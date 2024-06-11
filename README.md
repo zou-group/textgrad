@@ -1,4 +1,4 @@
-# TextGrad: Automatic ``Differentiation'' via Text
+# TextGrad: Automatic ''Differentiation'' via Text
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
