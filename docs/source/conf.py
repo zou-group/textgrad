@@ -45,6 +45,7 @@ autodoc_default_options = {
     'show-inheritance': True
 }
 
+
 autodoc_typehints = 'description'
 autosummary_generate = True  # Enable autosummary
 autoclass_content = 'both'
