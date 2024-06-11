@@ -1,0 +1,9 @@
+openai>=1.23.6
+tenacity>=8.2.3
+python-dotenv>=1.0.0
+pandas>=1.5.3
+platformdirs>=3.11.0
+datasets>=2.14.6
+diskcache>=5.6.3
+graphviz>=0.20.3
+gdown>=5.2.0
