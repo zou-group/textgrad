@@ -8,7 +8,7 @@ from .config import SingletonBackwardEngine
 
 class TextLoss(Module):
     def __init__(self, 
-                 eval_system_prompt: Variable, 
+                 eval_system_prompt: Union[Variable, str],
                  engine: Union[EngineLM, str] = None):
         """
         A vanilla loss function to evaluate a response.
@@ -29,6 +29,8 @@ class TextLoss(Module):
         >>> response_evaluator(response)
         """
         super().__init__()
+        if isinstance(eval_system_prompt, str):
+            eval_system_prompt = Variable(eval_system_prompt, requires_grad=False, role_description="system prompt for the evaluation")
         self.eval_system_prompt = eval_system_prompt
         if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
