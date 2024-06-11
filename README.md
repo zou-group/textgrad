@@ -21,7 +21,8 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 ![Analogy with Torch](assets/analogy.png)
 
 ## QuickStart
-
+If you know PyTorch, you know 80% of TextGrad. 
+Let's walk through the key components with a simple example. Say, we want to give you a punchline for TextGrad. 
 ```python
 import textgrad as tg
 # Step 1: Get an initial response from an LLM
@@ -33,7 +34,7 @@ punchline.set_role_description("a concise punchline that must hook everyone")
 Initial `punchline` from the model:
 > Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
 
-
+Not bad, but we (gpt-4o, i guess) can do better! Let's optimize the punchline using TextGrad.
 ```python
 # Step 2: Define the loss function and the optimizer, just like in PyTorch!
 loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
@@ -49,7 +50,7 @@ optimizer.step()
 Optimized punchline:
 > Boost your AI with our toolkit – because even robots need a tune-up!
 
-
+We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 ### Tutorials
 
 We have prepared a couple of tutorials to get you started with TextGrad. 
