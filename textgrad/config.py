@@ -1,4 +1,5 @@
-from .engine import EngineLM
+from .engine import EngineLM, get_engine
+from typing import Union
 
 class SingletonBackwardEngine:
     """
@@ -41,6 +42,8 @@ class SingletonBackwardEngine:
         """
         return self.engine
 
-def set_backward_engine(engine: EngineLM, override: bool = False):
+def set_backward_engine(engine: Union[EngineLM, str], override: bool = False):
     singleton_backward_engine = SingletonBackwardEngine()
+    if isinstance(engine, str):
+        engine = get_engine(engine)
     singleton_backward_engine.set_engine(engine, override=override)

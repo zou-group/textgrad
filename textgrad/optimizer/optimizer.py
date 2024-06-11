@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Union
 from collections import defaultdict
 from textgrad.variable import Variable
 from textgrad import logger
-from textgrad.engine import EngineLM
+from textgrad.engine import EngineLM, get_engine
 from .optimizer_prompts import construct_tgd_prompt, OPTIMIZER_SYSTEM_PROMPT
 from textgrad.config import SingletonBackwardEngine
 
@@ -41,7 +41,7 @@ class TextualGradientDescent(Optimizer):
     def __init__(self, 
                  parameters: List[Variable], 
                  verbose: int=0, 
-                 engine: EngineLM=None, 
+                 engine: Union[EngineLM, str]=None, 
                  constraints: List[str]=None,
                  new_variable_tags: List[str]=["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"],
                  optimizer_system_prompt: str=OPTIMIZER_SYSTEM_PROMPT,
@@ -69,7 +69,8 @@ class TextualGradientDescent(Optimizer):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
         elif engine is None:
             engine = SingletonBackwardEngine().get_engine()
-        
+        if isinstance(engine, str):
+            engine = get_engine(engine)
         self.engine = engine
         self.verbose = verbose
         self.constraints = constraints if constraints is not None else []
@@ -149,7 +150,7 @@ class TextualGradientDescent(Optimizer):
 
 class TextualGradientDescentwithMomentum(Optimizer):
     def __init__(self, 
-                 engine: EngineLM, 
+                 engine: Union[str, EngineLM], 
                  parameters: List[Variable], 
                  momentum_window: int = 0, 
                  constraints: List[str]=None,
@@ -157,6 +158,12 @@ class TextualGradientDescentwithMomentum(Optimizer):
                  in_context_examples: List[str]=None,
                  optimizer_system_prompt: str=OPTIMIZER_SYSTEM_PROMPT):
         super().__init__(parameters)
+        if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
+            raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
+        elif engine is None:
+            engine = SingletonBackwardEngine().get_engine()
+        if isinstance(engine, str):
+            engine = get_engine(engine)
         self.engine = engine
         
         if momentum_window == 0:
