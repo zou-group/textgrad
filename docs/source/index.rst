@@ -35,20 +35,35 @@ Tutorials
 We have prepared a couple of tutorials to get you started with TextGrad. 
 You can run them directly in Google Colab by clicking on the links below.
 
-.. list-table:: Tutorials
-   :widths: 25 75
-   :header-rows: 1
+.. |primiti| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb
+    :alt: Open In Colab
 
-   * - Example
-     - Colab Link
-   * - Introduction to TextGrad Primitives
-     - `![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg) <https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb>`_
-   * - Optimizing a Code Snippet and Define a New Loss
-     - `![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg) <https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb>`_
-   * - Prompt Optimization
-     - `![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg) <https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb>`_
-   * - Solution Optimization
-     - `![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg) <https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb>`_
+.. |code| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb
+    :alt: Open In Colab
+
+.. |promptopt| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb
+    :alt: Open In Colab
+
+.. |solut| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb
+    :alt: Open In Colab
+
+
+
++--------------------------------------------------------------------------------+------------------+
+| Name                                                                           | Link             |
++================================================================================+==================+
+| Introduction to TextGrad primitives                                            | |primiti|        |
++--------------------------------------------------------------------------------+------------------+
+| Code Optimization and New Loss Implementation                                  | |code|           |
++--------------------------------------------------------------------------------+------------------+
+| Prompt Optimization                                                            | |promptopt|      |
++--------------------------------------------------------------------------------+------------------+
+| Solution Optimization                                                          | |solut|          |
++--------------------------------------------------------------------------------+------------------+
 
 Installation
 ============
