@@ -22,6 +22,34 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 
 ## QuickStart
 
+```python
+import textgrad as tg
+# Step 1: Get an initial response from an LLM
+model = tg.BlackboxLLM("gpt-4o")
+punchline = model(tg.Variable("write a punchline for my github package about optimizing compound AI systems", role_description="prompt", requires_grad=False))
+punchline.set_role_description("a concise punchline that must hook everyone")
+```
+
+Initial `punchline` from the model:
+> Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
+
+
+```python
+# Step 2: Define the loss function and the optimizer, just like in PyTorch!
+loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
+optimizer = tg.TGD(parameters=[punchline])
+```
+
+```python
+# Step 3: Do the loss computation, backward pass, and update the punchline
+loss = loss_fn(punchline)
+loss.backward()
+optimizer.step()
+```
+Optimized punchline:
+> Boost your AI with our toolkit – because even robots need a tune-up!
+
+
 ### Tutorials
 
 We have prepared a couple of tutorials to get you started with TextGrad. 
@@ -46,7 +74,7 @@ You can install TextGrad via pip:
 pip install textgrad
 ```
 
-## Examples
+## More detailed examples
 
 ### Minimal Instance Optimization Example
 
