@@ -50,6 +50,9 @@ optimizer.step()
 Optimized punchline:
 > Boost your AI with our toolkit – because even robots need a tune-up!
 
+I mean, it's not perfect (and maybe a bit cringy), but who gets to maxima in one step? 
+
+<br>
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 ### Tutorials
 
