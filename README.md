@@ -22,7 +22,7 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 
 ## QuickStart
 If you know PyTorch, you know 80% of TextGrad. 
-Let's walk through the key components with a simple example. Say, we want to give you a punchline for TextGrad. 
+Let's walk through the key components with a simple example. Say we want to use GPT-4o to generate a punchline for TextGrad.
 ```python
 import textgrad as tg
 # Step 1: Get an initial response from an LLM
@@ -50,7 +50,7 @@ optimizer.step()
 Optimized punchline:
 > Boost your AI with our toolkit – because even robots need a tune-up!
 
-I mean, it's not perfect (and maybe a bit cringy), but who gets to maxima in one step? 
+Okay this model isn’t really ready for a comedy show yet (and maybe a bit cringy) but it is clearly trying. But who gets to maxima in one step? 
 
 <br>
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
