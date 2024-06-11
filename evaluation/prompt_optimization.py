@@ -16,7 +16,7 @@ def set_seed(seed):
 
 def config():
     parser = argparse.ArgumentParser(description="Optimize a prompt for a task.")
-    parser.add_argument("--task", type=str, default=" ", help="The task to evaluate the model on.")
+    parser.add_argument("--task", type=str, default="BBH_object_counting", help="The task to evaluate the model on.")
     parser.add_argument("--evaluation_engine", type=str, default="gpt-4o", help="The API to use for evaluation.")
     parser.add_argument("--test_engine", type=str, default="gpt-3.5-turbo-0125", help="The API to use for evaluation.")
     parser.add_argument("--batch_size", type=int, default=3, help="The batch size to use for training.")

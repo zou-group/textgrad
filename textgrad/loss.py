@@ -1,6 +1,6 @@
-from textgrad.engine import EngineLM
+from textgrad.engine import EngineLM, get_engine
 from textgrad.variable import Variable
-from typing import List
+from typing import List, Union
 from textgrad.autograd import LLMCall, FormattedLLMCall
 from textgrad.autograd import Module
 from .config import SingletonBackwardEngine
@@ -8,8 +8,8 @@ from .config import SingletonBackwardEngine
 
 class TextLoss(Module):
     def __init__(self, 
-                 eval_system_prompt: Variable, 
-                 engine: EngineLM = None):
+                 eval_system_prompt: Union[Variable, str],
+                 engine: Union[EngineLM, str] = None):
         """
         A vanilla loss function to evaluate a response.
         In particular, this module is used to evaluate any given text object.
@@ -29,11 +29,15 @@ class TextLoss(Module):
         >>> response_evaluator(response)
         """
         super().__init__()
+        if isinstance(eval_system_prompt, str):
+            eval_system_prompt = Variable(eval_system_prompt, requires_grad=False, role_description="system prompt for the evaluation")
         self.eval_system_prompt = eval_system_prompt
         if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
         elif engine is None:
             engine = SingletonBackwardEngine().get_engine()
+        if isinstance(engine, str):
+            engine = get_engine(engine)
         self.engine = engine
         self.llm_call = LLMCall(self.engine, self.eval_system_prompt)
 
@@ -52,7 +56,7 @@ class MultiFieldEvaluation(Module):
         self,
         evaluation_instruction: Variable,
         role_descriptions: List[str],
-        engine: EngineLM = None,
+        engine: Union[EngineLM, str] = None,
         system_prompt: Variable = None,
     ):
         """A module to compare two variables using a language model.
@@ -77,7 +81,8 @@ class MultiFieldEvaluation(Module):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
         elif engine is None:
             engine = SingletonBackwardEngine().get_engine()
-        
+        if isinstance(engine, str):
+            engine = get_engine(engine)
         self.engine = engine
         self.role_descriptions = role_descriptions
         if system_prompt:
@@ -111,7 +116,7 @@ class MultiFieldTokenParsedEvaluation(MultiFieldEvaluation):
         self,
         evaluation_instruction: Variable,
         role_descriptions: List[str],
-        engine: EngineLM = None,
+        engine: Union[EngineLM, str] = None,
         system_prompt: Variable = None,
         parse_tags: List[str] = None
     ):
@@ -137,7 +142,7 @@ DEFAULT_TEST_TIME = "You are an intelligent assistant used as an evaluator, and 
 class MultiChoiceTestTime(Module):
     def __init__(self,
                  evaluation_instruction: str,
-                 engine: EngineLM = None,
+                 engine: Union[EngineLM, str] = None,
                  system_prompt: Variable = None):
         """
         The test-time loss to use when working on a response to a multiple choice question.
@@ -162,7 +167,8 @@ class MultiChoiceTestTime(Module):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
         elif engine is None:
             engine = SingletonBackwardEngine().get_engine()
-        
+        if isinstance(engine, str):
+            engine = get_engine(engine)
         self.engine = engine
         format_string = "{instruction}\nQuestion: {{question}}\nAnswer by the language model: {{prediction}}"
         self.format_string = format_string.format(instruction=evaluation_instruction)

@@ -3,6 +3,10 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Arxiv](http://img.shields.io/badge/arXiv-0000.00000-B31B1B.svg)](https://arxiv.org/abs/0000.00000)
+[![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)](https://textgrad.readthedocs.io/en/latest/?badge=latest)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/textgrad)](https://pypi.org/project/textgrad/)
+[![PyPI](https://img.shields.io/pypi/v/textgrad)](https://pypi.org/project/textgrad/)
+
 
 ![Logo](assets/logo_full.png)
 
@@ -17,6 +21,39 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 ![Analogy with Torch](assets/analogy.png)
 
 ## QuickStart
+If you know PyTorch, you know 80% of TextGrad. 
+Let's walk through the key components with a simple example. Say we want to use GPT-4o to generate a punchline for TextGrad.
+```python
+import textgrad as tg
+# Step 1: Get an initial response from an LLM
+model = tg.BlackboxLLM("gpt-4o")
+punchline = model(tg.Variable("write a punchline for my github package about optimizing compound AI systems", role_description="prompt", requires_grad=False))
+punchline.set_role_description("a concise punchline that must hook everyone")
+```
+
+Initial `punchline` from the model:
+> Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
+
+Not bad, but we (gpt-4o, i guess) can do better! Let's optimize the punchline using TextGrad.
+```python
+# Step 2: Define the loss function and the optimizer, just like in PyTorch!
+loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
+optimizer = tg.TGD(parameters=[punchline])
+```
+
+```python
+# Step 3: Do the loss computation, backward pass, and update the punchline
+loss = loss_fn(punchline)
+loss.backward()
+optimizer.step()
+```
+Optimized punchline:
+> Boost your AI with our toolkit – because even robots need a tune-up!
+
+Okay this model isn’t really ready for a comedy show yet (and maybe a bit cringy) but it is clearly trying. But who gets to maxima in one step? 
+
+<br>
+We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 
 ### Tutorials
 
@@ -42,7 +79,7 @@ You can install TextGrad via pip:
 pip install textgrad
 ```
 
-## Examples
+## More detailed examples
 
 ### Minimal Instance Optimization Example
 
@@ -50,7 +87,7 @@ TextGrad can optimize unstructured variables, such as text. Let us have an initi
 
 ```python
 import textgrad as tg
-tg.set_backward_engine(tg.get_engine("gpt-4o"))
+tg.set_backward_engine("gpt-4o")
 
 initial_solution = """To solve the equation 3x^2 - 7x + 2 = 0, we use the quadratic formula:
 x = (-b ± √(b^2 - 4ac)) / 2a
@@ -112,7 +149,7 @@ TextGrad can also optimize prompts in PyTorch style! Here's how to do it with Te
 ```python
 import textgrad as tg
 llm_engine = tg.get_engine("gpt-3.5-turbo")
-tg.set_backward_engine(tg.get_engine("gpt-4o"))
+tg.set_backward_engine("gpt-4o")
 
 _, val_set, _, eval_fn = load_task("BBH_object_counting", llm_engine)
 question_str, answer_str = val_set[0]
