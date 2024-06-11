@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("requirements.txt") as f:
     requirements = f.read().splitlines()
@@ -8,7 +8,7 @@ with open("README.md") as readme_file:
 
 setup(
     name="textgrad",
-    version="0.1.1",
+    version="0.1.3",
     description="",
     python_requires=">=3.8",
     classifiers=[
@@ -24,7 +24,7 @@ setup(
     url="https://github.com/zou-group/textgrad",
     author="Zou Group",
     author_email="merty@stanford.edu",
-    packages=["textgrad"],
+    packages=find_packages(include=["textgrad", "textgrad.*"]),
     include_package_data=True,
     install_requires=requirements,
     extras_require={
