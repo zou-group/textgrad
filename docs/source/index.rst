@@ -29,6 +29,42 @@ This API is similar to the Pytorch API, making it simple to adapt to your use ca
 QuickStart
 ==========
 
+If you know PyTorch, you know 80% of TextGrad.
+Let's walk through the key components with a simple example. Say we want to use GPT-4o to generate a punchline for TextGrad.
+
+.. code-block:: python
+
+    import textgrad as tg
+    # Step 1: Get an initial response from an LLM
+    model = tg.BlackboxLLM("gpt-4o")
+    punchline = model(tg.Variable("write a punchline for my github package about optimizing compound AI systems", role_description="prompt", requires_grad=False))
+    punchline.set_role_description("a concise punchline that must hook everyone")
+
+Initial `punchline` from the model:
+> Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
+
+Not bad, but we (gpt-4o, I guess) can do better! Let's optimize the punchline using TextGrad.
+
+.. code-block:: python
+
+    # Step 2: Define the loss function and the optimizer, just like in PyTorch!
+    loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
+    optimizer = tg.TGD(parameters=[punchline])
+
+.. code-block:: python
+
+    # Step 3: Do the loss computation, backward pass, and update the punchline
+    loss = loss_fn(punchline)
+    loss.backward()
+    optimizer.step()
+
+Optimized punchline:
+> Boost your AI with our toolkit – because even robots need a tune-up!
+
+Okay this model isn’t really ready for a comedy show yet (and maybe a bit cringy) but it is clearly trying. But who gets to maxima in one step? 
+
+We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
+
 Tutorials
 ---------
 
