@@ -8,7 +8,7 @@ with open("README.md") as readme_file:
 
 setup(
     name="textgrad",
-    version="0.1",
+    version="0.1.1",
     description="",
     python_requires=">=3.8",
     classifiers=[
@@ -21,6 +21,9 @@ setup(
     license="MIT license",
     long_description=readme,
     long_description_content_type="text/markdown",
+    url="https://github.com/zou-group/textgrad",
+    author="Zou Group",
+    author_email="merty@stanford.edu",
     packages=["textgrad"],
     include_package_data=True,
     install_requires=requirements,
@@ -28,3 +31,4 @@ setup(
     },
     zip_safe=False,
 )
+
