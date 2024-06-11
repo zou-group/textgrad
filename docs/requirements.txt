@@ -9,3 +9,4 @@ sphinx_design
 jinja2
 sphinx
 setuptools
+textgrad
