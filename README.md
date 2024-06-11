@@ -54,6 +54,7 @@ Okay this model isn’t really ready for a comedy show yet (and maybe a bit crin
 
 <br>
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
+
 ### Tutorials
 
 We have prepared a couple of tutorials to get you started with TextGrad. 
