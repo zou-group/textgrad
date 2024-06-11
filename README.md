@@ -3,6 +3,10 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Arxiv](http://img.shields.io/badge/arXiv-0000.00000-B31B1B.svg)](https://arxiv.org/abs/0000.00000)
+[![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)](https://textgrad.readthedocs.io/en/latest/?badge=latest)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/textgrad)](https://pypi.org/project/textgrad/)
+[![PyPI](https://img.shields.io/pypi/v/textgrad)](https://pypi.org/project/textgrad/)
+
 
 ![Logo](assets/logo_full.png)
 
