@@ -12,24 +12,6 @@ Check out the :doc:`usage` section for further information, including how to
 Check out the :doc:`quickstart` guide!
 
 
-Contents
---------
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   usage
-   textgrad
-   quickstart
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
 .. image:: assets/logo_full.png
    :align: center
 
@@ -254,5 +236,20 @@ Citation
       year={2024},
     }
 
-Creating recipes
-----------------
+Contents
+--------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   usage
+   textgrad
+   quickstart
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
