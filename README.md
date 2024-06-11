@@ -50,7 +50,7 @@ TextGrad can optimize unstructured variables, such as text. Let us have an initi
 
 ```python
 import textgrad as tg
-tg.set_backward_engine(tg.get_engine("gpt-4o"))
+tg.set_backward_engine("gpt-4o")
 
 initial_solution = """To solve the equation 3x^2 - 7x + 2 = 0, we use the quadratic formula:
 x = (-b ± √(b^2 - 4ac)) / 2a
@@ -112,7 +112,7 @@ TextGrad can also optimize prompts in PyTorch style! Here's how to do it with Te
 ```python
 import textgrad as tg
 llm_engine = tg.get_engine("gpt-3.5-turbo")
-tg.set_backward_engine(tg.get_engine("gpt-4o"))
+tg.set_backward_engine("gpt-4o")
 
 _, val_set, _, eval_fn = load_task("BBH_object_counting", llm_engine)
 question_str, answer_str = val_set[0]
