@@ -1,6 +1,6 @@
 # TextGrad: Automatic ``Differentiation'' via Text
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](LINK)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Arxiv](http://img.shields.io/badge/arXiv-0000.00000-B31B1B.svg)](https://arxiv.org/abs/0000.00000)
 
@@ -27,8 +27,9 @@ You can run them directly in Google Colab by clicking on the links below.
 
 | Example                             | Colab Link                                                                                                                                                                                                    |
 |-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Introduction to TextGrad Primitives | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/prompt_optimization.ipynb)              |
-| Prompt Optimization                 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/prompt_optimization_textgrad.ipynb)     |
+| Introduction to TextGrad Primitives | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/)              |
+| Prompt Optimization                 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)     |
+| Solution Optimization               | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb)   |
 | Optimizing a code snippet and defining a test time loss  | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb) |
 
 </div>
