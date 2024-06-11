@@ -22,7 +22,7 @@ copyright = '2024, TextGrad authors'
 author = 'TextGrad authors'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.1.3'
 
 
 # -- General configuration ---------------------------------------------------
