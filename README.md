@@ -36,7 +36,9 @@ Initial `punchline` from the model:
 
 Not bad, but maybe GPT-4o can do better! Let's optimize the punchline using TextGrad. In this case `punchline` would be the variable we want to optimize and improve.
 ```python
-# Step 2: Define the loss function and the optimizer, just like in PyTorch! Here, we don't have SGD, but we have TGD (Textual Gradient Descent) that works with "textual gradients". TextLoss is a natural-language specified loss function that describes how we want to evaluate the punchline.
+# Step 2: Define the loss function and the optimizer, just like in PyTorch! 
+# Here, we don't have SGD, but we have TGD (Textual Gradient Descent) that works with "textual gradients". 
+# TextLoss is a natural-language specified loss function that describes how we want to evaluate the punchline.
 loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
 optimizer = tg.TGD(parameters=[punchline])
 ```
@@ -87,7 +89,6 @@ pip install textgrad
 TextGrad can optimize unstructured variables, such as text. Let us have an initial solution to a math problem that we want to improve. Here's how to do it with TextGrad, using GPT-4o:
 
 ```python
-import textgrad as tg
 tg.set_backward_engine("gpt-4o")
 
 initial_solution = """To solve the equation 3x^2 - 7x + 2 = 0, we use the quadratic formula:
@@ -104,16 +105,11 @@ solution = tg.Variable(initial_solution,
                        requires_grad=True,
                        role_description="solution to the math question")
 
-# Define the loss function, via a system prompt to an LLM
-loss_system_prompt = tg.Variable("""You will evaluate a solution to a math question. Do not attempt to solve it yourself, do not give a solution, only identify errors. Be super concise.""",
-                                 requires_grad=False,
-                                 role_description="system prompt")
+# Define the optimizer, let the optimizer know which variables to optimize, and run the loss function
 
-loss_fn = tg.TextLoss(loss_system_prompt)
+loss_fn = tg.TextLoss("""You will evaluate a solution to a math question. Do not attempt to solve it yourself, do not give a solution, only identify errors. Be super concise.""")
 
-# Define the optimizer, let the optimizer know which variables to optimize
 optimizer = tg.TGD(parameters=[solution])
-
 loss = loss_fn(solution)
 ```
 
@@ -145,6 +141,7 @@ Output:
 > The solutions are:
 > x1 = (7 + 5) / 6 = 12 / 6 = 2
 > x2 = (7 - 5) / 6 = 2 / 6 = 1/3
+
 ### Minimal Prompt Optimization Example
 TextGrad can also optimize prompts in PyTorch style! Here's how to do it with TextGrad, using GPT-4o for feedback, and optimizing a prompt for gpt-3.5-turbo:
 ```python
