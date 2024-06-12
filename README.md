@@ -25,8 +25,8 @@ If you know PyTorch, you know 80% of TextGrad.
 Let's walk through the key components with a simple example. Say we want to use GPT-4o to solve a simple
 reasoning problem.
 
-The question is "If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step."
-If you think about it **the answer is 1 hour**, since the number of shirts doesn't affect the time it takes to dry them.
+The question is *If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step.*
+If you think about it **the answer is 1 hour, since the number of shirts doesn't affect the time it takes to dry them.**
 
 ```python
 import textgrad as tg
@@ -41,8 +41,10 @@ answer = model(question)
 # answer: To determine how long it will take to dry 30 shirts under the sun, 
 # we can use a proportional relationship based on the given information. 
 # Here’s the step-by-step reasoning: [.....]
-#  So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
+# So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
 ```
+
+As you can see, **the model's answer is incorrect.** We can optimize the answer using TextGrad to get the correct answer.
 
 ```python
 
@@ -64,31 +66,6 @@ optimizer.step()
 
 ```
 
-Initial `punchline` from the model:
-> Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
-
-Not bad, but maybe GPT-4o can do better! Let's optimize the punchline using TextGrad. In this case `punchline` would be the variable we want to optimize and improve.
-```python
-# Step 2: Define the loss function and the optimizer, just like in PyTorch! 
-# Here, we don't have SGD, but we have TGD (Textual Gradient Descent) that works with "textual gradients". 
-# TextLoss is a natural-language specified loss function that describes how we want to evaluate the punchline.
-loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
-optimizer = tg.TGD(parameters=[punchline])
-```
-
-```python
-# Step 3: Do the loss computation, backward pass, and update the punchline. Exact same syntax as PyTorch!
-loss = loss_fn(punchline)
-loss.backward()
-optimizer.step()
-```
-
-Optimized punchline:
-> Boost your AI with our toolkit – because even robots need a tune-up!
-
-Okay this model isn’t really ready for a comedy show yet but it is clearly trying. But who gets to maxima in one step? 
-
-<br>
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 
 ### Tutorials
