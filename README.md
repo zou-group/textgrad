@@ -83,7 +83,7 @@ answer
 
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 
-### Tutorials
+### Tutorials :bookmark_tabs:
 
 We have prepared a couple of tutorials to get you started with TextGrad. 
 You can run them directly in Google Colab by clicking on the links below.
