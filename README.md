@@ -43,10 +43,10 @@ question = tg.Variable(question_string, role_description="question to the LLM", 
 answer = model(question)
 ```
 
-    answer: To determine how long it will take to dry 30 shirts under the sun, 
-    we can use a proportional relationship based on the given information. 
-    Here’s the step-by-step reasoning: [.....]
-    So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
+> answer: To determine how long it will take to dry 30 shirts under the sun, 
+> we can use a proportional relationship based on the given information. 
+> Here’s the step-by-step reasoning: [.....]
+> So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
 
 
 As you can see, **the model's answer is incorrect.** We can optimize the answer using TextGrad to get the correct answer.
@@ -63,9 +63,9 @@ evaluation_instruction = f"Here's a question: {question_string}. Evaluate any gi
 # TextLoss is a natural-language specified loss function that describes how we want to evaluate the reasoning.
 loss_fn = tg.TextLoss(evaluation_instruction)
 ```
-    loss: [...] Your step-by-step reasoning is clear and logical, 
-    but it contains a critical flaw in the assumption that drying time is directly proportional 
-    to the number of shirts. [...]
+> loss: [...] Your step-by-step reasoning is clear and logical, 
+> but it contains a critical flaw in the assumption that drying time is directly proportional 
+> to the number of shirts. [...]
 
 ```python
 # Step 3: Do the loss computation, backward pass, and update the punchline. Exact same syntax as PyTorch!
@@ -75,8 +75,8 @@ optimizer.step()
 answer
 ```
 
-    answer: It will still take 1 hour to dry 30 shirts under the sun, 
-    assuming they are all laid out properly to receive equal sunlight.
+> answer: It will still take 1 hour to dry 30 shirts under the sun, 
+> assuming they are all laid out properly to receive equal sunlight.
 
 
 
