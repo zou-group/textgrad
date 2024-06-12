@@ -25,7 +25,7 @@ If you know PyTorch, you know 80% of TextGrad.
 Let's walk through the key components with a simple example. Say we want to use GPT-4o to solve a simple
 reasoning problem.
 
-The question is *If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step.*
+The question is *If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step.* (Thanks, [Reddit User](https://www.reddit.com/r/OpenAI/comments/18q479x/comment/kf444es/))
 
 ```python
 import textgrad as tg
