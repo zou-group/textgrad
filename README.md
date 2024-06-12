@@ -42,7 +42,7 @@ question = tg.Variable(question_string,
                        role_description="question to the LLM", 
                        requires_grad=False)
 
-answer = model(question)
+answer = model(question_string)
 ```
 
 > :warning: **answer: To determine how long it will take to dry 30 shirts under the sun,** 
