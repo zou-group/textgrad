@@ -45,7 +45,7 @@ question = tg.Variable(question_string,
 answer = model(question)
 ```
 
-> :warning: answer: To determine how long it will take to dry 30 shirts under the sun,** 
+> :warning: answer: **To determine how long it will take to dry 30 shirts under the sun,** 
 > **we can use a proportional relationship based on the given information.**
 > **Here’s the step-by-step reasoning: [.....]**
 > **So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.**
