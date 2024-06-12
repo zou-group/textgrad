@@ -85,7 +85,7 @@ We have many more examples around how TextGrad can optimize all kinds of variabl
 
 ### Tutorials 
 
-We have prepared a couple of tutorials :bookmark_tabs: to get you started with TextGrad. 
+We have prepared a couple of tutorials to get you started with TextGrad. 
 You can run them directly in Google Colab by clicking on the links below.
 
 <div align="center">
