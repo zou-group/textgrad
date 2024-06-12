@@ -36,13 +36,13 @@ Initial `punchline` from the model:
 
 Not bad, but maybe GPT-4o can do better! Let's optimize the punchline using TextGrad. In this case `punchline` would be the variable we want to optimize and improve.
 ```python
-# Step 2: Define the loss function and the optimizer, just like in PyTorch!
+# Step 2: Define the loss function and the optimizer, just like in PyTorch! Here, we don't have SGD, but we have TGD (Textual Gradient Descent) that works with "textual gradients". TextLoss is a natural-language specified loss function that describes how we want to evaluate the punchline.
 loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
 optimizer = tg.TGD(parameters=[punchline])
 ```
 
 ```python
-# Step 3: Do the loss computation, backward pass, and update the punchline.
+# Step 3: Do the loss computation, backward pass, and update the punchline. Exact same syntax as PyTorch!
 loss = loss_fn(punchline)
 loss.backward()
 optimizer.step()
