@@ -38,10 +38,10 @@ question_string = "If it takes 1 hour to dry 25 shirts under the sun, how long w
 question = tg.Variable(question_string, role_description="question to the LLM", requires_grad=False)
 
 answer = model(question)
-# answer: To determine how long it will take to dry 30 shirts under the sun, 
-# we can use a proportional relationship based on the given information. 
-# Here’s the step-by-step reasoning: [.....]
-# So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
+>> answer: To determine how long it will take to dry 30 shirts under the sun, 
+>> we can use a proportional relationship based on the given information. 
+>> Here’s the step-by-step reasoning: [.....]
+>> So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
 ```
 
 As you can see, **the model's answer is incorrect.** We can optimize the answer using TextGrad to get the correct answer.
@@ -54,14 +54,14 @@ optimizer = tg.TGD(parameters=[answer])
 evaluation_instruction = f"Here's a question: {question_string}. Evaluate any given answer to this question, be smart, logical, and very critical. Just provide concise feedback."
 loss_fn = tg.TextLoss(evaluation_instruction)
 loss = loss_fn(answer)
-# loss: [...] Your step-by-step reasoning is clear and logical, 
-# but it contains a critical flaw in the assumption that drying time is directly proportional 
-# to the number of shirts. [..]
+>> loss: [...] Your step-by-step reasoning is clear and logical, 
+>> but it contains a critical flaw in the assumption that drying time is directly proportional 
+>> to the number of shirts. [..]
 
 loss.backward()
 optimizer.step()
-# answer: It will still take 1 hour to dry 30 shirts under the sun, 
-# assuming they are all laid out properly to receive equal sunlight.
+>> answer: It will still take 1 hour to dry 30 shirts under the sun, 
+>> assuming they are all laid out properly to receive equal sunlight.
 
 
 ```
