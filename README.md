@@ -63,7 +63,7 @@ evaluation_instruction = f"Here's a question: {question_string}. Evaluate any gi
 # TextLoss is a natural-language specified loss function that describes how we want to evaluate the reasoning.
 loss_fn = tg.TextLoss(evaluation_instruction)
 ```
-> loss: [...] Your step-by-step reasoning is clear and logical, 
+> :brain: loss: [...] Your step-by-step reasoning is clear and logical, 
 > but it contains a critical flaw in the assumption that drying time is directly proportional 
 > to the number of shirts. [...]
 
@@ -75,7 +75,7 @@ optimizer.step()
 answer
 ```
 
-> answer: It will still take 1 hour to dry 30 shirts under the sun, 
+> :white_check_mark: answer: It will still take 1 hour to dry 30 shirts under the sun, 
 > assuming they are all laid out properly to receive equal sunlight.
 
 
