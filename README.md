@@ -26,23 +26,28 @@ Let's walk through the key components with a simple example. Say we want to use 
 reasoning problem.
 
 The question is *If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step.*
-If you think about it **the answer is 1 hour, since the number of shirts doesn't affect the time it takes to dry them.**
 
 ```python
 import textgrad as tg
 
 tg.set_backward_engine("gpt-4o", override=True)
 
+# Step 1: Get an initial response from an LLM.
 model = tg.BlackboxLLM("gpt-4o")
-question_string = "If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step"
+question_string = ("If it takes 1 hour to dry 25 shirts under the sun, "
+                   "how long will it take to dry 30 shirts under the sun? "
+                   "Reason step by step")
+
 question = tg.Variable(question_string, role_description="question to the LLM", requires_grad=False)
 
 answer = model(question)
-#>> answer: To determine how long it will take to dry 30 shirts under the sun, 
-#>> we can use a proportional relationship based on the given information. 
-#>> Here’s the step-by-step reasoning: [.....]
-#>> So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
 ```
+
+    answer: To determine how long it will take to dry 30 shirts under the sun, 
+    we can use a proportional relationship based on the given information. 
+    Here’s the step-by-step reasoning: [.....]
+    So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.
+
 
 As you can see, **the model's answer is incorrect.** We can optimize the answer using TextGrad to get the correct answer.
 
@@ -50,21 +55,31 @@ As you can see, **the model's answer is incorrect.** We can optimize the answer 
 
 answer.set_role_description("concise and accurate answer to the question")
 
+# Step 2: Define the loss function and the optimizer, just like in PyTorch! 
+# Here, we don't have SGD, but we have TGD (Textual Gradient Descent) that works with "textual gradients". 
 optimizer = tg.TGD(parameters=[answer])
 evaluation_instruction = f"Here's a question: {question_string}. Evaluate any given answer to this question, be smart, logical, and very critical. Just provide concise feedback."
-loss_fn = tg.TextLoss(evaluation_instruction)
-loss = loss_fn(answer)
-#>> loss: [...] Your step-by-step reasoning is clear and logical, 
-#>> but it contains a critical flaw in the assumption that drying time is directly proportional 
-#>> to the number of shirts. [..]
 
+# TextLoss is a natural-language specified loss function that describes how we want to evaluate the reasoning.
+loss_fn = tg.TextLoss(evaluation_instruction)
+```
+    loss: [...] Your step-by-step reasoning is clear and logical, 
+    but it contains a critical flaw in the assumption that drying time is directly proportional 
+    to the number of shirts. [...]
+
+```python
+# Step 3: Do the loss computation, backward pass, and update the punchline. Exact same syntax as PyTorch!
+loss = loss_fn(answer)
 loss.backward()
 optimizer.step()
-#>> answer: It will still take 1 hour to dry 30 shirts under the sun, 
-#>> assuming they are all laid out properly to receive equal sunlight.
-
-
+answer
 ```
+
+    answer: It will still take 1 hour to dry 30 shirts under the sun, 
+    assuming they are all laid out properly to receive equal sunlight.
+
+
+
 
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 
