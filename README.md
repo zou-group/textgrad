@@ -22,7 +22,7 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 
 ## QuickStart
 If you know PyTorch, you know 80% of TextGrad. 
-Let's walk through the key components with a simple example. Say we want to use GPT-4o to generate a punchline for TextGrad.
+Let's walk through the key components with a simple example. Say we want to use GPT-4o to improve a solution to a math problem using TextGrad.
 ```python
 import textgrad as tg
 # Step 1: Get an initial response from an LLM.
@@ -107,7 +107,7 @@ solution = tg.Variable(initial_solution,
 
 # Define the optimizer, let the optimizer know which variables to optimize, and run the loss function
 
-loss_fn = tg.TextLoss("""You will evaluate a solution to a math question. Do not attempt to solve it yourself, do not give a solution, only identify errors. Be super concise.""")
+loss_fn = tg.TextLoss("You will evaluate a solution to a math question. Do not attempt to solve it yourself, do not give a solution, only identify errors. Be super concise.")
 
 optimizer = tg.TGD(parameters=[solution])
 loss = loss_fn(solution)
