@@ -261,8 +261,10 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
 ### Citation
 ```bibtex
 @article{yuksekgonul2024textgrad,
-  title={{TextGrad: Automatic ``Differentiation'' with Text}},
-  author={Mert Yuksekgonul and Federico Bianchi and Joseph Boen and Sheng Liu and Zhi Huang and Carlos Guestrin and James Zou},
-  year={2024},
+      title={TextGrad: Automatic "Differentiation" via Text}, 
+      author={Mert Yuksekgonul and Federico Bianchi and Joseph Boen and Sheng Liu and Zhi Huang and Carlos Guestrin and James Zou},
+      year={2024},
+      eprint={2406.07496},
+      archivePrefix={arXiv}
 }
 ``` 
