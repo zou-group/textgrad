@@ -5,7 +5,8 @@ except ImportError:
     raise ImportError("If you'd like to use hugging face models, please install the vllm package by running `pip install vllm`")
 
 
-
+import os
+import platformdirs
 from .base import EngineLM, CachedEngine
 
 
@@ -17,7 +18,11 @@ class ChatVllm(EngineLM, CachedEngine):
         model_string="microsoft/Phi-3-mini-4k-instruct",
         system_prompt=SYSTEM_PROMPT,**kwargs
     ):
-                
+        root = platformdirs.user_cache_dir("textgrad")
+        cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
+
+        super().__init__(cache_path=cache_path)  
+
         self.model_string = model_string
         self.model = LLM(model_string,**kwargs)
         self.tokenizer = AutoTokenizer.from_pretrained(model_string)
