@@ -20,7 +20,7 @@ class ChatVllm(EngineLM, CachedEngine):
                 
         self.model_string = model_string
         self.model = LLM(model_string,**kwargs)
-        self.tokenizer = AutoTokenizer(model_string)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_string)
         self.system_prompt = system_prompt
         assert isinstance(self.system_prompt, str)
 
