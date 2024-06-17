@@ -1,11 +1,19 @@
 from .base import EngineLM, CachedEngine
-
+from transformers import AutoConfig
 __ENGINE_NAME_SHORTCUTS__ = {
     "opus": "claude-3-opus-20240229",
     "haiku": "claude-3-haiku-20240307",
     "sonnet": "claude-3-sonnet-20240229",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
 }
+def is_in_hf(engine_name):
+    exists_on_hf = True
+    try:
+        tok = AutoConfig.from_pretrained(engine_name)
+    except:
+        exists_on_hf= False
+    return exists_on_hf
+
 
 def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if engine_name in __ENGINE_NAME_SHORTCUTS__:
@@ -30,5 +38,8 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif engine_name in ["command-r-plus", "command-r", "command", "command-light"]:
         from .cohere import ChatCohere
         return ChatCohere(model_string=engine_name, **kwargs)
+    elif is_in_hf(engine_name): 
+        from .vllm import ChatVllm
+        return ChatVllm(model_string=engine_name, **kwargs)
     else:
         raise ValueError(f"Engine {engine_name} not supported")
