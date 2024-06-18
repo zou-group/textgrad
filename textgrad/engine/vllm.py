@@ -16,18 +16,20 @@ class ChatVllm(EngineLM, CachedEngine):
     def __init__(
         self,
         model_string="microsoft/Phi-3-mini-4k-instruct",
-        system_prompt=SYSTEM_PROMPT,**kwargs
+        system_prompt=SYSTEM_PROMPT, **kwargs
     ):
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
 
-        super().__init__(cache_path=cache_path)  
+        CachedEngine.__init__(self, cache_path=cache_path)  
 
         self.model_string = model_string
-        self.model = LLM(model_string,**kwargs)
+        self.model = LLM(model_string, **kwargs)
         self.tokenizer = AutoTokenizer.from_pretrained(model_string)
         self.system_prompt = system_prompt
         assert isinstance(self.system_prompt, str)
+        EngineLM.__init__(self)
+
 
     def __call__(self, prompt, **kwargs):
         return self.generate(prompt, **kwargs)
@@ -41,15 +43,11 @@ class ChatVllm(EngineLM, CachedEngine):
         if cache_or_none is not None:
             return cache_or_none
         messages = [
-                {'role':'system',
-                'content':sys_prompt_arg
-                },
-                {'role':'user',
-                'content':prompt
-                }
+                {'role': 'system', 'content': sys_prompt_arg},
+                {'role': 'user', 'content': prompt}
         ]
-        prompt = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-        response = self.model.generate([prompt],sampling_params=sampling_parameters)[0].outputs[0]
-        response = response.text
-        self._save_cache(sys_prompt_arg + prompt, response)
-        return response
+        prompt_text = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        response = self.model.generate([prompt_text], sampling_params=sampling_parameters)[0].outputs[0]
+        response_text = response.text
+        self._save_cache(sys_prompt_arg + prompt, response_text)
+        return response_text
