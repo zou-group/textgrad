@@ -5,7 +5,7 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "haiku": "claude-3-haiku-20240307",
     "sonnet": "claude-3-sonnet-20240229",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
-    "qwen2": "qwen2:0.5b",
+    "ollama-qwen2:0.5b": "qwen2:0.5b",
 }
 
 def get_engine(engine_name: str, **kwargs) -> EngineLM:

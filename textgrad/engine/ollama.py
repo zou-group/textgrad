@@ -1,8 +1,7 @@
 try:
     from ollama import Client
-    # from openai import OpenAI
 except ImportError:
-    raise ImportError("If you'd like to use OpenAI models, please install the openai package by running `pip install openai`, and add 'OPENAI_API_KEY' to your environment variables.")
+    raise ImportError("If you'd like to use ollama models, please install ollama by going to https://ollama.com/download .")
 
 import os
 import platformdirs
@@ -13,7 +12,6 @@ from tenacity import (
 )
 import json
 from .base import EngineLM, CachedEngine
-from openai._types import NotGiven
 
 class ChatOllama(EngineLM, CachedEngine):
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
@@ -33,11 +31,8 @@ class ChatOllama(EngineLM, CachedEngine):
         super().__init__(cache_path=cache_path)
 
         self.system_prompt = system_prompt
-        # if os.getenv("OPENAI_API_KEY") is None:
-        #     raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
         
         self.client = Client(
-            # api_key="ollama",
             host="http://localhost:11434",
         )
         self.model_string = model_string
@@ -60,12 +55,6 @@ class ChatOllama(EngineLM, CachedEngine):
                 {"role": "system", "content": sys_prompt_arg},
                 {"role": "user", "content": prompt},
             ],
-            # frequency_penalty=0,
-            # presence_penalty=0,
-            # stop=None,
-            # temperature=temperature,
-            # max_tokens=max_tokens,
-            # top_p=top_p,
         )
 
         response = response['message']['content']
@@ -82,12 +71,6 @@ class ChatOllama(EngineLM, CachedEngine):
         response = self.client.chat(
             model=self.model_string,
             messages=messages,
-            # frequency_penalty=0,
-            # presence_penalty=0,
-            # stop=None,
-            # temperature=temperature,
-            # max_tokens=max_tokens,
-            # top_p=top_p,
         )
 
         response = response['message']['content']
