@@ -118,11 +118,16 @@ class MultiFieldTokenParsedEvaluation(MultiFieldEvaluation):
         role_descriptions: List[str],
         engine: Union[EngineLM, str] = None,
         system_prompt: Variable = None,
-        parse_tags: List[str] = None
+        parse_tags: List[str] = None,
     ):
-        super().__init__(evaluation_instruction, engine, role_descriptions, system_prompt=system_prompt)
+        super().__init__(
+            evaluation_instruction=evaluation_instruction,
+            role_descriptions=role_descriptions,
+            engine=engine,
+            system_prompt=system_prompt,
+        )
         self.parse_tags = parse_tags
-    
+
     def parse_output(self, response: Variable) -> str:
         """
         Parses the output response and returns the parsed response.
