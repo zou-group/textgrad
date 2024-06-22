@@ -1,12 +1,21 @@
 ![Logo](assets/logo_full.png)
 
+<!--- BADGES: START --->
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
-[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
-[![Arxiv](https://img.shields.io/badge/arXiv-2406.07496-B31B1B.svg)](https://arxiv.org/abs/2406.07496)
-[![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)](https://textgrad.readthedocs.io/en/latest/?badge=latest)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/textgrad)](https://pypi.org/project/textgrad/)
-[![PyPI](https://img.shields.io/pypi/v/textgrad)](https://pypi.org/project/textgrad/)
+[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)][#license-gh-package]
+[![Arxiv](https://img.shields.io/badge/arXiv-2406.07496-B31B1B.svg)][#arxiv-paper-package]
+[![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)][#docs-package]
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/textgrad)][#pypi-package]
+[![PyPI](https://img.shields.io/pypi/v/textgrad)][#pypi-package]
+[![Conda - Platform](https://img.shields.io/conda/pn/conda-forge/textgrad?logo=anaconda&style=flat)][#conda-forge-package]
+[![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/textgrad?logo=anaconda&style=flat&color=orange)][#conda-forge-package]
 
+[#license-gh-package]: https://lbesson.mit-license.org/
+[#arxiv-paper-package]: https://arxiv.org/abs/2406.07496
+[#docs-package]: https://textgrad.readthedocs.io/en/latest/?badge=latest
+[#pypi-package]: https://pypi.org/project/textgrad/
+[#conda-forge-package]: https://anaconda.org/conda-forge/textgrad
+<!--- BADGES: END --->
 
 ## TextGrad: Automatic ''Differentiation'' via Text
 
@@ -110,11 +119,29 @@ You can run them directly in Google Colab by clicking on the links below.
 
 ### Installation
 
-You can install TextGrad via pip:
+You can install TextGrad using any of the following methods.
+
+**With `pip`**:
 
 ```bash
 pip install textgrad
 ```
+
+**With `conda`**:
+
+```sh
+conda install -c conda-forge textgrad
+```
+
+> :bulb: The conda-forge package for `textgrad` is maintained [here](https://github.com/conda-forge/textgrad-feedstock).
+
+**Bleeding edge installation with `pip`**:
+
+```sh
+pip install git+https://github.com/zou-group/textgrad.git
+```
+
+See [here](https://pip.pypa.io/en/stable/cli/pip_install/) for more details on various methods of pip installation.
 
 ## More detailed examples
 
