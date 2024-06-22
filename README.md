@@ -1,7 +1,8 @@
 ![Logo](assets/logo_full.png)
 
 <!--- BADGES: START --->
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
+[![Open In Colab][#colab-svg]][#colab-demonb-package]
+[![Open In Lightning Studio][#lightning-studio-svg]][#oils-repo-package]
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)][#license-gh-package]
 [![Arxiv](https://img.shields.io/badge/arXiv-2406.07496-B31B1B.svg)][#arxiv-paper-package]
 [![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)][#docs-package]
@@ -10,6 +11,12 @@
 [![Conda - Platform](https://img.shields.io/conda/pn/conda-forge/textgrad?logo=anaconda&style=flat)][#conda-forge-package]
 [![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/textgrad?logo=anaconda&style=flat&color=orange)][#conda-forge-package]
 
+
+[#colab-svg]: https://colab.research.google.com/assets/colab-badge.svg
+[#lightning-studio-svg]: https://img.shields.io/badge/Open_in_Studio-%238229ee?style=flat&logo=lightning&labelColor=gray
+
+[#colab-demonb-package]: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb
+[#oils-repo-package]: https://lightning.ai/new?repo_url=https://github.com/zou-group/textgrad
 [#license-gh-package]: https://lbesson.mit-license.org/
 [#arxiv-paper-package]: https://arxiv.org/abs/2406.07496
 [#docs-package]: https://textgrad.readthedocs.io/en/latest/?badge=latest
@@ -108,14 +115,29 @@ You can run them directly in Google Colab by clicking on the links below.
 
 <div align="center">
 
-| Example                                         | Colab Link                                                                                                                                                                                                    |
-|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Introduction to TextGrad Primitives             | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb)                       |
-| Optimizing a Code Snippet and Define a New Loss | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb) |
-| Prompt Optimization                             | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)              |
-| Solution Optimization                           | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb)   |
+| Example                                         | Colab Link                                      | Lightning Studio Link                                                |
+|-------------------------------------------------|:-----------------------------------------------:|:--------------------------------------------------------------------:|
+| Introduction to TextGrad Primitives             | [![Open In Colab][#colab-svg]][#colab-nb-001]   | [![Open In Lightning Studio][#lightning-studio-svg]][#oils-nb-001]   |
+| Optimizing a Code Snippet and Define a New Loss | [![Open In Colab][#colab-svg]][#colab-nb-002]   | [![Open In Lightning Studio][#lightning-studio-svg]][#oils-nb-002]   |
+| Prompt Optimization                             | [![Open In Colab][#colab-svg]][#colab-nb-003]   | [![Open In Lightning Studio][#lightning-studio-svg]][#oils-nb-003]   |
+| Solution Optimization                           | [![Open In Colab][#colab-svg]][#colab-nb-004]   | [![Open In Lightning Studio][#lightning-studio-svg]][#oils-nb-004]   |
 
 </div>
+
+<!--- Google Colab for Notebooks --->
+[#colab-svg]: https://colab.research.google.com/assets/colab-badge.svg
+[#colab-nb-001]: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb
+[#colab-nb-002]: https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb
+[#colab-nb-003]: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb
+[#colab-nb-004]: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb
+
+<!--- Lightning Studio Badges for Notebooks --->
+[#lightning-studio-svg]: https://img.shields.io/badge/Open_in_Studio-%238229ee?style=flat&logo=lightning&labelColor=gray
+[#oils-nb-001]: https://lightning.ai/new?repo_url=https://github.com/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb
+[#oils-nb-002]: https://lightning.ai/new?repo_url=https://github.com/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb
+[#oils-nb-003]: https://lightning.ai/new?repo_url=https://github.com/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb
+[#oils-nb-004]: https://lightning.ai/new?repo_url=https://github.com/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb
+
 
 ### Installation
 
