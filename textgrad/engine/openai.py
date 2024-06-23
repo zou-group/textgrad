@@ -1,5 +1,5 @@
 try:
-    from openai import OpenAI
+    from openai import OpenAI, AzureOpenAI
 except ImportError:
     raise ImportError("If you'd like to use OpenAI models, please install the openai package by running `pip install openai`, and add 'OPENAI_API_KEY' to your environment variables.")
 
@@ -96,3 +96,30 @@ class ChatOpenAI(EngineLM, CachedEngine):
     def __call__(self, prompt, **kwargs):
         return self.generate(prompt, **kwargs)
 
+class AzureChatOpenAI(ChatOpenAI):
+    def __init__(
+        self,
+        model_string="gpt-35-turbo",
+        system_prompt=ChatOpenAI.DEFAULT_SYSTEM_PROMPT,
+        **kwargs):
+        """
+        :param model_string:
+        :param system_prompt:
+        """
+        root = platformdirs.user_cache_dir("textgrad")
+        cache_path = os.path.join(root, f"cache_azure_{model_string}.db")  # Changed cache path to differentiate from OpenAI cache
+
+        super().__init__(cache_path=cache_path, system_prompt=system_prompt, **kwargs)
+
+        self.system_prompt = system_prompt
+        api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2023-07-01-preview")
+        if os.getenv("AZURE_OPENAI_API_KEY") is None:
+            raise ValueError("Please set the AZURE_OPENAI_API_KEY environment variable if you'd like to use Azure OpenAI models.")
+        
+        self.client = AzureOpenAI(
+            api_version=api_version,
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            azure_endpoint=os.getenv("AZURE_OPENAI_API_BASE"),
+            azure_deployment=model_string,
+        )
+        self.model_string = model_string
