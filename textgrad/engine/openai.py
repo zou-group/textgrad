@@ -114,7 +114,7 @@ class AzureChatOpenAI(ChatOpenAI):
         self.system_prompt = system_prompt
         api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2023-07-01-preview")
         if os.getenv("AZURE_OPENAI_API_KEY") is None:
-            raise ValueError("Please set the AZURE_OPENAI_API_KEY environment variable if you'd like to use Azure OpenAI models.")
+            raise ValueError("Please set the AZURE_OPENAI_API_KEY, AZURE_OPENAI_API_BASE and AZURE_OPENAI_API_VERSION environment variables if you'd like to use Azure OpenAI models.")
         
         self.client = AzureOpenAI(
             api_version=api_version,
