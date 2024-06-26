@@ -49,7 +49,7 @@ class ChatBedrock(EngineLM, CachedEngine):
 
         if self.aws_region:
             self.my_config = Config(region_name = self.aws_region)
-            self.client = boto3.client(service_name='bedrock-runtime', config=my_config)
+            self.client = boto3.client(service_name='bedrock-runtime', config=self.my_config)
         else:
             self.client = boto3.client(service_name='bedrock-runtime')
 
