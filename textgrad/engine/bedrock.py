@@ -38,6 +38,9 @@ class ChatBedrock(EngineLM, CachedEngine):
                 self.system_prompt_supported = True
         if "amazon" in model_string:
             self.system_prompt_supported = False
+        if "ai21" in model_string:
+            self.system_prompt_supported = False
+            raise ValueError("ai21 not supported yet")
   
         self.max_tokens = kwargs.get("max_tokens", None)
         self.aws_region = kwargs.get("region", None)
