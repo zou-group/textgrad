@@ -84,6 +84,6 @@ class ChatBedrock(EngineLM, CachedEngine):
         
         response = self.generate_conversation(self.model_string, system_prompts=sys_prompt_args, messages=messages, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
 
-        response = response.choices[0].message.content
+        response = response["output"]["message"]["content"][0]["text"]
         self._save_cache(sys_prompt_arg + prompt, response)
         return response
