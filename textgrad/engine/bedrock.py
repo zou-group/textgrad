@@ -108,13 +108,10 @@ class ChatBedrock(EngineLM, CachedEngine):
             "content": [{"text": prompt}]
             }]
         else:
-            messages = [{
-            "role": "user",
-            "content": [{"text": sys_prompt_arg}]
-            },
+            messages = [
             {
             "role": "user",
-            "content": [{"text": prompt}]
+            "content": [{"text": sys_prompt_arg + "\n\n" + prompt}]
             }]
         
         response = self.generate_conversation(self.model_string, system_prompts=sys_prompt_args, messages=messages, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
