@@ -1,5 +1,6 @@
 try:
     import boto3
+    from botocore.config import Config
 
 except ImportError:
     raise ImportError("If you'd like to use Amazon Bedrock models, please install the boto3 package by running `pip install boto3`")
@@ -37,9 +38,15 @@ class ChatBedrock(EngineLM, CachedEngine):
                 self.system_prompt_supported = True
         if "amazon" in model_string:
             self.system_prompt_supported = False
-        
+  
         self.max_tokens = kwargs.get("max_tokens", None)
         self.aws_region = kwargs.get("region", None)
+
+        if self.aws_region:
+            self.my_config = Config(region_name = self.aws_region)
+            self.client = boto3.client(service_name='bedrock-runtime', config=my_config)
+        else:
+            self.client = boto3.client(service_name='bedrock-runtime')
 
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_bedrock_{model_string}.db")
@@ -47,14 +54,14 @@ class ChatBedrock(EngineLM, CachedEngine):
         
         self.model_string = model_string
         self.system_prompt = system_prompt
-        self.client = boto3.client(service_name='bedrock-runtime')
+        
         assert isinstance(self.system_prompt, str)
 
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
     def __call__(self, prompt, **kwargs):
         return self.generate(prompt, **kwargs)
     
-    def generate_conversation(self, model_id="", system_prompts=[], messages=[], temperature=0.5, top_k=200, top_p=0.99, max_tokens=4096):
+    def generate_conversation(self, model_id="", system_prompts=[], messages=[], temperature=0.5, top_k=200, top_p=0.99, max_tokens=2048):
         """
         Sends messages to a model.
         Args:
@@ -96,7 +103,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         return response
 
     def generate(
-        self, prompt, system_prompt=None, temperature=0, max_tokens=4096, top_p=0.99
+        self, prompt, system_prompt=None, temperature=0, max_tokens=2048, top_p=0.99
     ):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
