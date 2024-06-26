@@ -38,10 +38,8 @@ class ChatBedrock(EngineLM, CachedEngine):
         if "amazon" in model_string:
             self.system_prompt_supported = False
         
-        if kwargs.get("max_tokens"):
-            self.max_tokens = kwargs["max_tokens"]
-        if kwargs.get("region"):
-            self.aws_region = kwargs["region"]
+        self.max_tokens = kwargs.get("max_tokens", None)
+        self.aws_region = kwargs.get("region", None)
 
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_bedrock_{model_string}.db")
