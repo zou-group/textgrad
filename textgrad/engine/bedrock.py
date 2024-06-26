@@ -23,6 +23,20 @@ class ChatBedrock(EngineLM, CachedEngine):
         system_prompt=SYSTEM_PROMPT,
         **kwargs
     ):
+        
+        if "anthropic" in model_string:
+            self.system_prompt_supported = True
+        if "meta" in model_string:
+            self.system_prompt_supported = True
+        if "cohere" in model_string:
+            self.system_prompt_supported = True
+        if "mistral" in model_string:
+            if "instruct" in model_string:
+                self.system_prompt_supported = False
+            else:
+                self.system_prompt_supported = True
+        if "amazon" in model_string:
+            self.system_prompt_supported = False
 
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_bedrock_{model_string}.db")
@@ -60,13 +74,21 @@ class ChatBedrock(EngineLM, CachedEngine):
             additional_model_fields = {}
         
         # Send the message.
-        response = self.client.converse(
-            modelId=model_id,
-            messages=messages,
-            system=system_prompts,
-            inferenceConfig=inference_config,
-            additionalModelRequestFields=additional_model_fields
-        )
+        if self.system_prompt_supported:
+            response = self.client.converse(
+                modelId=model_id,
+                messages=messages,
+                system=system_prompts,
+                inferenceConfig=inference_config,
+                additionalModelRequestFields=additional_model_fields
+            )
+        else:
+            response = self.client.converse(
+                modelId=model_id,
+                messages=messages,
+                inferenceConfig=inference_config,
+                additionalModelRequestFields=additional_model_fields
+            )
 
         return response
 
@@ -80,10 +102,20 @@ class ChatBedrock(EngineLM, CachedEngine):
         if cache_or_none is not None:
             return cache_or_none
 
-        messages = [{
-        "role": "user",
-        "content": [{"text": prompt}]
-        }]      
+        if self.system_prompt_supported: 
+            messages = [{
+            "role": "user",
+            "content": [{"text": prompt}]
+            }]
+        else:
+            messages = [{
+            "role": "user",
+            "content": [{"text": sys_prompt_arg}]
+            },
+            {
+            "role": "user",
+            "content": [{"text": prompt}]
+            }]
         
         response = self.generate_conversation(self.model_string, system_prompts=sys_prompt_args, messages=messages, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
 
