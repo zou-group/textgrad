@@ -38,9 +38,9 @@ class ChatBedrock(EngineLM, CachedEngine):
         if "amazon" in model_string:
             self.system_prompt_supported = False
         
-        if kwargs["max_tokens"]:
+        if kwargs.get("max_tokens"):
             self.max_tokens = kwargs["max_tokens"]
-        if kwargs["region"]:
+        if kwargs.get("region"):
             self.aws_region = kwargs["region"]
 
         root = platformdirs.user_cache_dir("textgrad")
