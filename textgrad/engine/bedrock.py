@@ -37,6 +37,11 @@ class ChatBedrock(EngineLM, CachedEngine):
                 self.system_prompt_supported = True
         if "amazon" in model_string:
             self.system_prompt_supported = False
+        
+        if kwargs["max_tokens"]:
+            self.max_tokens = kwargs["max_tokens"]
+        if kwargs["region"]:
+            self.aws_region = kwargs["region"]
 
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_bedrock_{model_string}.db")
@@ -66,7 +71,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         """
 
         # Base inference parameters to use.
-        inference_config = {"temperature": temperature, "topP": top_p, "maxTokens": max_tokens}
+        inference_config = {"temperature": temperature, "topP": top_p, "maxTokens": self.max_tokens if self.max_tokens else max_tokens}
         if("anthropic" in model_id): 
             # Additional inference parameters to use.
             additional_model_fields = {"top_k": top_k}
