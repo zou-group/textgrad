@@ -24,7 +24,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         system_prompt=SYSTEM_PROMPT,
         **kwargs
     ):
-        
+        self.system_prompt_supported = True
         if "anthropic" in model_string:
             self.system_prompt_supported = True
         if "meta" in model_string:
@@ -38,6 +38,8 @@ class ChatBedrock(EngineLM, CachedEngine):
                 self.system_prompt_supported = True
         if "amazon" in model_string:
             self.system_prompt_supported = False
+            if "premier" in model_string:
+                raise ValueError("amazon-titan-premier not supported yet")
         if "ai21" in model_string:
             self.system_prompt_supported = False
             raise ValueError("ai21 not supported yet")
