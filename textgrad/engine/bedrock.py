@@ -53,8 +53,11 @@ class ChatBedrock(EngineLM, CachedEngine):
 
         # Base inference parameters to use.
         inference_config = {"temperature": temperature, "topP": top_p, "maxTokens": max_tokens}
-        # Additional inference parameters to use.
-        additional_model_fields = {"top_k": top_k}
+        if("anthropic" in model_id): 
+            # Additional inference parameters to use.
+            additional_model_fields = {"top_k": top_k}
+        else: 
+            additional_model_fields = {}
         
         # Send the message.
         response = self.client.converse(
