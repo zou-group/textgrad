@@ -22,6 +22,11 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if (("gpt-4" in engine_name) or ("gpt-3.5" in engine_name)):
         from .openai import ChatOpenAI
         return ChatOpenAI(model_string=engine_name, **kwargs)
+    # bedrock incluedes most of the models so first check
+    elif "bedrock" in engine_name:
+        from .bedrock import ChatBedrock
+        engine_name = engine_name.replace("bedrock-", "")
+        return ChatBedrock(model_string=engine_name, **kwargs)
     elif "claude" in engine_name:
         from .anthropic import ChatAnthropic
         return ChatAnthropic(model_string=engine_name, **kwargs)
@@ -35,9 +40,5 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif engine_name in ["command-r-plus", "command-r", "command", "command-light"]:
         from .cohere import ChatCohere
         return ChatCohere(model_string=engine_name, **kwargs)
-    elif "bedrock" in engine_name:
-        from .bedrock import ChatBedrock
-        engine_name = engine_name.replace("bedrock-", "")
-        return ChatBedrock(model_string=engine_name, **kwargs)
     else:
         raise ValueError(f"Engine {engine_name} not supported")
