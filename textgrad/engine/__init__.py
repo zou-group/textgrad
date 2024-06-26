@@ -4,12 +4,7 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "opus": "claude-3-opus-20240229",
     "haiku": "claude-3-haiku-20240307",
     "sonnet": "claude-3-sonnet-20240229",
-    "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
-    "bedrock-sonnet-3": "bedrock-anthropic.claude-3-sonnet-20240229-v1:0",
-    "bedrock-sonnet-3.5": "bedrock-anthropic.claude-3-5-sonnet-20240620-v1:0",
-    "bedrock-opus": "bedrock-anthropic.claude-3-opus-20240229-v1:0",
-    "bedrock-haiku": "bedrock-anthropic.claude-3-haiku-20240307-v1:0",
-    "bedrock-mistral-large": "bedrock-mistral.mistral-large-2402-v1:0"
+    "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf"
 }
 
 def get_engine(engine_name: str, **kwargs) -> EngineLM:
