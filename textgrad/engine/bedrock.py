@@ -37,7 +37,7 @@ class ChatBedrock(EngineLM, CachedEngine):
     def __call__(self, prompt, **kwargs):
         return self.generate(prompt, **kwargs)
     
-    def generate_conversation(self, model_id="", system_prompt="", messages=[], temperature=0.5, top_k=200, top_p=0.99, max_tokens=4096):
+    def generate_conversation(self, model_id="", system_prompts=[], messages=[], temperature=0.5, top_k=200, top_p=0.99, max_tokens=4096):
         """
         Sends messages to a model.
         Args:
@@ -52,7 +52,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         """
 
         # Base inference parameters to use.
-        inference_config = {"temperature": temperature, "top_p": top_p, "maxTokens": max_tokens}
+        inference_config = {"temperature": temperature, "topP": top_p, "maxTokens": max_tokens}
         # Additional inference parameters to use.
         additional_model_fields = {"top_k": top_k}
         
@@ -60,7 +60,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         response = self.client.converse(
             modelId=model_id,
             messages=messages,
-            system=system_prompt,
+            system=system_prompts,
             inferenceConfig=inference_config,
             additionalModelRequestFields=additional_model_fields
         )
@@ -72,6 +72,7 @@ class ChatBedrock(EngineLM, CachedEngine):
     ):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
+        sys_prompt_args = [{"text": sys_prompt_arg}]
         cache_or_none = self._check_cache(sys_prompt_arg + prompt)
         if cache_or_none is not None:
             return cache_or_none
@@ -81,7 +82,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         "content": [{"text": prompt}]
         }]      
         
-        response = self.generate_conversation(self.model_string, system_prompt=sys_prompt_arg, messages=messages, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
+        response = self.generate_conversation(self.model_string, system_prompts=sys_prompt_args, messages=messages, temperature=temperature, top_p=top_p, max_tokens=max_tokens)
 
 
         response = response.text
