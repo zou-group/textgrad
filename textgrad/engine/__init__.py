@@ -5,6 +5,11 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "haiku": "claude-3-haiku-20240307",
     "sonnet": "claude-3-sonnet-20240229",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
+    "bedrock-sonnet-3": "bedrock-anthropic.claude-3-sonnet-20240229-v1:0",
+    "bedrock-sonnet-3.5": "bedrock-anthropic.claude-3-5-sonnet-20240620-v1:0",
+    "bedrock-opus": "bedrock-anthropic.claude-3-opus-20240229-v1:0",
+    "bedrock-haiku": "bedrock-anthropic.claude-3-haiku-20240307-v1:0",
+    "bedrock-mistral-large": "bedrock-mistral.mistral-large-2402-v1:0"
 }
 
 def get_engine(engine_name: str, **kwargs) -> EngineLM:
@@ -30,5 +35,9 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif engine_name in ["command-r-plus", "command-r", "command", "command-light"]:
         from .cohere import ChatCohere
         return ChatCohere(model_string=engine_name, **kwargs)
+    elif "bedrock" in engine_name:
+        from .bedrock import ChatBedrock
+        engine_name = engine_name.replace("bedrock-", "")
+        return ChatBedrock(model_string=engine_name, **kwargs)
     else:
         raise ValueError(f"Engine {engine_name} not supported")
