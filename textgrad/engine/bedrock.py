@@ -47,11 +47,31 @@ class ChatBedrock(EngineLM, CachedEngine):
         self.max_tokens = kwargs.get("max_tokens", None)
         self.aws_region = kwargs.get("region", None)
 
-        if self.aws_region:
-            self.my_config = Config(region_name = self.aws_region)
-            self.client = boto3.client(service_name='bedrock-runtime', config=self.my_config)
+        if boto3._get_default_session().get_credentials() is not None:
+            if self.aws_region:
+                self.my_config = Config(region_name = self.aws_region)
+                self.client = boto3.client(service_name='bedrock-runtime', config=self.my_config)
+            else:
+                self.client = boto3.client(service_name='bedrock-runtime')
         else:
-            self.client = boto3.client(service_name='bedrock-runtime')
+            access_key_id = os.getenv("AWS_ACCESS_KEY_ID", None)
+            secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY", None)
+            session_token = os.getenv("AWS_SESSION_TOKEN", None)
+            if self.aws_region is None:
+                self.aws_region = os.getenv("AWS_DEFAULT_REGION", None)
+                if self.aws_region is None:
+                    raise ValueError("AWS region not specified. Please add it in get_engine parameters or has AWS_DEFAULT_REGION var")
+            if access_key_id is None:
+                raise ValueError("AWS access key ID cannot be 'None'.")
+            if secret_access_key is None:
+                raise ValueError("AWS secret access key cannot be 'None'.")
+            session = boto3.Session(
+                aws_access_key_id=access_key_id,
+                aws_secret_access_key=secret_access_key,
+                aws_session_token=session_token
+            )
+            self.my_config = Config(region_name = self.aws_region)
+            self.client = session.client(service_name='bedrock-runtime', config=self.my_config)
 
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_bedrock_{model_string}.db")
