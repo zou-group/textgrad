@@ -47,6 +47,7 @@ class ChatBedrock(EngineLM, CachedEngine):
         self.max_tokens = kwargs.get("max_tokens", None)
         self.aws_region = kwargs.get("region", None)
 
+        # handle both AWS interaction options: with default credential or providing AWS ACCESS KEY and SECRET KEY
         if boto3._get_default_session().get_credentials() is not None:
             if self.aws_region:
                 self.my_config = Config(region_name = self.aws_region)
