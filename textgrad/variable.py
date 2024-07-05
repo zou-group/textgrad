@@ -5,12 +5,12 @@ from typing import List, Set, Dict
 from collections import defaultdict
 from functools import partial
 from .config import SingletonBackwardEngine
-from .prompts import GRADIENT_TEMPLATE
+from typing import Union
 
 class Variable:
     def __init__(
         self,
-        value: str = "",
+        value: Union[str, bytes] = "",
         predecessors: List['Variable']=None,
         requires_grad: bool=True,
         *,
@@ -20,7 +20,7 @@ class Variable:
         :param role_description: The role of this variable. We find that this has a huge impact on the optimization performance, and being specific often helps quite a bit!
         :type role_description: str
         :param value: The string value of this variable, defaults to "". In the future, we'll go multimodal, for sure!
-        :type value: str, optional
+        :type value: str or bytes, optional
         :param predecessors: predecessors of this variable in the computation graph, defaults to None. Here, for instance, if we have a prompt -> response through an LLM call, we'd call the prompt the predecessor, and the response the successor. 
         :type predecessors: List[Variable], optional
         :param requires_grad: Whether this variable requires a gradient, defaults to True. If False, we'll not compute the gradients on this variable.
@@ -36,7 +36,8 @@ class Variable:
             raise Exception("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
-        self.value = str(value)
+        assert type(value) in [str, bytes], "Value must be a string or image (bytes)."
+        self.value = value
         self.gradients: Set[Variable] = set()
         self.gradients_context: Dict[Variable, str] = defaultdict(lambda: None)
         self.grad_fn = None
@@ -44,9 +45,12 @@ class Variable:
         self.predecessors = set(predecessors)
         self.requires_grad = requires_grad
         self._reduce_meta = []
+        
+        if requires_grad and (type(value) == bytes):
+            raise ValueError("Gradients are not yet supported for image inputs. Please provide a string input instead.")
 
     def __repr__(self):
-        return f"Variable(value={self.value}, role={self.get_role_description()}, grads={self.get_gradient_and_context_text()})"
+        return f"Variable(value={self.value}, role={self.get_role_description()}, grads={self.gradients})"
 
     def __str__(self):
         return str(self.value)
@@ -114,26 +118,6 @@ class Variable:
         
         return "\n".join([g.value for g in self.gradients])
     
-    def get_gradient_and_context_text(self) -> str:
-        """For the variable, aggregates and returns 
-        i. the gradients 
-        ii. the context for which the gradients are computed.
-
-        :return: A string containing the aggregated gradients and their corresponding context.
-        :rtype: str
-        """
-        
-        gradients = []
-        for g in self.gradients:
-            if self.gradients_context[g] is None:
-                gradients.append(g.value)
-            else:
-                criticism_and_context = GRADIENT_TEMPLATE.format(
-                    feedback=g.value, **(self.gradients_context[g]))
-                gradients.append(criticism_and_context)
-        gradient_text = "\n".join(gradients)
-        return gradient_text
-
     def backward(self, engine: EngineLM = None):
         """
         Backpropagate gradients through the computation graph starting from this variable.
@@ -263,6 +247,7 @@ class Variable:
                 graph.edge(str(id(predecessor)), str(id(v)))
         
         return graph
+
 
 def _check_and_reduce_gradients(variable: Variable, backward_engine: EngineLM) -> Set[Variable]:
     """

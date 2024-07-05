@@ -3,9 +3,47 @@ from typing import List, Union
 from collections import defaultdict
 from textgrad.variable import Variable
 from textgrad import logger
-from textgrad.engine import EngineLM, get_engine
-from .optimizer_prompts import construct_tgd_prompt, OPTIMIZER_SYSTEM_PROMPT
-from textgrad.config import SingletonBackwardEngine
+from textgrad.engine import EngineLM
+from textgrad.config import validate_engine_or_get_default
+from .optimizer_prompts import construct_tgd_prompt, OPTIMIZER_SYSTEM_PROMPT, GRADIENT_TEMPLATE, GRADIENT_MULTIPART_TEMPLATE
+
+
+def get_gradient_and_context_text(variable) -> Union[str, List[Union[str, bytes]]]:
+    """For the variable, aggregates and returns 
+    i. the gradients 
+    ii. the context for which the gradients are computed.
+
+    This is used by the optimizer.  
+    :return: A string containing the aggregated gradients and their corresponding context.
+    :rtype: str
+    """
+
+    gradient_content = []
+    for g in variable.gradients:
+        if variable.gradients_context[g] is None:
+            gradient_content.append(g.value)
+        else:
+            # If context is a list, we handle it differently.
+            context = variable.gradients_context[g]
+            if isinstance(context["context"], str):
+                # The context could be all string.
+                criticism_and_context = GRADIENT_TEMPLATE.format(
+                    feedback=g.value, **context)
+                gradient_content.append(criticism_and_context)
+            elif isinstance(context["context"], list):
+                # The context may have a list of images / strings. In this case, we need to handle it differently.
+                context_prompt = GRADIENT_MULTIPART_TEMPLATE.format(**context, feedback=g.value)
+                criticism_and_context = context["context"] + [context_prompt]
+                gradient_content.extend(criticism_and_context)
+            else:
+                raise ValueError("Context must be either a string or a list.")
+    
+    # Check if all instances are string
+    if all(isinstance(i, str) for i in gradient_content):
+        return "\n".join(gradient_content)
+    else:
+        return gradient_content
+
 
 class Optimizer(ABC):
     """
@@ -20,8 +58,11 @@ class Optimizer(ABC):
     """
 
     def __init__(self, parameters: List[Variable]):
+        for parameter in parameters:
+            if type(parameter.value) !=  str:
+                raise NotImplementedError(f"We cannot yet update multimodal content and this data type: {type(parameter.value)}. We can only evaluate gradients using multimodal models. This may change soon (looking at you, GPT-5).")
         self.parameters = parameters
-
+        
     def zero_grad(self):
         """
         Clears the gradients of all parameters.
@@ -43,7 +84,7 @@ class TextualGradientDescent(Optimizer):
                  verbose: int=0, 
                  engine: Union[EngineLM, str]=None, 
                  constraints: List[str]=None,
-                 new_variable_tags: List[str]=["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"],
+                 new_variable_tags: List[str]=None,
                  optimizer_system_prompt: str=OPTIMIZER_SYSTEM_PROMPT,
                  in_context_examples: List[str]=None,
                  gradient_memory: int=0):
@@ -65,13 +106,11 @@ class TextualGradientDescent(Optimizer):
         :type gradient_memory: int, optional
         """
         super().__init__(parameters)
-        if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
-            raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
-        elif engine is None:
-            engine = SingletonBackwardEngine().get_engine()
-        if isinstance(engine, str):
-            engine = get_engine(engine)
-        self.engine = engine
+
+        if new_variable_tags is None:
+            new_variable_tags = ["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"]
+
+        self.engine = validate_engine_or_get_default(engine)
         self.verbose = verbose
         self.constraints = constraints if constraints is not None else []
         self.optimizer_system_prompt = optimizer_system_prompt.format(new_variable_start_tag=new_variable_tags[0], new_variable_end_tag=new_variable_tags[1])
@@ -104,12 +143,12 @@ class TextualGradientDescent(Optimizer):
     def update_gradient_memory(self, variable: Variable):
         self.gradient_memory_dict[variable].append({"value": variable.get_gradient_text()})
     
-    def _update_prompt(self, variable: Variable):
+    def _update_prompt(self, variable: Variable) -> Union[str, List[Union[str, bytes]]]:
         grad_memory = self.get_gradient_memory_text(variable)
         optimizer_information = {
             "variable_desc": variable.get_role_description(),
             "variable_value": variable.value,
-            "variable_grad": variable.get_gradient_and_context_text(),
+            "variable_grad": get_gradient_and_context_text(variable),
             "variable_short": variable.get_short_value(),
             "constraint_text": self.constraint_text,
             "new_variable_start_tag": self.new_variable_tags[0],
@@ -154,21 +193,20 @@ class TextualGradientDescentwithMomentum(Optimizer):
                  parameters: List[Variable], 
                  momentum_window: int = 0, 
                  constraints: List[str]=None,
-                 new_variable_tags: List[str]=["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"],
+                 new_variable_tags: List[str]=None,
                  in_context_examples: List[str]=None,
                  optimizer_system_prompt: str=OPTIMIZER_SYSTEM_PROMPT):
         super().__init__(parameters)
-        if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
-            raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
-        elif engine is None:
-            engine = SingletonBackwardEngine().get_engine()
-        if isinstance(engine, str):
-            engine = get_engine(engine)
-        self.engine = engine
+
+        if new_variable_tags is None:
+            new_variable_tags = ["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"]
+
+        self.engine = validate_engine_or_get_default(engine)
         
         if momentum_window == 0:
             return TextualGradientDescent(engine=engine, parameters=parameters, constraints=constraints)
-        # Each item in the momentum storage will include past value and the criticsm
+
+        # Each item in the momentum storage will include past value and the criticism
         self.momentum_storage = [[] for _ in range(len(parameters))]
         self.momentum_window = momentum_window
         self.do_momentum = True
@@ -217,7 +255,7 @@ class TextualGradientDescentwithMomentum(Optimizer):
         if len(self.momentum_storage[momentum_storage_idx]) >= self.momentum_window:
             self.momentum_storage[momentum_storage_idx].pop(0)
         
-        self.momentum_storage[momentum_storage_idx].append({"value": variable.value, "gradients": variable.get_gradient_and_context_text()})
+        self.momentum_storage[momentum_storage_idx].append({"value": variable.value, "gradients": get_gradient_and_context_text(variable)})
         
     def step(self):
         for idx, parameter in enumerate(self.parameters):
