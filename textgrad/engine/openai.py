@@ -109,7 +109,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
         return formatted_content
 
     def _generate_multimodal(
-        self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=300, top_p=0.99
+        self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
     ):
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
         formatted_content = self._format_content(content)
