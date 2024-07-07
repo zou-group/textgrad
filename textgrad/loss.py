@@ -1,7 +1,7 @@
 from textgrad.engine import EngineLM, get_engine
 from textgrad.variable import Variable
 from typing import List, Union
-from textgrad.autograd import LLMCall, FormattedLLMCall
+from textgrad.autograd import LLMCall, FormattedLLMCall, OrderedFieldsMultimodalLLMCall
 from textgrad.autograd import Module
 from .config import SingletonBackwardEngine
 
@@ -192,3 +192,38 @@ class MultiChoiceTestTime(Module):
         return self.formatted_llm_call(inputs=inputs,
                                        response_role_description=f"evaluation of the {prediction.get_role_description()}")
 
+class ImageQALoss(Module):
+    def __init__(self,
+                 evaluation_instruction: str,
+                 engine: Union[EngineLM, str] = None,
+                 system_prompt: Variable = None):
+        super().__init__()
+        self.evaluation_instruction = Variable(evaluation_instruction, role_description="evaluation instruction", requires_grad=False)
+        if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
+            raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
+        elif engine is None:
+            engine = SingletonBackwardEngine().get_engine()
+        if isinstance(engine, str):
+            engine = get_engine(engine)
+        self.engine = engine
+        if system_prompt:
+            self.system_prompt = system_prompt
+        else:
+            self.system_prompt = Variable("You are an evaluation system that evaluates image-related questions.",
+                                            requires_grad=False,
+                                            role_description="system prompt for the evaluation")
+
+        self.multimodal_llm_call = OrderedFieldsMultimodalLLMCall(engine=self.engine,
+                                                                  system_prompt=self.system_prompt,
+                                                                  fields=["Evaluation Instruction", "Question", "Image", "Answer"])
+
+    def forward(self, image: Variable, question: Variable, response: Variable) -> Variable:
+        
+        inputs = {
+            "Evaluation Instruction": self.evaluation_instruction,
+            "Question": question,
+            "Image": image,
+            "Answer": response
+        }
+        return self.multimodal_llm_call(inputs=inputs,
+                                        response_role_description=f"evaluation of the {response.get_role_description()}")

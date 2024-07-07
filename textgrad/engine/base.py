@@ -8,7 +8,11 @@ class EngineLM(ABC):
     @abstractmethod
     def generate(self, prompt, system_prompt=None, **kwargs):
         pass
-        
+
+    def __call__(self, *args, **kwargs):
+        pass
+
+
 class CachedEngine:
     def __init__(self, cache_path):
         super().__init__()

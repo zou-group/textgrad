@@ -31,6 +31,17 @@ TGD_PROMPT_PREFIX = (
     "Improve the variable ({variable_desc}) using the feedback provided in <FEEDBACK> tags.\n"
 )
 
+# If the gradients are in a multi-part container
+TGD_MULTIPART_PROMPT_INIT = (
+    "Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n\n"
+    "The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n\n"
+    "Here is the context and feedback we got for the variable:\n\n"
+)
+
+TGD_MULTIPART_PROMPT_PREFIX = (
+    "Improve the variable ({variable_desc}) using the feedback provided in <FEEDBACK> tags.\n"
+)
+
 TGD_PROMPT_SUFFIX  = (
     "Send the improved variable "
     "in the following format:\n\n{new_variable_start_tag}{{the improved variable}}{new_variable_end_tag}\n\n"
@@ -72,18 +83,41 @@ def construct_tgd_prompt(do_momentum: bool = False,
     :rtype: str
     """
 
-    prompt = TGD_PROMPT_PREFIX.format(**optimizer_kwargs)
-    
+    if isinstance(optimizer_kwargs["variable_grad"], str):
+        multipart=False
+        prompt = TGD_PROMPT_PREFIX.format(**optimizer_kwargs)
+        
+    else:
+        gradient_context = optimizer_kwargs["variable_grad"]
+        gradient_context = [TGD_MULTIPART_PROMPT_INIT.format(**optimizer_kwargs)] + gradient_context
+        multipart=True
+        prompt = TGD_MULTIPART_PROMPT_PREFIX.format(**optimizer_kwargs)
+           
     if do_momentum:
         prompt += MOMENTUM_PROMPT_ADDITION.format(**optimizer_kwargs)
-    
+
     if do_constrained:
         prompt += CONSTRAINT_PROMPT_ADDITION.format(**optimizer_kwargs)
-    
+
     if do_in_context_examples:
         prompt += IN_CONTEXT_EXAMPLE_PROMPT_ADDITION.format(**optimizer_kwargs)
-    
+
     prompt += TGD_PROMPT_SUFFIX.format(**optimizer_kwargs)
 
-    return prompt
+    if not multipart:
+        return prompt
+    
+    else:
+        return gradient_context + [prompt]
 
+# This is how we save gradients to the variable.
+GRADIENT_TEMPLATE = (
+    "Here is a conversation:\n\n<CONVERSATION>{context}</CONVERSATION>\n\n"
+    "This conversation is potentially part of a larger system. The output is used as {response_desc}\n\n"
+    "Here is the feedback we got for {variable_desc} in the conversation:\n\n<FEEDBACK>{feedback}</FEEDBACK>\n\n"
+)
+GRADIENT_MULTIPART_TEMPLATE = (
+    "Above is a conversation with a language model.\n"
+    "This conversation is potentially part of a larger system. The output is used as {response_desc}\n\n"
+    "Here is the feedback we got for {variable_desc} in the conversation:\n\n<FEEDBACK>{feedback}</FEEDBACK>\n\n"
+)
