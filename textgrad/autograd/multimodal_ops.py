@@ -19,6 +19,14 @@ from .function import Function, BackwardContext
 
 
 class MultimodalLLMCall(Function):
+    """The MultiModalLM call function. This function will call the LLM with the input (image) and return the response,
+    also register the grad_fn for backpropagation.
+
+    :param engine: engine to use for the LLM call
+    :type engine: EngineLM
+    :param system_prompt: system prompt to use for the LLM call, default depends on the engine.
+    :type system_prompt: Variable, optional
+    """
     def __init__(self, 
                  engine: Union[str, EngineLM], 
                  system_prompt: Variable = None):
@@ -34,6 +42,20 @@ class MultimodalLLMCall(Function):
     def forward(self, 
                 inputs: List[Variable], 
                 response_role_description: str = VARIABLE_OUTPUT_DEFAULT_ROLE) -> Variable:
+        """
+        Forward pass for the multimodal LLM call function.
+
+        :param inputs: list of input variables to the multimodal LLM call. One is an image and the second one is text
+        :type inputs: List[Variable]
+        :param response_role_description: role description for the response variable
+        :type response_role_description: str, optional
+
+        >>> from textgrad import Variable, get_engine
+        >>> from textgrad.autograd import MultimodalLLMCall
+        >>> target_image = "A byte representation of the image"
+        >>> question_variable = Variable("What do you see here?", role_description="question to answer", requires_grad=False)
+        >>> response = MultimodalLLMCall("gpt-4o")([target_image, question_variable])
+        """
         # First ensure that all keys are present in the fields
 
         # Assert that all variables are either strings or bytes

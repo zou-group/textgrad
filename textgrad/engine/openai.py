@@ -13,6 +13,7 @@ from tenacity import (
     wait_random_exponential,
 )
 from typing import List, Union
+from textgrad.engine import get_image_type_from_bytes
 
 from .base import EngineLM, CachedEngine
 
@@ -92,11 +93,12 @@ class ChatOpenAI(EngineLM, CachedEngine):
         formatted_content = []
         for item in content:
             if isinstance(item, bytes):
+                image_type = get_image_type_from_bytes(item)
                 base64_image = base64.b64encode(item).decode('utf-8')
                 formatted_content.append({
                     "type": "image_url",
                     "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image}"
+                        "url": f"data:image/{image_type};base64,{base64_image}"
                     }
                 })
             elif isinstance(item, str):

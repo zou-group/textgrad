@@ -14,6 +14,7 @@ import base64
 import json
 from typing import List, Union
 from .base import EngineLM, CachedEngine
+from textgrad.engine import get_image_type_from_bytes
 
 class ChatAnthropic(EngineLM, CachedEngine):
     SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
@@ -83,7 +84,9 @@ class ChatAnthropic(EngineLM, CachedEngine):
         formatted_content = []
         for item in content:
             if isinstance(item, bytes):
-                image_media_type = "image/jpeg"
+                image_type = get_image_type_from_bytes(item)
+
+                image_media_type = f"image/{image_type}"
                 base64_image = base64.b64encode(item).decode('utf-8')
                 formatted_content.append(                {
                     "type": "image",
