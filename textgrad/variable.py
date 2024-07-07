@@ -1,30 +1,38 @@
 from textgrad import logger
 from textgrad.engine import EngineLM
 from typing import List, Set, Dict
-
+import httpx
 from collections import defaultdict
 from functools import partial
 from .config import SingletonBackwardEngine
 from typing import Union
+from urllib.parse import urlparse
+
+def is_valid_url(url):
+    result = urlparse(url)
+    return all([result.scheme, result.netloc])
 
 class Variable:
     def __init__(
         self,
         value: Union[str, bytes] = "",
+        image_path: str = "",
         predecessors: List['Variable']=None,
         requires_grad: bool=True,
         *,
         role_description: str):
         """The main thing. Nodes in the computation graph. Really the heart and soul of textgrad.
 
-        :param role_description: The role of this variable. We find that this has a huge impact on the optimization performance, and being specific often helps quite a bit!
-        :type role_description: str
         :param value: The string value of this variable, defaults to "". In the future, we'll go multimodal, for sure!
         :type value: str or bytes, optional
+        :param image_path: The path to the image file, defaults to "". If present we will read from disk or download the image.
+        :type image_path: str, optional
         :param predecessors: predecessors of this variable in the computation graph, defaults to None. Here, for instance, if we have a prompt -> response through an LLM call, we'd call the prompt the predecessor, and the response the successor. 
         :type predecessors: List[Variable], optional
         :param requires_grad: Whether this variable requires a gradient, defaults to True. If False, we'll not compute the gradients on this variable.
         :type requires_grad: bool, optional
+        :param role_description: The role of this variable. We find that this has a huge impact on the optimization performance, and being specific often helps quite a bit!
+        :type role_description: str
         """
 
         if predecessors is None:
@@ -37,6 +45,14 @@ class Variable:
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
         assert type(value) in [str, bytes], "Value must be a string or image (bytes)."
+
+
+        if image_path != "":
+            if is_valid_url(image_path):
+                self.value = httpx.get(image_path).content
+            with open(image_path, 'rb') as file:
+                self.value = file.read()
+
         self.value = value
         self.gradients: Set[Variable] = set()
         self.gradients_context: Dict[Variable, str] = defaultdict(lambda: None)
