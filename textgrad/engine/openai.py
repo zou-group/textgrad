@@ -13,9 +13,10 @@ from tenacity import (
     wait_random_exponential,
 )
 from typing import List, Union
-from textgrad.engine import get_image_type_from_bytes
 
 from .base import EngineLM, CachedEngine
+from .engine_utils import get_image_type_from_bytes
+
 
 class ChatOpenAI(EngineLM, CachedEngine):
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."

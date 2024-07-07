@@ -14,7 +14,7 @@ import base64
 import json
 from typing import List, Union
 from .base import EngineLM, CachedEngine
-from textgrad.engine import get_image_type_from_bytes
+from .engine_utils import get_image_type_from_bytes
 
 class ChatAnthropic(EngineLM, CachedEngine):
     SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
