@@ -1,10 +1,7 @@
 import os
 import requests
 import hashlib
-from urllib.parse import urlparse
-from typing import Union
 import platformdirs
-
 from urllib.parse import urlparse
 
 def is_valid_url(url):

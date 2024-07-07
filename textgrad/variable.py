@@ -49,8 +49,9 @@ class Variable:
         if image_path != "":
             if is_valid_url(image_path):
                 self.value = httpx.get(image_path).content
-            with open(image_path, 'rb') as file:
-                self.value = file.read()
+            else:
+                with open(image_path, 'rb') as file:
+                    self.value = file.read()
         else:
             self.value = value
             
