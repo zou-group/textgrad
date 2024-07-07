@@ -44,11 +44,11 @@ class ChatAnthropic(EngineLM, CachedEngine):
     
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
     def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt=None, **kwargs):
-        if isinstance(content, str):
+        if any(isinstance(item, bytes) for item in content):
             return self._generate_text(content, system_prompt=system_prompt, **kwargs)
         
         elif isinstance(content, list):
-            if (not self.is_multimodal):
+            if not self.is_multimodal:
                 raise NotImplementedError("Multimodal generation is only supported for Claude-3 and beyond.")
             
             return self._generate_multimodal(content, system_prompt=system_prompt, **kwargs)
@@ -88,7 +88,7 @@ class ChatAnthropic(EngineLM, CachedEngine):
 
                 image_media_type = f"image/{image_type}"
                 base64_image = base64.b64encode(item).decode('utf-8')
-                formatted_content.append(                {
+                formatted_content.append({
                     "type": "image",
                     "source": {
                         "type": "base64",
