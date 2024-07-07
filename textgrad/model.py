@@ -1,10 +1,8 @@
-from typing import List, Union
-from functools import partial
+from typing import Union
 from textgrad.variable import Variable
 from textgrad.autograd import LLMCall
 from textgrad.autograd.function import Module
 from textgrad.engine import EngineLM, get_engine
-from textgrad.autograd.llm_ops import FormattedLLMCall
 from .config import SingletonBackwardEngine
 
 class BlackboxLLM(Module):
