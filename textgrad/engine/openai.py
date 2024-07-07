@@ -22,8 +22,8 @@ class ChatOpenAI(EngineLM, CachedEngine):
 
     def __init__(
         self,
-        model_string="gpt-3.5-turbo-0613",
-        system_prompt=DEFAULT_SYSTEM_PROMPT,
+        model_string: str="gpt-3.5-turbo-0613",
+        system_prompt: str=DEFAULT_SYSTEM_PROMPT,
         is_multimodal: bool=False,
         **kwargs):
         """
@@ -32,8 +32,6 @@ class ChatOpenAI(EngineLM, CachedEngine):
         """
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
-        self.image_cache_dir = os.path.join(root, "image_cache")
-        os.makedirs(self.image_cache_dir, exist_ok=True)
 
         super().__init__(cache_path=cache_path)
 
@@ -48,17 +46,19 @@ class ChatOpenAI(EngineLM, CachedEngine):
         self.is_multimodal = is_multimodal
 
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
-    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt=None, **kwargs):
-        if any(isinstance(item, bytes) for item in content):
-            if not self.is_multimodal:
-                raise NotImplementedError("Multimodal generation is only supported for GPT-4 models.")
+    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt: str=None, **kwargs):
+        if isinstance(content, str):
+            return self._generate_from_single_prompt(content, system_prompt=system_prompt, **kwargs)
+        
+        elif isinstance(content, list):
+            has_multimodal_input = any(isinstance(item, bytes) for item in content)
+            if (has_multimodal_input) and (not self.is_multimodal):
+                raise NotImplementedError("Multimodal generation is only supported for Claude-3 and beyond.")
+            
+            return self._generate_from_multiple_input(content, system_prompt=system_prompt, **kwargs)
 
-            return self._generate_multimodal(content, system_prompt=system_prompt, **kwargs)
-
-        return self._generate_text(content, system_prompt=system_prompt, **kwargs)
-
-    def _generate_text(
-        self, prompt, system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+    def _generate_from_single_prompt(
+        self, prompt: str, system_prompt: str=None, temperature=0, max_tokens=2000, top_p=0.99
     ):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
@@ -89,9 +89,12 @@ class ChatOpenAI(EngineLM, CachedEngine):
         return self.generate(prompt, **kwargs)
 
     def _format_content(self, content: List[Union[str, bytes]]) -> List[dict]:
+        """Helper function to format a list of strings and bytes into a list of dictionaries to pass as messages to the API.
+        """
         formatted_content = []
         for item in content:
             if isinstance(item, bytes):
+                # For now, bytes are assumed to be images
                 image_type = get_image_type_from_bytes(item)
                 base64_image = base64.b64encode(item).decode('utf-8')
                 formatted_content.append({
@@ -109,7 +112,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
                 raise ValueError(f"Unsupported input type: {type(item)}")
         return formatted_content
 
-    def _generate_multimodal(
+    def _generate_from_multiple_input(
         self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
     ):
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt

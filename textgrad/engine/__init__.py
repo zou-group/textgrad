@@ -4,6 +4,7 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "opus": "claude-3-opus-20240229",
     "haiku": "claude-3-haiku-20240307",
     "sonnet": "claude-3-sonnet-20240229",
+    "sonnet-3.5": "claude-3-5-sonnet-20240620",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
 }
 

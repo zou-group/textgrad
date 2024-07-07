@@ -21,9 +21,9 @@ class ChatAnthropic(EngineLM, CachedEngine):
 
     def __init__(
         self,
-        model_string="claude-3-opus-20240229",
-        system_prompt=SYSTEM_PROMPT,
-        is_multimodal=False,
+        model_string: str="claude-3-opus-20240229",
+        system_prompt: str=SYSTEM_PROMPT,
+        is_multimodal: bool=False,
     ):
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_anthropic_{model_string}.db")
@@ -43,18 +43,19 @@ class ChatAnthropic(EngineLM, CachedEngine):
         return self.generate(prompt, **kwargs)
     
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
-    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt=None, **kwargs):
-        if any(isinstance(item, bytes) for item in content):
-            return self._generate_text(content, system_prompt=system_prompt, **kwargs)
+    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt: str=None, **kwargs):
+        if isinstance(content, str):
+            return self._generate_from_single_prompt(content, system_prompt=system_prompt, **kwargs)
         
         elif isinstance(content, list):
-            if not self.is_multimodal:
+            has_multimodal_input = any(isinstance(item, bytes) for item in content)
+            if (has_multimodal_input) and (not self.is_multimodal):
                 raise NotImplementedError("Multimodal generation is only supported for Claude-3 and beyond.")
             
-            return self._generate_multimodal(content, system_prompt=system_prompt, **kwargs)
+            return self._generate_from_multiple_input(content, system_prompt=system_prompt, **kwargs)
 
-    def _generate_text(
-        self, prompt, system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+    def _generate_from_single_prompt(
+        self, prompt: str, system_prompt: str=None, temperature=0, max_tokens=2000, top_p=0.99
     ):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
@@ -105,7 +106,7 @@ class ChatAnthropic(EngineLM, CachedEngine):
                 raise ValueError(f"Unsupported input type: {type(item)}")
         return formatted_content
 
-    def _generate_multimodal(
+    def _generate_from_multiple_input(
         self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
     ):
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
