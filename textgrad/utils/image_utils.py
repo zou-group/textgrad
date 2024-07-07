@@ -4,10 +4,17 @@ import hashlib
 from urllib.parse import urlparse
 from typing import Union
 import platformdirs
-import base64
+
+from urllib.parse import urlparse
+
+def is_valid_url(url):
+    result = urlparse(url)
+    return all([result.scheme, result.netloc])
+
 
 def download_and_cache_image(image_url: str) -> str:
     # Set up cache directory
+    assert is_valid_url(image_url), "Invalid URL"
     root = platformdirs.user_cache_dir("textgrad")
     image_cache_dir = os.path.join(root, "image_cache")
     os.makedirs(image_cache_dir, exist_ok=True)

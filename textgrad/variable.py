@@ -5,12 +5,8 @@ import httpx
 from collections import defaultdict
 from functools import partial
 from .config import SingletonBackwardEngine
+from .utils.image_utils import is_valid_url
 from typing import Union
-from urllib.parse import urlparse
-
-def is_valid_url(url):
-    result = urlparse(url)
-    return all([result.scheme, result.netloc])
 
 class Variable:
     def __init__(
@@ -45,15 +41,19 @@ class Variable:
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
         assert type(value) in [str, bytes], "Value must be a string or image (bytes)."
-
+        if value == "" and image_path == "":
+            raise ValueError("Please provide a value or an image path for the variable")
+        if value != "" and image_path != "":
+            raise ValueError("Please provide either a value or an image path for the variable, not both.")
 
         if image_path != "":
             if is_valid_url(image_path):
                 self.value = httpx.get(image_path).content
             with open(image_path, 'rb') as file:
                 self.value = file.read()
-
-        self.value = value
+        else:
+            self.value = value
+            
         self.gradients: Set[Variable] = set()
         self.gradients_context: Dict[Variable, str] = defaultdict(lambda: None)
         self.grad_fn = None
