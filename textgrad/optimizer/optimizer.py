@@ -276,5 +276,4 @@ class TextualGradientDescentwithMomentum(Optimizer):
                 logger.error(f"TextualGradientDescent optimizer response could not be indexed", extra={"optimizer.response": new_text})
                 raise IndexError(f"TextualGradientDescent optimizer response could not be indexed. This can happen if the optimizer model cannot follow the instructions. You can try using a stronger model, or somehow reducing the context of the optimization. Response: {new_text}")
             parameter.set_value(new_value)
-            logger.info(f"TextualGradientDescent updated text", extra={"parameter.value": parameter.value})            
             logger.info(f"TextualGradientDescentwithMomentum updated text", extra={"parameter.value": parameter.value})
