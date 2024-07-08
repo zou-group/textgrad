@@ -2,7 +2,7 @@
 
 We are pleased to release the results of our solution optimization experiments for multimodal tasks, including [MathVista](https://mathvista.github.io/) and [ScienceQA](https://scienceqa.github.io/) tasks. This release aims to ensure transparency and provide detailed insights into our optimization processes.
 
-The files in this repository contain the solution trajectory, final solution, and the answers for each question in the datasets. Each `.json` file is structured as a dictionary where the key is the question index, and the value is another dictionary with the following possible keys:
+The files in this repository contain the solution trajectory, final solution, and the answers for each question in the datasets. Each `.json` file (can be downloaded from google drive) is structured as a dictionary where the key is the question index, and the value is another dictionary with the following possible keys:
 
 - **`question`**: The question text.
 - **`answer`**: The ground truth answer.
@@ -31,7 +31,7 @@ python solution_optimization_mm.py --task mathvista \
 --majority_voting
 ```
 
-The result file is `mathvista_predictions.json`.
+The resulting `mathvista_predictions.json` file can be downloaded from [here](https://drive.google.com/drive/u/0/folders/1hJ6kQozkTNiUPxtEhZCgCqnK2EFW5MHY).
 
 ## Experiment on ScienceQA
 
@@ -49,5 +49,4 @@ python solution_optimization_mm.py --task scienceqa \
 --num_threads 20
 ```
 
-The result file is `scienceqa_predictions.json`.
-
+The resulting `scienceqa_predictions.json` file can be downloaded from [here](https://drive.google.com/file/d/1BkMD3CcaxAUpB-9L0aI8bLEqoo8jHqlZ/view?usp=sharing).
