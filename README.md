@@ -296,4 +296,12 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
       eprint={2406.07496},
       archivePrefix={arXiv}
 }
-``` 
+```
+
+
+### Contributors
+
+We are grateful for all the help we got from our contributors!
+
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
