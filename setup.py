@@ -8,9 +8,9 @@ with open("README.md") as readme_file:
 
 setup(
     name="textgrad",
-    version="0.1.3",
+    version="0.1.4",
     description="",
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

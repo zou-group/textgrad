@@ -3,6 +3,7 @@ from textgrad.defaults import (SYSTEM_PROMPT_DEFAULT_ROLE,
                                VARIABLE_OUTPUT_DEFAULT_ROLE)
 from textgrad.variable import Variable
 from textgrad.engine import EngineLM
+from textgrad.config import validate_engine_or_get_default
 from typing import List
 from .llm_backward_prompts import (
     EVALUATE_VARIABLE_INSTRUCTION,
@@ -23,13 +24,11 @@ class LLMCall(Function):
 
         :param engine: engine to use for the LLM call
         :type engine: EngineLM
-        :param input_role_description: role description for the input variable, defaults to VARIABLE_INPUT_DEFAULT_ROLE
-        :type input_role_description: str, optional
         :param system_prompt: system prompt to use for the LLM call, default depends on the engine.
         :type system_prompt: Variable, optional
         """
         super().__init__()
-        self.engine = engine
+        self.engine = validate_engine_or_get_default(engine)
         self.system_prompt = system_prompt
         if self.system_prompt and self.system_prompt.get_role_description() is None:
             self.system_prompt.set_role_description(SYSTEM_PROMPT_DEFAULT_ROLE)
@@ -112,6 +111,7 @@ class LLMCall(Function):
                                     prompt: str, 
                                     system_prompt: str,
                                     backward_engine: EngineLM):
+
         """
         Backward through the LLM to compute gradients for each variable, in the case where the output has gradients on them.
         i.e. applying the chain rule.
