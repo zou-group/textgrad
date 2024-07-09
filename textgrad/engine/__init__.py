@@ -6,6 +6,7 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "sonnet": "claude-3-sonnet-20240229",
     "sonnet-3.5": "claude-3-5-sonnet-20240620",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
+    "ollama-qwen2:0.5b": "qwen2:0.5b",
 }
 
 # Any better way to do this?
@@ -33,7 +34,10 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if "seed" in kwargs and engine_name not in ["gpt-4", "gpt-3.5"]:
         raise ValueError(f"Seed is currently supported only for OpenAI engines, not {engine_name}")
 
-    if (("gpt-4" in engine_name) or ("gpt-3.5" in engine_name)):
+    if "qwen2" in engine_name:
+        from .ollama import ChatOllama
+        return ChatOllama(model_string=engine_name, **kwargs)
+    elif (("gpt-4" in engine_name) or ("gpt-3.5" in engine_name)):
         from .openai import ChatOpenAI
         return ChatOpenAI(model_string=engine_name, is_multimodal=_check_if_multimodal(engine_name), **kwargs)
     elif "claude" in engine_name:
