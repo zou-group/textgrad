@@ -80,7 +80,7 @@ You can run them directly in Google Colab by clicking on the links below.
     :alt: Open In Colab
 
 .. |promptopt| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb
+    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Prompt-Optimization.ipynb
     :alt: Open In Colab
 
 .. |solut| image:: https://colab.research.google.com/assets/colab-badge.svg
