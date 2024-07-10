@@ -28,6 +28,7 @@ setup(
     include_package_data=True,
     install_requires=requirements,
     extras_require={
+        "vllm": ["vllm"],
     },
     zip_safe=False,
 )

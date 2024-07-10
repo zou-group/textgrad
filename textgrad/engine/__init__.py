@@ -6,6 +6,7 @@ __ENGINE_NAME_SHORTCUTS__ = {
     "sonnet": "claude-3-sonnet-20240229",
     "sonnet-3.5": "claude-3-5-sonnet-20240620",
     "together-llama-3-70b": "together-meta-llama/Llama-3-70b-chat-hf",
+    "vllm-llama-3-8b": "vllm-meta-llama/Meta-Llama-3-8B-Instruct",
 }
 
 # Any better way to do this?
@@ -54,5 +55,9 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif engine_name in ["command-r-plus", "command-r", "command", "command-light"]:
         from .cohere import ChatCohere
         return ChatCohere(model_string=engine_name, **kwargs)
+    elif "vllm" in engine_name:
+        from .vllm import ChatVLLM
+        engine_name = engine_name.replace("vllm-", "")
+        return ChatVLLM(model_string=engine_name, **kwargs)
     else:
         raise ValueError(f"Engine {engine_name} not supported")
