@@ -54,5 +54,13 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif engine_name in ["command-r-plus", "command-r", "command", "command-light"]:
         from .cohere import ChatCohere
         return ChatCohere(model_string=engine_name, **kwargs)
+    elif engine_name.startswith("ollama"):
+        from .openai import ChatOpenAI, OLLAMA_BASE_URL
+        model_string = engine_name.replace("ollama-", "")
+        return ChatOpenAI(
+            model_string=model_string,
+            base_url=OLLAMA_BASE_URL,
+            **kwargs
+        )
     else:
         raise ValueError(f"Engine {engine_name} not supported")
