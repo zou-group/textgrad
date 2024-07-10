@@ -322,6 +322,13 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/Cerrix">
+                    <img src="https://avatars.githubusercontent.com/u/7694393?v=4" width="100;" alt="Cerrix"/>
+                    <br />
+                    <sub><b>Francesco</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sugatoray">
                     <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
                     <br />
@@ -342,6 +349,8 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>David Ruan</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/sanowl">
                     <img src="https://avatars.githubusercontent.com/u/99511815?v=4" width="100;" alt="sanowl"/>
@@ -349,8 +358,6 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>San </b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
             <td align="center">
                 <a href="https://github.com/huangzhii">
                     <img src="https://avatars.githubusercontent.com/u/10902358?v=4" width="100;" alt="huangzhii"/>
