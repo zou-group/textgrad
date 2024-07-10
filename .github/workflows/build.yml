@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
     - '**.rst'
-    - 'tests/test_vllm.py' # requires vllm to be installed
 
 jobs:
   build:
@@ -26,7 +25,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest
+        pytest --ignore=tests/test_vllm.py
 
   contrib-readme-job:
     runs-on: ubuntu-latest
