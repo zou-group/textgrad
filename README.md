@@ -322,24 +322,17 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/Cerrix">
+                    <img src="https://avatars.githubusercontent.com/u/7694393?v=4" width="100;" alt="Cerrix"/>
+                    <br />
+                    <sub><b>Francesco</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sugatoray">
                     <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
                     <br />
                     <sub><b>Sugato Ray</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/lupantech">
-                    <img src="https://avatars.githubusercontent.com/u/17663606?v=4" width="100;" alt="lupantech"/>
-                    <br />
-                    <sub><b>Pan Lu</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/ruanwz">
-                    <img src="https://avatars.githubusercontent.com/u/4874?v=4" width="100;" alt="ruanwz"/>
-                    <br />
-                    <sub><b>David Ruan</b></sub>
                 </a>
             </td>
             <td align="center">
@@ -349,15 +342,6 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>San </b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
-            <td align="center">
-                <a href="https://github.com/huangzhii">
-                    <img src="https://avatars.githubusercontent.com/u/10902358?v=4" width="100;" alt="huangzhii"/>
-                    <br />
-                    <sub><b>Zhi Huang</b></sub>
-                </a>
-            </td>
             <td align="center">
                 <a href="https://github.com/ajms">
                     <img src="https://avatars.githubusercontent.com/u/2394425?v=4" width="100;" alt="ajms"/>
@@ -365,6 +349,8 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>Albert</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/tboen1">
                     <img src="https://avatars.githubusercontent.com/u/46495807?v=4" width="100;" alt="tboen1"/>
