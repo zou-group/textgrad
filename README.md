@@ -304,4 +304,75 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
 We are grateful for all the help we got from our contributors!
 
 <!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/vinid">
+                    <img src="https://avatars.githubusercontent.com/u/2234699?v=4" width="100;" alt="vinid"/>
+                    <br />
+                    <sub><b>Federico Bianchi</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/mertyg">
+                    <img src="https://avatars.githubusercontent.com/u/29640736?v=4" width="100;" alt="mertyg"/>
+                    <br />
+                    <sub><b>Mert Yuksekgonul</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/sugatoray">
+                    <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
+                    <br />
+                    <sub><b>Sugato Ray</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/lupantech">
+                    <img src="https://avatars.githubusercontent.com/u/17663606?v=4" width="100;" alt="lupantech"/>
+                    <br />
+                    <sub><b>Pan Lu</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ruanwz">
+                    <img src="https://avatars.githubusercontent.com/u/4874?v=4" width="100;" alt="ruanwz"/>
+                    <br />
+                    <sub><b>David Ruan</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/sanowl">
+                    <img src="https://avatars.githubusercontent.com/u/99511815?v=4" width="100;" alt="sanowl"/>
+                    <br />
+                    <sub><b>San </b></sub>
+                </a>
+            </td>
+		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/huangzhii">
+                    <img src="https://avatars.githubusercontent.com/u/10902358?v=4" width="100;" alt="huangzhii"/>
+                    <br />
+                    <sub><b>Zhi Huang</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ajms">
+                    <img src="https://avatars.githubusercontent.com/u/2394425?v=4" width="100;" alt="ajms"/>
+                    <br />
+                    <sub><b>Albert</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/tboen1">
+                    <img src="https://avatars.githubusercontent.com/u/46495807?v=4" width="100;" alt="tboen1"/>
+                    <br />
+                    <sub><b>tboen1</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: contributors -end -->
