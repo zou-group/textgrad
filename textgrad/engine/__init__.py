@@ -31,10 +31,15 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if engine_name in __ENGINE_NAME_SHORTCUTS__:
         engine_name = __ENGINE_NAME_SHORTCUTS__[engine_name]
 
-    if "seed" in kwargs and engine_name not in ["gpt-4", "gpt-3.5"]:
+    if "seed" in kwargs and "gpt-4" not in engine_name and "gpt-3.5" not in engine_name and "gpt-35" not in engine_name:
         raise ValueError(f"Seed is currently supported only for OpenAI engines, not {engine_name}")
 
-    if (("gpt-4" in engine_name) or ("gpt-3.5" in engine_name)):
+    if engine_name.startswith("azure"):
+        from .openai import AzureChatOpenAI
+        # remove engine_name "azure-" prefix
+        engine_name = engine_name[6:]
+        return AzureChatOpenAI(model_string=engine_name, **kwargs)
+    elif (("gpt-4" in engine_name) or ("gpt-3.5" in engine_name)):
         from .openai import ChatOpenAI
         return ChatOpenAI(model_string=engine_name, is_multimodal=_check_if_multimodal(engine_name), **kwargs)
     elif "claude" in engine_name:
