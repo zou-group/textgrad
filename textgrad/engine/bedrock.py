@@ -61,11 +61,11 @@ class ChatBedrock(EngineLM, CachedEngine):
             if self.aws_region is None:
                 self.aws_region = os.getenv("AWS_DEFAULT_REGION", None)
                 if self.aws_region is None:
-                    raise ValueError("AWS region not specified. Please add it in get_engine parameters or has AWS_DEFAULT_REGION var")
+                    raise ValueError("AWS region not specified. Please add it in get_engine parameters or as AWS_DEFAULT_REGION env var. You can also provide an AWS role to this environment to use default session credentials")
             if access_key_id is None:
-                raise ValueError("AWS access key ID cannot be 'None'.")
+                raise ValueError("AWS access key ID cannot be 'None'. You can also provide an AWS role to this environment to use default session credentials")
             if secret_access_key is None:
-                raise ValueError("AWS secret access key cannot be 'None'.")
+                raise ValueError("AWS secret access key cannot be 'None'. You can also provide an AWS role to this environment to use default session credentials")
             session = boto3.Session(
                 aws_access_key_id=access_key_id,
                 aws_secret_access_key=secret_access_key,
