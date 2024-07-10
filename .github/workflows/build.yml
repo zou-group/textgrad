@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
     - '**.rst'
+    - 'tests/test_vllm.py' # requires vllm to be installed
 
 jobs:
   build:
