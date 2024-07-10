@@ -103,17 +103,19 @@ We have many more examples around how TextGrad can optimize all kinds of variabl
 
 ### Tutorials 
 
-We have prepared a couple of tutorials to get you started with TextGrad. 
-You can run them directly in Google Colab by clicking on the links below.
+We have prepared a couple of tutorials to get you started with TextGrad. The order of this
+tutorial is what we would recommend to follow for a beginner. You can run them directly in Google Colab by clicking on the links below (but
+you need an OpenAI/Anthropic key to run the LLMs).
 
 <div align="center">
 
-| Example                                         | Colab Link                                                                                                                                                                                                    |
-|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Introduction to TextGrad Primitives             | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb)                       |
-| Optimizing a Code Snippet and Define a New Loss | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb) |
-| Prompt Optimization                             | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)              |
-| Solution Optimization                           | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb)   |
+| Tutorial                                           | Difficulty                                                      | Colab Link                                                                                                                                                                                                    |
+|----------------------------------------------------|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1. Introduction to TextGrad Primitives             | ![](https://img.shields.io/badge/Level-Beginner-green.svg)      | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Primitives.ipynb)              |
+| 2. Solution Optimization                           | ![](https://img.shields.io/badge/Level-Beginner-green.svg)      | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Solution-Optimization.ipynb)   |
+| 3. Optimizing a Code Snippet and Define a New Loss | ![](https://img.shields.io/badge/Level-Beginner-green.svg)      | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/textgrad/blob/main/examples/notebooks/Tutorial-Test-Time-Loss-for-Code.ipynb) |
+| 4. Prompt Optimization                             | ![](https://img.shields.io/badge/Level-Intermediate-yellow.svg) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Prompt-Optimization.ipynb)     |
+| 5. MultiModal Optimization                         | ![](https://img.shields.io/badge/Level-Beginner-green.svg)      | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-MultiModal.ipynb)              |
 
 </div>
 
@@ -294,4 +296,83 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
       eprint={2406.07496},
       archivePrefix={arXiv}
 }
-``` 
+```
+
+
+### Contributors
+
+We are grateful for all the help we got from our contributors!
+
+<!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/vinid">
+                    <img src="https://avatars.githubusercontent.com/u/2234699?v=4" width="100;" alt="vinid"/>
+                    <br />
+                    <sub><b>Federico Bianchi</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/mertyg">
+                    <img src="https://avatars.githubusercontent.com/u/29640736?v=4" width="100;" alt="mertyg"/>
+                    <br />
+                    <sub><b>Mert Yuksekgonul</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/sugatoray">
+                    <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
+                    <br />
+                    <sub><b>Sugato Ray</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/lupantech">
+                    <img src="https://avatars.githubusercontent.com/u/17663606?v=4" width="100;" alt="lupantech"/>
+                    <br />
+                    <sub><b>Pan Lu</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ruanwz">
+                    <img src="https://avatars.githubusercontent.com/u/4874?v=4" width="100;" alt="ruanwz"/>
+                    <br />
+                    <sub><b>David Ruan</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/sanowl">
+                    <img src="https://avatars.githubusercontent.com/u/99511815?v=4" width="100;" alt="sanowl"/>
+                    <br />
+                    <sub><b>San </b></sub>
+                </a>
+            </td>
+		</tr>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/huangzhii">
+                    <img src="https://avatars.githubusercontent.com/u/10902358?v=4" width="100;" alt="huangzhii"/>
+                    <br />
+                    <sub><b>Zhi Huang</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ajms">
+                    <img src="https://avatars.githubusercontent.com/u/2394425?v=4" width="100;" alt="ajms"/>
+                    <br />
+                    <sub><b>Albert</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/tboen1">
+                    <img src="https://avatars.githubusercontent.com/u/46495807?v=4" width="100;" alt="tboen1"/>
+                    <br />
+                    <sub><b>tboen1</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
+<!-- readme: contributors -end -->

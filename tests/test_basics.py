@@ -1,5 +1,6 @@
 import os
 import pytest
+from typing import Union, List
 import logging
 
 
@@ -14,6 +15,26 @@ logging.disable(logging.CRITICAL)
 class DummyEngine(EngineLM):
     def generate(self, prompt, system_prompt=None, **kwargs):
         return "Hello World"
+
+    def __call__(self, prompt, system_prompt=None):
+        return self.generate(prompt)
+
+class DummyMultimodalEngine(EngineLM):
+
+    def __init__(self, is_multimodal=False):
+        self.is_multimodal = is_multimodal
+        self.model_string = "gpt-4o" # fake
+
+    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt: str = None, **kwargs):
+        if isinstance(content, str):
+            return "Hello Text"
+
+        elif isinstance(content, list):
+            has_multimodal_input = any(isinstance(item, bytes) for item in content)
+            if (has_multimodal_input) and (not self.is_multimodal):
+                raise NotImplementedError("Multimodal generation is only supported for Claude-3 and beyond.")
+
+            return "Hello Text from Image"
 
     def __call__(self, prompt, system_prompt=None):
         return self.generate(prompt)
@@ -124,3 +145,53 @@ def test_formattedllmcall():
     assert inputs["question"] in output.predecessors
     assert inputs["prediction"] in output.predecessors
     assert output.get_role_description() == "test response"
+
+
+def test_multimodal():
+    from textgrad.autograd import MultimodalLLMCall, LLMCall
+    from textgrad import Variable
+    import httpx
+
+    image_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
+    image_data = httpx.get(image_url).content
+
+    os.environ['OPENAI_API_KEY'] = "fake_key"
+    engine = DummyMultimodalEngine(is_multimodal=True)
+
+    image_variable = Variable(image_data,
+                              role_description="image to answer a question about", requires_grad=False)
+
+    text = Variable("Hello", role_description="A variable")
+    question_variable = Variable("What do you see in this image?", role_description="question", requires_grad=False)
+    response = MultimodalLLMCall(engine=engine)([image_variable, question_variable])
+
+    assert response.value == "Hello Text from Image"
+
+    response = LLMCall(engine=engine)(text)
+
+    assert response.value == "Hello Text"
+
+    ## llm call cannot handle images
+    with pytest.raises(AttributeError):
+        response = LLMCall(engine=engine)([text, image_variable])
+
+    # this is just to check the content, we can't really have int variables but
+    # it's just for testing purposes
+    with pytest.raises(AssertionError):
+        response = MultimodalLLMCall(engine=engine)([Variable(4, role_description="tst"),
+                                                 Variable(5, role_description="tst")])
+
+def test_multimodal_from_url():
+    from textgrad import Variable
+    import httpx
+
+    image_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
+    image_data = httpx.get(image_url).content
+
+    image_variable = Variable(image_path=image_url,
+                              role_description="image to answer a question about", requires_grad=False)
+
+    image_variable_2 = Variable(image_data,
+                                role_description="image to answer a question about", requires_grad=False)
+
+    assert image_variable_2.value == image_variable.value
