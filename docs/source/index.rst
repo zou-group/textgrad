@@ -72,7 +72,7 @@ We have prepared a couple of tutorials to get you started with TextGrad.
 You can run them directly in Google Colab by clicking on the links below.
 
 .. |primiti| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Primitives.ipynb
+    :target: https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-Primitives.ipynb
     :alt: Open In Colab
 
 .. |code| image:: https://colab.research.google.com/assets/colab-badge.svg
