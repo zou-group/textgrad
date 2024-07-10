@@ -8,7 +8,7 @@ from textgrad.optimizer import TextualGradientDescent
 from textgrad.engine.vllm import ChatVLLM
 
 logging.disable(logging.CRITICAL)
-vllm_engine = ChatVLLM(model_string="mistralai/Mistral-7B-Instruct-v0.3")
+vllm_engine = ChatVLLM(model_string="meta-llama/Meta-Llama-3-8B-Instruct")
 
 def test_import_vllm():
     assert ChatVLLM
