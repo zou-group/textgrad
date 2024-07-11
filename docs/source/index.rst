@@ -31,39 +31,74 @@ QuickStart
 
 If you know PyTorch, you know 80% of TextGrad.
 Let's walk through the key components with a simple example. Say we want to use GPT-4o to generate a punchline for TextGrad.
+## QuickStart
+If you know PyTorch, you know 80% of TextGrad.
+Let's walk through the key components with a simple example. Say we want to use GPT-4o to solve a simple
+reasoning problem.
+
+The question is *If it takes 1 hour to dry 25 shirts under the sun, how long will it take to dry 30 shirts under the sun? Reason step by step.* (Thanks, [Reddit User](https://www.reddit.com/r/OpenAI/comments/18q479x/comment/kf444es/))
 
 .. code-block:: python
 
-    import textgrad as tg
-    # Step 1: Get an initial response from an LLM
-    model = tg.BlackboxLLM("gpt-4o")
-    punchline = model(tg.Variable("write a punchline for my github package about optimizing compound AI systems", role_description="prompt", requires_grad=False))
-    punchline.set_role_description("a concise punchline that must hook everyone")
+   import textgrad as tg
 
-Initial `punchline` from the model:
-> Supercharge your AI synergy with our optimization toolkit – where compound intelligence meets peak performance!
+   tg.set_backward_engine("gpt-4o", override=True)
 
-Not bad, but we (gpt-4o, I guess) can do better! Let's optimize the punchline using TextGrad.
+   # Step 1: Get an initial response from an LLM.
+   model = tg.BlackboxLLM("gpt-4o")
+   question_string = ("If it takes 1 hour to dry 25 shirts under the sun, "
+                      "how long will it take to dry 30 shirts under the sun? "
+                      "Reason step by step")
+
+   question = tg.Variable(question_string,
+                          role_description="question to the LLM",
+                          requires_grad=False)
+
+   answer = model(question)
+
+
+> :warning: **answer: To determine how long it will take to dry 30 shirts under the sun,**
+> **we can use a proportional relationship based on the given information.**
+> **Here’s the step-by-step reasoning: [.....]**
+> **So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.**
+
+
+As you can see, **the model's answer is incorrect.** We can optimize the answer using TextGrad to get the correct answer.
 
 .. code-block:: python
 
-    # Step 2: Define the loss function and the optimizer, just like in PyTorch!
-    loss_fn = tg.TextLoss("We want to have a super smart and funny punchline. Is the current one concise and addictive? Is the punch fun, makes sense, and subtle enough?")
-    optimizer = tg.TGD(parameters=[punchline])
+   answer.set_role_description("concise and accurate answer to the question")
+
+   # Step 2: Define the loss function and the optimizer, just like in PyTorch!
+   # Here, we don't have SGD, but we have TGD (Textual Gradient Descent)
+   # that works with "textual gradients".
+   optimizer = tg.TGD(parameters=[answer])
+   evaluation_instruction = (f"Here's a question: {question_string}. "
+                              "Evaluate any given answer to this question, "
+                              "be smart, logical, and very critical. "
+                              "Just provide concise feedback.")
+
+
+   # TextLoss is a natural-language specified loss function that describes
+   # how we want to evaluate the reasoning.
+   loss_fn = tg.TextLoss(evaluation_instruction)
+
+> :brain: **loss: [...] Your step-by-step reasoning is clear and logical,**
+> **but it contains a critical flaw in the assumption that drying time is**
+> **directly proportional to the number of shirts. [...]**
 
 .. code-block:: python
 
-    # Step 3: Do the loss computation, backward pass, and update the punchline
-    loss = loss_fn(punchline)
-    loss.backward()
-    optimizer.step()
+   # Step 3: Do the loss computation, backward pass, and update the punchline.
+   # Exact same syntax as PyTorch!
+   loss = loss_fn(answer)
+   loss.backward()
+   optimizer.step()
+   answer
 
-Optimized punchline:
-> Boost your AI with our toolkit – because even robots need a tune-up!
 
-Okay this model isn’t really ready for a comedy show yet (and maybe a bit cringy) but it is clearly trying. But who gets to maxima in one step? 
-
-We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
+> :white_check_mark: **answer: It will still take 1 hour to dry 30 shirts under the sun,**
+> **assuming they are all laid out properly to receive equal sunlight.**
 
 Tutorials
 ---------

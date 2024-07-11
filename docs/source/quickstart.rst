@@ -6,41 +6,45 @@ What can TextGrad do? TextGrad can optimize your prompts from a language model i
 
 .. code-block:: python
 
-    import textgrad
+    import textgrad as tg
 
-    # Set the backward engine as an External LLM API object.
-    See textgrad.config for more details.
-    textgrad.set_backward_engine(llm_api)
-    basic_system_prompt = "You are a language model that summarizes \
-                            a given document"
+    tg.set_backward_engine("gpt-4o", override=True)
 
-    system_prompt = textgrad.Variable(basic_system_prompt, requires_grad=True)
+    # Step 1: Get an initial response from an LLM.
+    model = tg.BlackboxLLM("gpt-4o")
+    question_string = ("If it takes 1 hour to dry 25 shirts under the sun, "
+                       "how long will it take to dry 30 shirts under the sun? "
+                       "Reason step by step")
 
-    api_model = textgrad.model.BlackboxLLM(llm_api)
+    question = tg.Variable(question_string,
+                           role_description="question to the LLM",
+                           requires_grad=False)
 
-    # this tells the model to use the following system prompt
-    api_model = api_model + system_prompt
+    answer = model(question)
 
-    big_document = "This is a big document that we want to summarize."
+.. code-block:: python
 
-    # Since we will not need the criticisms for the document,
-    # we will explicitly set requires_grad=False
-    doc = textgrad.Variable(data, requires_grad=False)
-    # Get the summary
-    summary = api_model(big_document)
 
-    # Compute a loss
-    evaluation_prompt = "Evaluate if this is a good summary \
-                        based on completeness and fluency."
+    answer.set_role_description("concise and accurate answer to the question")
 
-    loss_fn = textgrad.ResponseEvaluation(engine=llm_api,
-                    evaluation_instruction=Variable(evaluation_prompt,
-                    requires_grad=False))
+    # Step 2: Define the loss function and the optimizer, just like in PyTorch!
+    # Here, we don't have SGD, but we have TGD (Textual Gradient Descent)
+    # that works with "textual gradients".
+    optimizer = tg.TGD(parameters=[answer])
+    evaluation_instruction = (f"Here's a question: {question_string}. "
+                               "Evaluate any given answer to this question, "
+                               "be smart, logical, and very critical. "
+                               "Just provide concise feedback.")
 
-    loss = loss_fn(summary)
-    loss.backward() # This populates gradients
 
-    optimizer = textgrad.TextualGradientDescent(engine=llm_api,
-    parameters=[system_prompt])
+    # TextLoss is a natural-language specified loss function that describes
+    # how we want to evaluate the reasoning.
+    loss_fn = tg.TextLoss(evaluation_instruction)
+
+.. code-block:: python
+    # Step 3: Do the loss computation, backward pass, and update the punchline.
+    # Exact same syntax as PyTorch!
+    loss = loss_fn(answer)
+    loss.backward()
     optimizer.step()
-    print(system_prompt)
+    answer
