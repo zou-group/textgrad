@@ -146,7 +146,7 @@ pip install git+https://github.com/zou-group/textgrad.git
 **Installing textgrad with vllm**:
 
 ```sh
-pip3 install textgrad[vllm]
+pip install textgrad[vllm]
 ```
 
 See [here](https://pip.pypa.io/en/stable/cli/pip_install/) for more details on various methods of pip installation.
