@@ -124,7 +124,6 @@ def extract_answer(response, problem, quick_extract=False):
         except:
             pass
 
-    # quick extraction
     if quick_extract:
         try:
             result = re.search(r'The answer is "(.*)"\.', response)
@@ -134,7 +133,6 @@ def extract_answer(response, problem, quick_extract=False):
         except Exception as e:
             raise Exception(f"Error in extracting answer for {pid}: {e}. Remove this line responsibly.")
 
-    # general extraction
     try:
         from textgrad.engine.openai import ChatOpenAI
         local_llm_engine = ChatOpenAI(model_string="gpt-3.5-turbo", is_multimodal=False)
@@ -153,7 +151,6 @@ def get_most_similar(prediction, choices):
     distances = [distance(prediction, choice) for choice in choices]
     ind = distances.index(min(distances))
     return choices[ind]
-    # return min(choices, key=lambda choice: distance(prediction, choice))
 
 
 def normalize_extracted_answer(extraction, question_data):
@@ -243,8 +240,6 @@ class MathVistaDataset(Dataset):
     def __getitem__(self, index):
         row = self.data[index]
         pid = row["pid"]
-        # question = row["question"]
-        # image = row["image"]
         decoded_image = row["decoded_image"]
         choices = row["choices"]
         unit = row["unit"]
