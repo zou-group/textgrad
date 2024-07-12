@@ -1,13 +1,15 @@
-import platformdirs
-from .base import Dataset
-from textgrad.loss import ImageQALoss
-from textgrad.variable import Variable
-
 import re
 import io
-# !pip install python-Levenshtein
-from Levenshtein import distance
+import platformdirs
 from PIL import Image
+
+from textgrad.tasks.base import Dataset
+from textgrad.loss import ImageQALoss
+from textgrad.variable import Variable
+try:
+    from Levenshtein import distance
+except ImportError:
+    raise ImportError("Please install the Levenshtein package using 'pip install python-Levenshtein' to use mathvista.")
 
 from textgrad.engine.openai import ChatOpenAI
 
