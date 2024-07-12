@@ -328,6 +328,13 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/nihalnayak">
+                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
+                    <br />
+                    <sub><b>Nihal Nayak</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sugatoray">
                     <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
                     <br />
@@ -346,13 +353,6 @@ We are grateful for all the help we got from our contributors!
                     <img src="https://avatars.githubusercontent.com/u/4874?v=4" width="100;" alt="ruanwz"/>
                     <br />
                     <sub><b>David Ruan</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/nihalnayak">
-                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
-                    <br />
-                    <sub><b>Nihal Nayak</b></sub>
                 </a>
             </td>
 		</tr>
