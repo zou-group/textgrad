@@ -1,0 +1,12 @@
+sphinx_autodoc_typehints
+toml
+sphinx-panels
+sphinx-autobuild
+sphinx_book_theme
+sphinx-toolbox
+sphinx-copybutton
+sphinx_design
+jinja2
+sphinx
+setuptools
+textgrad
