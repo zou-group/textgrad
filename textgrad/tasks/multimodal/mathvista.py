@@ -1,15 +1,18 @@
-import re
-import io
 import platformdirs
-from PIL import Image
-
-from textgrad.tasks.base import Dataset
+from .base import Dataset
 from textgrad.loss import ImageQALoss
 from textgrad.variable import Variable
-try:
-    from Levenshtein import distance
-except ImportError:
-    raise ImportError("Please install the Levenshtein package using 'pip install python-Levenshtein' to use mathvista.")
+
+import re
+import io
+# !pip install python-Levenshtein
+from Levenshtein import distance
+from PIL import Image
+
+from textgrad.engine.openai import ChatOpenAI
+
+local_llm_engine = ChatOpenAI(model_string="gpt-3.5-turbo", is_multimodal=False)
+print("Local OpenAI engine initialized.\n")
 
 def compress_image(decoded_image, max_size_bytes=3.6*1024*1024):
     # Convert image to RGB if it's in a mode that JPEG does not support
@@ -40,6 +43,47 @@ def compress_image(decoded_image, max_size_bytes=3.6*1024*1024):
     
     buffer.seek(0)
     return buffer.getvalue()
+
+
+# Demos (pids = 852,  104,  824,  506,  540) from MathVista
+demo_prompt = """
+Please read the following example. Then extract the answer from the model response and type it at the end of the prompt.
+
+Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: Which number is missing?
+
+Model response: The number missing in the sequence is 14.
+
+Extracted answer: 14
+
+Hint: Please answer the question requiring a floating-point number with one decimal place and provide the final value, e.g., 1.2, 1.3, 1.4, at the end.
+Question: What is the fraction of females facing the camera?
+
+Model response: The fraction of females facing the camera is 0.6, which means that six out of ten females in the group are facing the camera.
+
+Extracted answer: 0.6
+
+Hint: Please answer the question requiring a floating-point number with two decimal places and provide the final value, e.g., 1.23, 1.34, 1.45, at the end.
+Question: How much money does Luca need to buy a sour apple candy and a butterscotch candy? (Unit: $)
+
+Model response: Luca needs $1.45 to buy a sour apple candy and a butterscotch candy.
+
+Extracted answer: 1.45
+
+Hint: Please answer the question requiring a Python list as an answer and provide the final list, e.g., [1, 2, 3], [1.2, 1.3, 1.4], at the end.
+Question: Between which two years does the line  graph saw its maximum peak?
+
+Model response: The line graph saw its maximum peak between 2007 and 2008.
+
+Extracted answer: [2007, 2008]
+
+Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.
+Question: What fraction of the shape is blue?\nChoices:\n(A) 3/11\n(B) 8/11\n(C) 6/11\n(D) 3/5
+
+Model response: The correct answer is (B) 8/11.
+
+Extracted answer: B
+"""
 
 
 def verify_extraction(extraction):
@@ -86,6 +130,7 @@ def extract_answer(response, problem, quick_extract=False):
     # quick extraction
     if quick_extract:
         print("Quickly extracting answer...")
+        # The answer is "text". -> "text"
         try:
             result = re.search(r'The answer is "(.*)"\.', response)
             if result:
@@ -94,8 +139,16 @@ def extract_answer(response, problem, quick_extract=False):
         except:
             pass
 
-    else:
-        raise NotImplementedError("Extraction using LLMs are to-be-implemented.")
+    # general extraction
+    try:
+        full_prompt = create_test_prompt(demo_prompt, query, response)
+        extraction = local_llm_engine(full_prompt)
+        return extraction
+    except Exception as e:
+        print(e)
+        print(f"Error in extracting answer for {pid}")
+
+    return ""
 
 
 def get_most_similar(prediction, choices):
@@ -210,7 +263,6 @@ class MathVistaDataset(Dataset):
 
         # NOTE: convert image to bytes
         if "claude" in self.evaluation_api.model_string:
-            # TODO @lupantech This does not seem neat.
             image_bytes = compress_image(decoded_image)
         else:
             buffer = io.BytesIO()
