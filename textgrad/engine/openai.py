@@ -17,7 +17,12 @@ from typing import List, Union
 from .base import EngineLM, CachedEngine
 from .engine_utils import get_image_type_from_bytes
 
+# Default base URL for OLLAMA
 OLLAMA_BASE_URL = 'http://localhost:11434/v1'
+
+# Check if the user set the OLLAMA_BASE_URL environment variable
+if os.getenv("OLLAMA_BASE_URL"):
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL")
 
 class ChatOpenAI(EngineLM, CachedEngine):
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
@@ -32,6 +37,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
         """
         :param model_string:
         :param system_prompt:
+        :param base_url: Used to support Ollama
         """
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
@@ -39,6 +45,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
         super().__init__(cache_path=cache_path)
 
         self.system_prompt = system_prompt
+        self.base_url = base_url
         
         if not base_url:
             if os.getenv("OPENAI_API_KEY") is None:
