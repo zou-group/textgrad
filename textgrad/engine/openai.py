@@ -17,6 +17,12 @@ from typing import List, Union
 from .base import EngineLM, CachedEngine
 from .engine_utils import get_image_type_from_bytes
 
+# Default base URL for OLLAMA
+OLLAMA_BASE_URL = 'http://localhost:11434/v1'
+
+# Check if the user set the OLLAMA_BASE_URL environment variable
+if os.getenv("OLLAMA_BASE_URL"):
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL")
 
 class ChatOpenAI(EngineLM, CachedEngine):
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
@@ -26,10 +32,12 @@ class ChatOpenAI(EngineLM, CachedEngine):
         model_string: str="gpt-3.5-turbo-0613",
         system_prompt: str=DEFAULT_SYSTEM_PROMPT,
         is_multimodal: bool=False,
+        base_url: str=None,
         **kwargs):
         """
         :param model_string:
         :param system_prompt:
+        :param base_url: Used to support Ollama
         """
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
@@ -37,12 +45,23 @@ class ChatOpenAI(EngineLM, CachedEngine):
         super().__init__(cache_path=cache_path)
 
         self.system_prompt = system_prompt
-        if os.getenv("OPENAI_API_KEY") is None:
-            raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
+        self.base_url = base_url
         
-        self.client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
-        )
+        if not base_url:
+            if os.getenv("OPENAI_API_KEY") is None:
+                raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
+            
+            self.client = OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY")
+            )
+        elif base_url and base_url == OLLAMA_BASE_URL:
+            self.client = OpenAI(
+                base_url=base_url,
+                api_key="ollama"
+            )
+        else:
+            raise ValueError("Invalid base URL provided. Please use the default OLLAMA base URL or None.")
+
         self.model_string = model_string
         self.is_multimodal = is_multimodal
 

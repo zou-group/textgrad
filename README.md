@@ -146,7 +146,7 @@ pip install git+https://github.com/zou-group/textgrad.git
 **Installing textgrad with vllm**:
 
 ```sh
-pip3 install textgrad[vllm]
+pip install textgrad[vllm]
 ```
 
 See [here](https://pip.pypa.io/en/stable/cli/pip_install/) for more details on various methods of pip installation.
@@ -328,6 +328,13 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/nihalnayak">
+                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
+                    <br />
+                    <sub><b>Nihal Nayak</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sugatoray">
                     <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
                     <br />
@@ -348,6 +355,8 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>David Ruan</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/nihalnayak">
                     <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
@@ -383,6 +392,20 @@ We are grateful for all the help we got from our contributors!
                     <img src="https://avatars.githubusercontent.com/u/46495807?v=4" width="100;" alt="tboen1"/>
                     <br />
                     <sub><b>tboen1</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/nihalnayak">
+                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
+                    <br />
+                    <sub><b>Nihal Nayak</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/AtakanTekparmak">
+                    <img src="https://avatars.githubusercontent.com/u/59488384?v=4" width="100;" alt="AtakanTekparmak"/>
+                    <br />
+                    <sub><b>Atakan Tekparmak</b></sub>
                 </a>
             </td>
 		</tr>
