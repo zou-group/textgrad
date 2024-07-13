@@ -314,6 +314,13 @@ We are grateful for all the help we got from our contributors!
 	<tbody>
 		<tr>
             <td align="center">
+                <a href="https://github.com/mertyg">
+                    <img src="https://avatars.githubusercontent.com/u/29640736?v=4" width="100;" alt="mertyg"/>
+                    <br />
+                    <sub><b>Mert Yuksekgonul</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/vinid">
                     <img src="https://avatars.githubusercontent.com/u/2234699?v=4" width="100;" alt="vinid"/>
                     <br />
@@ -321,10 +328,10 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
-                <a href="https://github.com/mertyg">
-                    <img src="https://avatars.githubusercontent.com/u/29640736?v=4" width="100;" alt="mertyg"/>
+                <a href="https://github.com/lupantech">
+                    <img src="https://avatars.githubusercontent.com/u/17663606?v=4" width="100;" alt="lupantech"/>
                     <br />
-                    <sub><b>Mert Yuksekgonul</b></sub>
+                    <sub><b>Pan Lu</b></sub>
                 </a>
             </td>
             <td align="center">
@@ -342,12 +349,14 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
-                <a href="https://github.com/lupantech">
-                    <img src="https://avatars.githubusercontent.com/u/17663606?v=4" width="100;" alt="lupantech"/>
+                <a href="https://github.com/AtakanTekparmak">
+                    <img src="https://avatars.githubusercontent.com/u/59488384?v=4" width="100;" alt="AtakanTekparmak"/>
                     <br />
-                    <sub><b>Pan Lu</b></sub>
+                    <sub><b>Atakan Tekparmak</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/ruanwz">
                     <img src="https://avatars.githubusercontent.com/u/4874?v=4" width="100;" alt="ruanwz"/>
@@ -355,17 +364,6 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>David Ruan</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
-            <td align="center">
-                <a href="https://github.com/nihalnayak">
-                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
-                    <br />
-                    <sub><b>Nihal Nayak</b></sub>
-                </a>
-            </td>
-		</tr>
-		<tr>
             <td align="center">
                 <a href="https://github.com/sanowl">
                     <img src="https://avatars.githubusercontent.com/u/99511815?v=4" width="100;" alt="sanowl"/>
@@ -392,20 +390,6 @@ We are grateful for all the help we got from our contributors!
                     <img src="https://avatars.githubusercontent.com/u/46495807?v=4" width="100;" alt="tboen1"/>
                     <br />
                     <sub><b>tboen1</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/nihalnayak">
-                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
-                    <br />
-                    <sub><b>Nihal Nayak</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/AtakanTekparmak">
-                    <img src="https://avatars.githubusercontent.com/u/59488384?v=4" width="100;" alt="AtakanTekparmak"/>
-                    <br />
-                    <sub><b>Atakan Tekparmak</b></sub>
                 </a>
             </td>
 		</tr>
