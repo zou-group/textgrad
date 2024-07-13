@@ -19,7 +19,7 @@
 
 ## TextGrad: Automatic ''Differentiation'' via Text
 
-An autograd engine -- for textual gradients! 
+An autograd engine -- for textual gradients!
 
 TextGrad is a powerful framework  building automatic ``differentiation'' via text.
 TextGrad implements backpropagation through text feedback provided by LLMs, strongly building on the gradient metaphor
@@ -30,7 +30,7 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 ![Analogy with Torch](assets/analogy.png)
 
 ## QuickStart
-If you know PyTorch, you know 80% of TextGrad. 
+If you know PyTorch, you know 80% of TextGrad.
 Let's walk through the key components with a simple example. Say we want to use GPT-4o to solve a simple
 reasoning problem.
 
@@ -47,14 +47,14 @@ question_string = ("If it takes 1 hour to dry 25 shirts under the sun, "
                    "how long will it take to dry 30 shirts under the sun? "
                    "Reason step by step")
 
-question = tg.Variable(question_string, 
-                       role_description="question to the LLM", 
+question = tg.Variable(question_string,
+                       role_description="question to the LLM",
                        requires_grad=False)
 
 answer = model(question)
 ```
 
-> :warning: **answer: To determine how long it will take to dry 30 shirts under the sun,** 
+> :warning: **answer: To determine how long it will take to dry 30 shirts under the sun,**
 > **we can use a proportional relationship based on the given information.**
 > **Here’s the step-by-step reasoning: [.....]**
 > **So, it will take 1.2 hours (or 1 hour and 12 minutes) to dry 30 shirts under the sun.**
@@ -66,26 +66,26 @@ As you can see, **the model's answer is incorrect.** We can optimize the answer 
 
 answer.set_role_description("concise and accurate answer to the question")
 
-# Step 2: Define the loss function and the optimizer, just like in PyTorch! 
-# Here, we don't have SGD, but we have TGD (Textual Gradient Descent) 
-# that works with "textual gradients". 
+# Step 2: Define the loss function and the optimizer, just like in PyTorch!
+# Here, we don't have SGD, but we have TGD (Textual Gradient Descent)
+# that works with "textual gradients".
 optimizer = tg.TGD(parameters=[answer])
-evaluation_instruction = (f"Here's a question: {question_string}. " 
+evaluation_instruction = (f"Here's a question: {question_string}. "
                            "Evaluate any given answer to this question, "
                            "be smart, logical, and very critical. "
                            "Just provide concise feedback.")
-                            
 
-# TextLoss is a natural-language specified loss function that describes 
+
+# TextLoss is a natural-language specified loss function that describes
 # how we want to evaluate the reasoning.
 loss_fn = tg.TextLoss(evaluation_instruction)
 ```
-> :brain: **loss: [...] Your step-by-step reasoning is clear and logical,** 
+> :brain: **loss: [...] Your step-by-step reasoning is clear and logical,**
 > **but it contains a critical flaw in the assumption that drying time is**
 > **directly proportional to the number of shirts. [...]**
 
 ```python
-# Step 3: Do the loss computation, backward pass, and update the punchline. 
+# Step 3: Do the loss computation, backward pass, and update the punchline.
 # Exact same syntax as PyTorch!
 loss = loss_fn(answer)
 loss.backward()
@@ -93,7 +93,7 @@ optimizer.step()
 answer
 ```
 
-> :white_check_mark: **answer: It will still take 1 hour to dry 30 shirts under the sun,** 
+> :white_check_mark: **answer: It will still take 1 hour to dry 30 shirts under the sun,**
 > **assuming they are all laid out properly to receive equal sunlight.**
 
 
@@ -101,7 +101,7 @@ answer
 
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
 
-### Tutorials 
+### Tutorials
 
 We have prepared a couple of tutorials to get you started with TextGrad. The order of this
 tutorial is what we would recommend to follow for a beginner. You can run them directly in Google Colab by clicking on the links below (but
@@ -141,6 +141,12 @@ conda install -c conda-forge textgrad
 
 ```sh
 pip install git+https://github.com/zou-group/textgrad.git
+```
+
+**Installing textgrad with vllm**:
+
+```sh
+pip install textgrad[vllm]
 ```
 
 See [here](https://pip.pypa.io/en/stable/cli/pip_install/) for more details on various methods of pip installation.
@@ -191,16 +197,16 @@ print(solution.value)
 Output:
 > To solve the equation 3x^2 - 7x + 2 = 0, we use the quadratic formula:
 > x = (-b ± √(b^2 - 4ac)) / 2a
-> 
+>
 > Given:
 > a = 3, b = -7, c = 2
-> 
+>
 > Substitute the values into the formula:
 > x = (7 ± √((-7)^2 - 4(3)(2))) / 6
 > x = (7 ± √(49 - 24)) / 6
 > x = (7 ± √25) / 6
 > x = (7 ± 5) / 6
-> 
+>
 > The solutions are:
 > x1 = (7 + 5) / 6 = 12 / 6 = 2
 > x2 = (7 - 5) / 6 = 2 / 6 = 1/3
@@ -271,10 +277,10 @@ New prediction:
 > 4. Broccoli heads: 3
 > 5. Carrot: 1
 > 6. Yam: 1
-> 
+>
 > Now, let's add up the total number of vegetables:
 > 2 + 2 + 1 + 3 + 1 + 1 = 10
-> 
+>
 > You have a total of 10 vegetables.
 
 ## Resources
@@ -290,7 +296,7 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
 ### Citation
 ```bibtex
 @article{yuksekgonul2024textgrad,
-      title={TextGrad: Automatic "Differentiation" via Text}, 
+      title={TextGrad: Automatic "Differentiation" via Text},
       author={Mert Yuksekgonul and Federico Bianchi and Joseph Boen and Sheng Liu and Zhi Huang and Carlos Guestrin and James Zou},
       year={2024},
       eprint={2406.07496},
@@ -322,6 +328,13 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/nihalnayak">
+                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
+                    <br />
+                    <sub><b>Nihal Nayak</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/sugatoray">
                     <img src="https://avatars.githubusercontent.com/u/10201242?v=4" width="100;" alt="sugatoray"/>
                     <br />
@@ -342,6 +355,8 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>David Ruan</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/sanowl">
                     <img src="https://avatars.githubusercontent.com/u/99511815?v=4" width="100;" alt="sanowl"/>
@@ -349,8 +364,6 @@ We are grateful for all the help we got from our contributors!
                     <sub><b>San </b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
             <td align="center">
                 <a href="https://github.com/huangzhii">
                     <img src="https://avatars.githubusercontent.com/u/10902358?v=4" width="100;" alt="huangzhii"/>
