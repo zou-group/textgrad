@@ -1,5 +1,5 @@
 import argparse
-import concurrent
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
@@ -55,7 +55,7 @@ def eval_dataset(test_set, eval_fn, model, max_samples: int=None):
             futures.append(future)
             if len(futures) >= max_samples:
                 break
-        tqdm_loader = tqdm(concurrent.futures.as_completed(futures), total=len(futures), position=0)
+        tqdm_loader = tqdm(as_completed(futures), total=len(futures), position=0)
         for future in tqdm_loader:
             acc_item = future.result()
             accuracy_list.append(acc_item)
