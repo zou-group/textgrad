@@ -41,8 +41,9 @@ class Variable:
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
         assert type(value) in [str, bytes], "Value must be a string or image (bytes)."
-        if value == "" and image_path == "":
-            raise ValueError("Please provide a value or an image path for the variable")
+        # We'll currently let "empty variables" slide, but we'll need to handle this better in the future.
+        # if value == "" and image_path == "":
+        #    raise ValueError("Please provide a value or an image path for the variable")
         if value != "" and image_path != "":
             raise ValueError("Please provide either a value or an image path for the variable, not both.")
 
