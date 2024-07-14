@@ -85,9 +85,8 @@ class CachedLLM(CachedEngine, EngineLM):
     def multimodal_generate(self, content: List[Union[str, bytes]], system_prompt: str = None, **kwargs):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
+        key = "".join([str(k) for k in content])
         if self.do_cache:
-            key = "".join([str(k) for k in content])
-
             cache_key = sys_prompt_arg + key
             cache_or_none = self._check_cache(cache_key)
             if cache_or_none is not None:
@@ -96,6 +95,7 @@ class CachedLLM(CachedEngine, EngineLM):
         response = self._generate_from_multiple_input(content, system_prompt=sys_prompt_arg, **kwargs)
 
         if self.do_cache:
+            cache_key = sys_prompt_arg + key
             self._save_cache(cache_key, response)
 
         return response
