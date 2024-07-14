@@ -22,6 +22,10 @@ class GSM8K(Dataset):
         elif split == "train":
             self.data = load_dataset("gsm8k", subset, cache_dir=root, split="train[100:]")
         self.split = split
+        self._task_description = "You will answer a mathemetical reasoning question. Think step by step. The last line of your response should be of the following format: 'Answer: $VALUE' where VALUE is a numerical value."
+    
+    def get_task_description(self):
+        return self._task_description 
     
     def __getitem__(self, index):
         row = self.data[index]
@@ -33,9 +37,8 @@ class GSM8K(Dataset):
     def __len__(self):
         return len(self.data)
 
-    def get_task_description(self):
-        return "You will answer a mathemetical reasoning question. Think step by step. The last line of your response should be of the following format: 'Answer: $VALUE' where VALUE is a numerical value."
-
+    def get_default_task_instruction(self):
+        return self._task_description
     
     
     
