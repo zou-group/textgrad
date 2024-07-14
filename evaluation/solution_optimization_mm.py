@@ -2,7 +2,7 @@ import re
 import os
 import json
 import argparse
-import concurrent
+import concurrent.futures
 from tqdm import tqdm
 import numpy as np
 from dotenv import load_dotenv
