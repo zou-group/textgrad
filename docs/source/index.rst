@@ -145,6 +145,12 @@ You can install TextGrad via pip:
 
     pip install textgrad
 
+For the latest and greatest, you can install the development version from GitHub:
+
+.. code-block:: bash
+
+    pip install git+https://github.com/zou-group/textgrad.git
+
 Examples
 ========
 
