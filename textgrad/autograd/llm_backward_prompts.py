@@ -23,7 +23,7 @@ BACKWARD_SYSTEM_PROMPT = (
 # First part of the prompt for the llm backward function
 CONVERSATION_TEMPLATE = (
     "<LM_SYSTEM_PROMPT> {system_prompt} </LM_SYSTEM_PROMPT>\n\n"
-    "<LM_INPUT> {prompt} </LM_INPUT>\n\n"
+    "<VARIABLE> {prompt} </VARIABLE>\n\n"
     "<LM_OUTPUT> {response_value} </LM_OUTPUT>\n\n"
 )
 
