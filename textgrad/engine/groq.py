@@ -46,4 +46,3 @@ class ChatGroq(ChatOpenAI):
         self.system_prompt = system_prompt
         assert isinstance(self.system_prompt, str)
         self.is_multimodal = False
-        breakpoint()
