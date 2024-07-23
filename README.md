@@ -52,6 +52,7 @@ question = tg.Variable(question_string,
                        requires_grad=False)
 
 answer = model(question)
+print(answer)
 ```
 
 > :warning: **answer: To determine how long it will take to dry 30 shirts under the sun,**
