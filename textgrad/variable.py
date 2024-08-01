@@ -1,12 +1,15 @@
-from textgrad import logger
-from textgrad.engine import EngineLM
-from typing import List, Set, Dict
-import httpx
 from collections import defaultdict
 from functools import partial
+from typing import Dict, List, Set, Union
+
+import httpx
+
+from textgrad import logger
+from textgrad.engine import EngineLM
+
 from .config import SingletonBackwardEngine
 from .utils.image_utils import is_valid_url
-from typing import Union
+
 
 class Variable:
     def __init__(
@@ -33,14 +36,14 @@ class Variable:
 
         if predecessors is None:
             predecessors = []
-        
+
         _predecessor_requires_grad = [v for v in predecessors if v.requires_grad]
-        
+
         if (not requires_grad) and (len(_predecessor_requires_grad) > 0):
-            raise Exception("If the variable does not require grad, none of its predecessors should require grad."
+            raise ValueError("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
-        
-        assert type(value) in [str, bytes, int], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
+
+        assert type(value) in [str, bytes, int], f"Value must be a string, int, or image (bytes). Got: {type(value)}"
         if isinstance(value, int):
             value = str(value)
         # We'll currently let "empty variables" slide, but we'll need to handle this better in the future.
@@ -57,7 +60,7 @@ class Variable:
                     self.value = file.read()
         else:
             self.value = value
-            
+
         self.gradients: Set[Variable] = set()
         self.gradients_context: Dict[Variable, str] = defaultdict(lambda: None)
         self.grad_fn = None
@@ -65,8 +68,8 @@ class Variable:
         self.predecessors = set(predecessors)
         self.requires_grad = requires_grad
         self._reduce_meta = []
-        
-        if requires_grad and (type(value) == bytes):
+
+        if requires_grad and isinstance(value, bytes):
             raise ValueError("Gradients are not yet supported for image inputs. Please provide a string input instead.")
 
     def __repr__(self):
@@ -94,15 +97,14 @@ class Variable:
                 summation=total,
             ))
             return total
-        else:
-            return to_add.__add__(self)
+        return to_add.__add__(self)
 
     def set_role_description(self, role_description):
         self.role_description = role_description
 
     def reset_gradients(self):
         self.gradients = set()
-        self.gradients_context = dict()
+        self.gradients_context = {}
         self._reduce_meta = []
 
     def get_role_description(self) -> str:
