@@ -139,18 +139,18 @@ class Aggregate(Function):
         children_variable = aggregated_variable.predecessors
         for variable in children_variable:
             aggregate_gradients = aggregated_variable.get_gradient_text()
-        if aggregate_gradients == "":
-            variable_gradient_value = ""
-        else:
-            variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {aggregate_gradients}."
-            
-        logger.info(f"aggregation backward", extra={"v_gradient_value": variable_gradient_value, 
-                                                "aggregation_role": aggregated_variable.get_role_description()})
+            if aggregate_gradients == "":
+                variable_gradient_value = ""
+            else:
+                variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {aggregate_gradients}."
+                
+            logger.info("aggregation backward", extra={"v_gradient_value": variable_gradient_value, 
+                                                    "aggregation_role": aggregated_variable.get_role_description()})
 
-        var_gradients = Variable(value=variable_gradient_value, 
-                                role_description=f"feedback to {variable.get_role_description()}")
-        variable.gradients.add(var_gradients)
-        
-        if aggregated_variable._reduce_meta != []:
-            var_gradients._reduce_meta.extend(aggregated_variable._reduce_meta)
-            variable._reduce_meta.extend(aggregated_variable._reduce_meta)
+            var_gradients = Variable(value=variable_gradient_value,
+                                    role_description=f"feedback to {variable.get_role_description()}")
+            variable.gradients.add(var_gradients)
+
+            if aggregated_variable._reduce_meta != []:
+                var_gradients._reduce_meta.extend(aggregated_variable._reduce_meta)
+                variable._reduce_meta.extend(aggregated_variable._reduce_meta)
