@@ -1,5 +1,4 @@
 ## Operations over variables.
-from gettext import gettext as _
 from typing import List, Set
 
 from textgrad import logger
@@ -90,7 +89,7 @@ class Sum(Function):
                 var_grad_template = _("Here is the combined feedback we got for this specific {variable_desc} and other variables: {feedback}")
                 variable_gradient_value = var_grad_template.format(variable_desc=variable.get_role_description(), feedback=summation_gradients)
                 
-            logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
+            logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value,
                                                     "summation_role": summation.get_role_description()})
 
             feedback_role_template = _("feedback to {variable_desc}")
@@ -102,7 +101,6 @@ class Sum(Function):
                 var_gradients._reduce_meta.extend(summation._reduce_meta)
                 variable._reduce_meta.extend(summation._reduce_meta)
 
-            
             variable.gradients.add(Variable(value=variable_gradient_value, 
                                             role_description=feedback_role_template.format(variable_desc=variable.get_role_description())))
 

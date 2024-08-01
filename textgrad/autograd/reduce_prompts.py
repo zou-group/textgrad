@@ -1,6 +1,3 @@
-from gettext import gettext as _
-
-
 REDUCE_MEAN_SYSTEM_PROMPT = _(
     "You are part of an optimization system that improves a given text (i.e. the variable). "
     "Your only responsibility is to critically aggregate and summarize the feedback from sources. "

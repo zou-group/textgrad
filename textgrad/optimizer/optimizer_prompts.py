@@ -1,6 +1,3 @@
-from gettext import gettext as _
-
-
 GLOSSARY_TEXT = _("""
 ### Glossary of tags that will be sent to you:
 # - <LM_SYSTEM_PROMPT>: The system prompt for the language model.

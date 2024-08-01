@@ -1,6 +1,3 @@
-from gettext import gettext as _
-
-
 # First part of the prompt for the llm backward function
 MULTIMODAL_CONVERSATION_TEMPLATE = _(
     "\n Above messages are the <LM_INPUT>\n\n"

@@ -1,6 +1,6 @@
 from collections import defaultdict
 from functools import partial
-from gettext import gettext as _
+
 from typing import Dict, List, Set, Union
 
 import httpx

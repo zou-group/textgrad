@@ -1,5 +1,3 @@
-from gettext import gettext as _
-
 # This is how we save gradients to the variable.
 GRADIENT_TEMPLATE = _(
     "Here is a conversation:\n\n<CONVERSATION>{context}</CONVERSATION>\n\n"

@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from typing import List, Union
 
 from textgrad.autograd import (FormattedLLMCall, LLMCall, Module,

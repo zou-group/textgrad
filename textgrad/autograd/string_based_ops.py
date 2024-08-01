@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from typing import Callable, Dict, List
 
 from textgrad import logger
