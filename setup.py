@@ -26,6 +26,7 @@ setup(
     author_email="merty@stanford.edu",
     packages=find_packages(include=["textgrad", "textgrad.*"]),
     include_package_data=True,
+    package_data={"textgrad": ["locales/*/LC_MESSAGES/*.mo"]},
     install_requires=requirements,
     extras_require={
         "vllm": ["vllm"],

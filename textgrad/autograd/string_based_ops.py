@@ -1,44 +1,46 @@
-from textgrad import logger
-from textgrad.variable import Variable
-from textgrad.engine import EngineLM
-from .function import Function, BackwardContext
+from gettext import gettext as _
 from typing import Callable, Dict, List
 
-CONVERSATION_TEMPLATE_STRING = (
+from textgrad import logger
+from textgrad.engine import EngineLM
+from textgrad.variable import Variable
+
+from .function import BackwardContext, Function
+
+CONVERSATION_TEMPLATE_STRING = _(
     "Function purpose: {function_purpose}\n\n"
     "<INPUTS_TO_FUNCTION> {inputs_string} </INPUTS_TO_FUNCTION>\n\n"
     "<OUTPUT_OF_FUNCTION> {response_value} </OUTPUT_OF_FUNCTION>\n\n"
 )
 
 # Has the gradient on the output.
-CONVERSATION_START_INSTRUCTION_STRING_FN_CHAIN = (
+CONVERSATION_START_INSTRUCTION_STRING_FN_CHAIN = _(
     "You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. "
     "Here is an evaluation of a string-based function with inputs and outputs :\n\n"
     "{conversation}"
 )
 
 # Does not have gradient on the output
-CONVERSATION_START_INSTRUCTION_STRING_FN_BASE = (
+CONVERSATION_START_INSTRUCTION_STRING_FN_BASE = _(
     "You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. "
     "Here is an evaluation of the variable using a string-based function:\n\n"
     "{conversation}"
 )
 
-OBJECTIVE_INSTRUCTION_CHAIN = (
+OBJECTIVE_INSTRUCTION_CHAIN = _(
     "This conversation is part of a larger system. The <OUTPUT_OF_FUNCTION> was later used as {response_desc}.\n\n"
     "<OBJECTIVE_FUNCTION>Your goal is to give feedback to the variable to address the following feedback on the OUTPUT_OF_FUNCTION: {response_gradient} </OBJECTIVE_FUNCTION>\n\n"
 )
 
-OBJECTIVE_INSTRUCTION_BASE = (
+OBJECTIVE_INSTRUCTION_BASE = _(
     "<OBJECTIVE_FUNCTION>Your goal is to give feedback and criticism to the variable given the above evaluation output. "
     "Our only goal is to improve the above metric, and nothing else. </OBJECTIVE_FUNCTION>\n\n"
 )
 
 # Some instructions for the backward pass are shared with LLMs
-from .llm_backward_prompts import (
-    EVALUATE_VARIABLE_INSTRUCTION,
-    BACKWARD_SYSTEM_PROMPT
-)
+from .llm_backward_prompts import (BACKWARD_SYSTEM_PROMPT,
+                                   EVALUATE_VARIABLE_INSTRUCTION)
+
 
 class StringBasedFunction(Function):
     def __init__(self, fn: Callable, function_purpose: str):

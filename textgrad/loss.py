@@ -1,8 +1,11 @@
+from gettext import gettext as _
+from typing import List, Union
+
+from textgrad.autograd import (FormattedLLMCall, LLMCall, Module,
+                               OrderedFieldsMultimodalLLMCall)
 from textgrad.engine import EngineLM, get_engine
 from textgrad.variable import Variable
-from typing import List, Union
-from textgrad.autograd import LLMCall, FormattedLLMCall, OrderedFieldsMultimodalLLMCall
-from textgrad.autograd import Module
+
 from .config import SingletonBackwardEngine
 
 
@@ -30,7 +33,7 @@ class TextLoss(Module):
         """
         super().__init__()
         if isinstance(eval_system_prompt, str):
-            eval_system_prompt = Variable(eval_system_prompt, requires_grad=False, role_description="system prompt for the evaluation")
+            eval_system_prompt = Variable(eval_system_prompt, requires_grad=False, role_description=_("system prompt for the evaluation"))
         self.eval_system_prompt = eval_system_prompt
         if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
@@ -88,9 +91,9 @@ class MultiFieldEvaluation(Module):
         if system_prompt:
             self.system_prompt = system_prompt
         else:
-            self.system_prompt = Variable("You are an evaluation system that compares two variables.",
+            self.system_prompt = Variable(_("You are an evaluation system that compares two variables."),
                                             requires_grad=False,
-                                            role_description="system prompt for the evaluation")
+                                            role_description=_("system prompt for the evaluation"))
         format_string_items = ["{{instruction}}"]
         for role_description in role_descriptions:
             format_string_items.append(f"**{role_description}**: {{{role_description}}}")
@@ -108,7 +111,7 @@ class MultiFieldEvaluation(Module):
         inputs_call = {"instruction": self.evaluation_instruction, 
                        **{role_description: var for role_description, var in zip(self.role_descriptions, inputs)}}
         return self.formatted_llm_call(inputs=inputs_call,
-                                       response_role_description=f"evaluation of the a prediction")
+                                       response_role_description=_("evaluation of the a prediction"))
 
 
 class MultiFieldTokenParsedEvaluation(MultiFieldEvaluation):
@@ -142,7 +145,7 @@ class MultiFieldTokenParsedEvaluation(MultiFieldEvaluation):
         return response
 
 
-DEFAULT_TEST_TIME = "You are an intelligent assistant used as an evaluator, and part of an optimization system. You will analyze a solution to a multi-choice problem. Investigate the reasoning and answer. Do not try to solve the problem, only raise the potential issues and mistakes in the answer. Be creative, think about different perspectives, and be very critical."
+DEFAULT_TEST_TIME = _("You are an intelligent assistant used as an evaluator, and part of an optimization system. You will analyze a solution to a multi-choice problem. Investigate the reasoning and answer. Do not try to solve the problem, only raise the potential issues and mistakes in the answer. Be creative, think about different perspectives, and be very critical.")
 
 class MultiChoiceTestTime(Module):
     def __init__(self,
@@ -166,7 +169,7 @@ class MultiChoiceTestTime(Module):
             tt_system_prompt = DEFAULT_TEST_TIME
             self.tt_system_prompt = Variable(tt_system_prompt,
                                                 requires_grad=False,
-                                                role_description="system prompt for the test-time evaluation")
+                                                role_description=_("system prompt for the test-time evaluation"))
         
         if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
@@ -175,7 +178,7 @@ class MultiChoiceTestTime(Module):
         if isinstance(engine, str):
             engine = get_engine(engine)
         self.engine = engine
-        format_string = "{instruction}\nQuestion: {{question}}\nAnswer by the language model: {{prediction}}"
+        format_string = _("{instruction}\nQuestion: {{question}}\nAnswer by the language model: {{prediction}}")
         self.format_string = format_string.format(instruction=evaluation_instruction)
         self.fields = {"prediction": None, "question": None}
         self.formatted_llm_call = FormattedLLMCall(engine=self.engine,
@@ -184,13 +187,14 @@ class MultiChoiceTestTime(Module):
                                                    system_prompt=self.tt_system_prompt)
 
     def forward(self, question: str, prediction: Variable) -> Variable:
-        question_variable = Variable(question, 
-                                     requires_grad=False, 
-                                     role_description="the multiple choice question")
+        question_variable = Variable(question,
+                                     requires_grad=False,
+                                     role_description=_("the multiple choice question"))
 
         inputs = {"prediction": prediction, "question": question_variable}
+        eval_role_template = _("evaluation of the {role_description}")
         return self.formatted_llm_call(inputs=inputs,
-                                       response_role_description=f"evaluation of the {prediction.get_role_description()}")
+                                       response_role_description=eval_role_template.format(role_description=prediction.get_role_description()))
 
 class ImageQALoss(Module):
     def __init__(self,
@@ -198,7 +202,7 @@ class ImageQALoss(Module):
                  engine: Union[EngineLM, str] = None,
                  system_prompt: Variable = None):
         super().__init__()
-        self.evaluation_instruction = Variable(evaluation_instruction, role_description="evaluation instruction", requires_grad=False)
+        self.evaluation_instruction = Variable(evaluation_instruction, role_description=_("evaluation instruction"), requires_grad=False)
         if ((engine is None) and (SingletonBackwardEngine().get_engine() is None)):
             raise Exception("No engine provided. Either provide an engine as the argument to this call, or use `textgrad.set_backward_engine(engine)` to set the backward engine.")
         elif engine is None:
@@ -209,9 +213,9 @@ class ImageQALoss(Module):
         if system_prompt:
             self.system_prompt = system_prompt
         else:
-            self.system_prompt = Variable("You are an evaluation system that evaluates image-related questions.",
+            self.system_prompt = Variable(_("You are an evaluation system that evaluates image-related questions."),
                                             requires_grad=False,
-                                            role_description="system prompt for the evaluation")
+                                            role_description=_("system prompt for the evaluation"))
 
         self.multimodal_llm_call = OrderedFieldsMultimodalLLMCall(engine=self.engine,
                                                                   system_prompt=self.system_prompt,
@@ -225,5 +229,6 @@ class ImageQALoss(Module):
             "Image": image,
             "Answer": response
         }
+        eval_role_template = _("evaluation of the {role_description}")
         return self.multimodal_llm_call(inputs=inputs,
-                                        response_role_description=f"evaluation of the {response.get_role_description()}")
+                                        response_role_description=eval_role_template.format(role_description=response.get_role_description()))

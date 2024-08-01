@@ -1,4 +1,7 @@
-GLOSSARY_TEXT = """
+from gettext import gettext as _
+
+
+GLOSSARY_TEXT = _("""
 ### Glossary of tags that will be sent to you:
 # - <LM_SYSTEM_PROMPT>: The system prompt for the language model.
 # - <LM_INPUT>: The input to the language model.
@@ -6,12 +9,12 @@ GLOSSARY_TEXT = """
 # - <FEEDBACK>: The feedback to the variable.
 # - <CONVERSATION>: The conversation history.
 # - <FOCUS>: The focus of the optimization.
-# - <ROLE>: The role description of the variable."""
+# - <ROLE>: The role description of the variable.""")
 
 ### Optimize Prompts
 
 # System prompt to TGD
-OPTIMIZER_SYSTEM_PROMPT = (
+OPTIMIZER_SYSTEM_PROMPT = _(
     "You are part of an optimization system that improves text (i.e., variable). "
     "You will be asked to creatively and critically improve prompts, solutions to problems, code, or any other text-based variable. "
     "You will receive some feedback, and use the feedback to improve the variable. "
@@ -23,7 +26,7 @@ OPTIMIZER_SYSTEM_PROMPT = (
 )
 
 # TGD update instruction
-TGD_PROMPT_PREFIX = (
+TGD_PROMPT_PREFIX = _(
     "Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n\n"
     "The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n\n"
     "Here is the context and feedback we got for the variable:\n\n"
@@ -32,35 +35,35 @@ TGD_PROMPT_PREFIX = (
 )
 
 # If the gradients are in a multi-part container
-TGD_MULTIPART_PROMPT_INIT = (
+TGD_MULTIPART_PROMPT_INIT = _(
     "Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n\n"
     "The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n\n"
     "Here is the context and feedback we got for the variable:\n\n"
 )
 
-TGD_MULTIPART_PROMPT_PREFIX = (
+TGD_MULTIPART_PROMPT_PREFIX = _(
     "Improve the variable ({variable_desc}) using the feedback provided in <FEEDBACK> tags.\n"
 )
 
-TGD_PROMPT_SUFFIX  = (
+TGD_PROMPT_SUFFIX  = _(
     "Send the improved variable "
     "in the following format:\n\n{new_variable_start_tag}{{the improved variable}}{new_variable_end_tag}\n\n"
     "Send ONLY the improved variable between the <IMPROVED_VARIABLE> tags, and nothing else."
 )
 
-MOMENTUM_PROMPT_ADDITION = (
+MOMENTUM_PROMPT_ADDITION = _(
     "Here are the past iterations of this variable:\n\n"
     "<PAST_ITERATIONS>{past_values}</PAST_ITERATIONS>\n\n"
     "Similar feedbacks across different steps suggests that the modifications to the variable are insufficient." 
     "If this is the case, please make more significant changes to the variable.\n\n"
 )
 
-CONSTRAINT_PROMPT_ADDITION = (
+CONSTRAINT_PROMPT_ADDITION = _(
     "You must follow the following constraints:\n\n"
     "<CONSTRAINTS>{constraint_text}</CONSTRAINTS>\n\n"
 )
 
-IN_CONTEXT_EXAMPLE_PROMPT_ADDITION = (
+IN_CONTEXT_EXAMPLE_PROMPT_ADDITION = _(
     "You must base on the following examples when modifying the {variable_desc}:\n\n"
     "<EXAMPLES>{in_context_examples}</EXAMPLES>\n\n"
 )
@@ -111,12 +114,12 @@ def construct_tgd_prompt(do_momentum: bool = False,
         return gradient_context + [prompt]
 
 # This is how we save gradients to the variable.
-GRADIENT_TEMPLATE = (
+GRADIENT_TEMPLATE = _(
     "Here is a conversation:\n\n<CONVERSATION>{context}</CONVERSATION>\n\n"
     "This conversation is potentially part of a larger system. The output is used as {response_desc}\n\n"
     "Here is the feedback we got for {variable_desc} in the conversation:\n\n<FEEDBACK>{feedback}</FEEDBACK>\n\n"
 )
-GRADIENT_MULTIPART_TEMPLATE = (
+GRADIENT_MULTIPART_TEMPLATE = _(
     "Above is a conversation with a language model.\n"
     "This conversation is potentially part of a larger system. The output is used as {response_desc}\n\n"
     "Here is the feedback we got for {variable_desc} in the conversation:\n\n<FEEDBACK>{feedback}</FEEDBACK>\n\n"

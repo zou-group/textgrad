@@ -1,5 +1,6 @@
 from collections import defaultdict
 from functools import partial
+from gettext import gettext as _
 from typing import Dict, List, Set, Union
 
 import httpx
@@ -253,15 +254,15 @@ class Variable:
                 node_label += f"<br/><b><font color='{label_color}'>Gradients: </font></b> {wrap_and_escape(v.get_gradient_text())}"
             # Update the graph node with modern font and better color scheme
             graph.node(
-                str(id(v)), 
-                label=f"<{node_label}>", 
-                shape='rectangle', 
-                style='filled', 
-                fillcolor='lavender', 
-                fontsize='8', 
-                fontname="Arial", 
-                margin='0.1', 
-                pad='0.1', 
+                str(id(v)),
+                label=f"<{node_label}>",
+                shape='rectangle',
+                style='filled',
+                fillcolor='lavender',
+                fontsize='8',
+                fontname="Arial",
+                margin='0.1',
+                pad='0.1',
                 width='1.2',
             )
             # Add forward edges from predecessors to the parent
@@ -341,13 +342,15 @@ def _backward_idempotent(variables: List[Variable], summation: Variable, backwar
         if summation_gradients == "":
             variable_gradient_value = ""
         else:
-            variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {summation_gradients}."
+            var_grad_template = _("Here is the combined feedback we got for this specific {role_description} and other variables: {summation_gradients}.")
+            variable_gradient_value = var_grad_template.format(role_description=variable.get_role_description(), summation_gradients=summation_gradients)
             
-        logger.info(f"Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
+        logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
                                                    "summation_role": summation.get_role_description()})
 
-        var_gradients = Variable(value=variable_gradient_value, 
-                                 role_description=f"feedback to {variable.get_role_description()}")
+        feedback_role_template = _("feedback to {role_description}")
+        var_gradients = Variable(value=variable_gradient_value,
+                                 role_description=feedback_role_template.format(role_description=variable.get_role_description()))
         variable.gradients.add(var_gradients)
         
         if summation._reduce_meta != []:
@@ -355,5 +358,5 @@ def _backward_idempotent(variables: List[Variable], summation: Variable, backwar
             variable._reduce_meta.extend(summation._reduce_meta)
 
         variable.gradients.add(Variable(value=variable_gradient_value, 
-                                        role_description=f"feedback to {variable.get_role_description()}"))
+                                        role_description=feedback_role_template.format(role_description=variable.get_role_description())))
         
