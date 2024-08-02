@@ -40,9 +40,12 @@ class Variable:
             raise Exception("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
-        assert type(value) in [str, bytes], "Value must be a string or image (bytes)."
-        if value == "" and image_path == "":
-            raise ValueError("Please provide a value or an image path for the variable")
+        assert type(value) in [str, bytes, int], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
+        if isinstance(value, int):
+            value = str(value)
+        # We'll currently let "empty variables" slide, but we'll need to handle this better in the future.
+        # if value == "" and image_path == "":
+        #    raise ValueError("Please provide a value or an image path for the variable")
         if value != "" and image_path != "":
             raise ValueError("Please provide either a value or an image path for the variable, not both.")
 

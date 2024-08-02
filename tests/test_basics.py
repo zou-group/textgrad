@@ -175,11 +175,13 @@ def test_multimodal():
     with pytest.raises(AttributeError):
         response = LLMCall(engine=engine)([text, image_variable])
 
-    # this is just to check the content, we can't really have int variables but
+    # this is just to check the content, we can't really have double variables but
     # it's just for testing purposes
+
     with pytest.raises(AssertionError):
-        response = MultimodalLLMCall(engine=engine)([Variable(4, role_description="tst"),
-                                                 Variable(5, role_description="tst")])
+        response = MultimodalLLMCall(engine=engine)([Variable(4.2, role_description="tst"),
+                                                 Variable(5.5, role_description="tst")])
+
 
 def test_multimodal_from_url():
     from textgrad import Variable

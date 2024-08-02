@@ -8,7 +8,7 @@ with open("README.md") as readme_file:
 
 setup(
     name="textgrad",
-    version="0.1.4",
+    version="0.1.5",
     description="",
     python_requires=">=3.9",
     classifiers=[
@@ -16,7 +16,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     license="MIT license",
     long_description=readme,

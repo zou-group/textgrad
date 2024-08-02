@@ -13,10 +13,7 @@ class Dataset(ABC):
     @abstractmethod
     def __len__(self):
         pass
-    
-    @abstractmethod
-    def get_default_task_instruction(self):
-        pass
+
 
 class DataLoader:
     def __init__(self, data, batch_size=32, shuffle=True):

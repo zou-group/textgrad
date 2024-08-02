@@ -386,13 +386,6 @@ We are grateful for all the help we got from our contributors!
                 </a>
             </td>
             <td align="center">
-                <a href="https://github.com/nihalnayak">
-                    <img src="https://avatars.githubusercontent.com/u/5679782?v=4" width="100;" alt="nihalnayak"/>
-                    <br />
-                    <sub><b>Nihal Nayak</b></sub>
-                </a>
-            </td>
-            <td align="center">
                 <a href="https://github.com/AtakanTekparmak">
                     <img src="https://avatars.githubusercontent.com/u/59488384?v=4" width="100;" alt="AtakanTekparmak"/>
                     <br />

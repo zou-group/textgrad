@@ -67,6 +67,10 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
         from .vllm import ChatVLLM
         engine_name = engine_name.replace("vllm-", "")
         return ChatVLLM(model_string=engine_name, **kwargs)
+    elif "groq" in engine_name:
+        from .groq import ChatGroq
+        engine_name = engine_name.replace("groq-", "")
+        return ChatGroq(model_string=engine_name, **kwargs)
     elif "fireworks" in engine_name:
         from .fireworks import ChatFireworks
         engine_name = engine_name.replace("fireworks-", "")
