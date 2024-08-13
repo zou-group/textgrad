@@ -45,9 +45,13 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     elif "claude" in engine_name:
         from .anthropic import ChatAnthropic
         return ChatAnthropic(model_string=engine_name, is_multimodal=_check_if_multimodal(engine_name), **kwargs)
-    elif "gemini" in engine_name:
+    elif engine_name.startswith("gemini"):
         from .gemini import ChatGemini
         return ChatGemini(model_string=engine_name, **kwargs)
+    elif engine_name.startswith("vertex-"):
+        engine_name = engine_name.replace("vertex-", "")
+        from .vertexai import ChatVertexAI
+        return ChatVertexAI(model_string=engine_name, **kwargs)
     elif "together" in engine_name:
         from .together import ChatTogether
         engine_name = engine_name.replace("together-", "")
