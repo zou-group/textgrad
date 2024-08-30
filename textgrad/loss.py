@@ -108,7 +108,7 @@ class MultiFieldEvaluation(Module):
         inputs_call = {"instruction": self.evaluation_instruction, 
                        **{role_description: var for role_description, var in zip(self.role_descriptions, inputs)}}
         return self.formatted_llm_call(inputs=inputs_call,
-                                       response_role_description=f"evaluation of the a prediction")
+                                       response_role_description="evaluation of the a prediction")
 
 
 class MultiFieldTokenParsedEvaluation(MultiFieldEvaluation):

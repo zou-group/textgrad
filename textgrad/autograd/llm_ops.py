@@ -66,7 +66,7 @@ class LLMCall(Function):
             role_description=response_role_description
         )
         
-        logger.info(f"LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {input_variable.value}\nResponse: {response_text}"})
+        logger.info("LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {input_variable.value}\nResponse: {response_text}"})
         
         # Populate the gradient function, using a container to store the backward function and the context
         response.set_grad_fn(BackwardContext(backward_fn=self.backward, 
@@ -145,9 +145,9 @@ class LLMCall(Function):
             
             backward_prompt = LLMCall._construct_llm_chain_backward_prompt(backward_info)
 
-            logger.info(f"_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
+            logger.info("_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
+            logger.info("_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
             
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")
             variable.gradients.add(var_gradients)
@@ -206,9 +206,9 @@ class LLMCall(Function):
             
             backward_prompt = LLMCall._construct_llm_base_backward_prompt(backward_info)
             
-            logger.info(f"_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
+            logger.info("_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
+            logger.info("_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
 
             conversation = CONVERSATION_TEMPLATE.format(**backward_info)
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")
@@ -282,7 +282,7 @@ class FormattedLLMCall(LLMCall):
             role_description=response_role_description
         )
         
-        logger.info(f"LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {formatted_input_string}\nResponse: {response_text}"})
+        logger.info("LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {formatted_input_string}\nResponse: {response_text}"})
         
         # Populate the gradient function, using a container to store the backward function and the context
         response.set_grad_fn(BackwardContext(backward_fn=self.backward, 
@@ -331,7 +331,7 @@ class LLMCall_with_in_context_examples(LLMCall):
 
 
         
-        logger.info(f"LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {input_variable.value}\nResponse: {response_text}"})
+        logger.info("LLMCall function forward", extra={"text": f"System:{system_prompt_value}\nQuery: {input_variable.value}\nResponse: {response_text}"})
         
         # Populate the gradient function, using a container to store the backward function and the context
         response.set_grad_fn(BackwardContext(backward_fn=self.backward, 
@@ -419,9 +419,9 @@ class LLMCall_with_in_context_examples(LLMCall):
             
             backward_prompt = LLMCall_with_in_context_examples._construct_llm_chain_backward_prompt(backward_info)
 
-            logger.info(f"_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
+            logger.info("_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
+            logger.info("_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
             
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")
             variable.gradients.add(var_gradients)
@@ -489,9 +489,9 @@ class LLMCall_with_in_context_examples(LLMCall):
             
             backward_prompt = LLMCall_with_in_context_examples._construct_llm_base_backward_prompt(backward_info)
             
-            logger.info(f"_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
+            logger.info("_backward_through_llm prompt", extra={"_backward_through_llm": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
+            logger.info("_backward_through_llm gradient", extra={"_backward_through_llm": gradient_value})
 
             conversation = CONVERSATION_TEMPLATE.format(**backward_info)
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")

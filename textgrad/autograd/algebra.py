@@ -24,10 +24,10 @@ def _reduce_gradients_mean(gradients: Set[Variable], backward_engine: EngineLM) 
     gradient_descriptions = set([g.get_role_description() for g in gradients])
     gradient_descriptions = ", ".join(gradient_descriptions)
     reduced_gradients_variable = Variable(reduced_gradients, role_description=gradient_descriptions)
-    logger.info(f"Reduced gradients", extra={"reduced_gradients": reduced_gradients_variable.value})
+    logger.info("Reduced gradients", extra={"reduced_gradients": reduced_gradients_variable.value})
     # TODO: We need to add context for these gradients
     # Otherwise, .get_gradient_and_context_text() will return an empty string
-    logger.info(f"Reduced gradients", extra={"reduced_gradients": reduced_gradients_variable.value})
+    logger.info("Reduced gradients", extra={"reduced_gradients": reduced_gradients_variable.value})
     return reduced_gradients_variable
 
 
@@ -86,7 +86,7 @@ class Sum(Function):
             else:
                 variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {summation_gradients}."
                 
-            logger.info(f"Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
+            logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
                                                     "summation_role": summation.get_role_description()})
 
             var_gradients = Variable(value=variable_gradient_value, 
@@ -144,7 +144,7 @@ class Aggregate(Function):
         else:
             variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {aggregate_gradients}."
             
-        logger.info(f"aggregation backward", extra={"v_gradient_value": variable_gradient_value, 
+        logger.info("aggregation backward", extra={"v_gradient_value": variable_gradient_value, 
                                                 "aggregation_role": aggregated_variable.get_role_description()})
 
         var_gradients = Variable(value=variable_gradient_value, 

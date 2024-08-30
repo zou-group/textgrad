@@ -76,7 +76,7 @@ class StringBasedFunction(Function):
             role_description=response_role_description
         )
         
-        logger.info(f"StringBasedFunction", extra={"text": f"In: {inputs}, Out: {response_string}"})
+        logger.info("StringBasedFunction", extra={"text": f"In: {inputs}, Out: {response_string}"})
         
         # Populate the gradient function, using a container to store the backward function and the context
         response.set_grad_fn(BackwardContext(backward_fn=self.backward, 
@@ -128,9 +128,9 @@ class StringBasedFunction(Function):
             
             backward_prompt = StringBasedFunction._construct_string_fn_chain_backward_prompt(backward_info)
 
-            logger.info(f"_backward_through_string_fn", extra={"_backward_through_string_fn": backward_prompt})
+            logger.info("_backward_through_string_fn", extra={"_backward_through_string_fn": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_string_fn gradient", extra={"_backward_through_string_fn": gradient_value})
+            logger.info("_backward_through_string_fn gradient", extra={"_backward_through_string_fn": gradient_value})
             
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")
             variable.gradients.add(var_gradients)
@@ -176,9 +176,9 @@ class StringBasedFunction(Function):
             }
             backward_prompt = StringBasedFunction._construct_string_fn_base_backward_prompt(backward_info)
             
-            logger.info(f"_backward_through_string_fn prompt", extra={"_backward_through_string_fn": backward_prompt})
+            logger.info("_backward_through_string_fn prompt", extra={"_backward_through_string_fn": backward_prompt})
             gradient_value = backward_engine(backward_prompt, system_prompt=BACKWARD_SYSTEM_PROMPT)
-            logger.info(f"_backward_through_string_fn gradient", extra={"_backward_through_string_fn": gradient_value})
+            logger.info("_backward_through_string_fn gradient", extra={"_backward_through_string_fn": gradient_value})
 
             conversation = CONVERSATION_TEMPLATE_STRING.format(**backward_info)
             var_gradients = Variable(value=gradient_value, role_description=f"feedback to {variable.get_role_description()}")

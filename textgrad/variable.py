@@ -66,7 +66,7 @@ class Variable:
         self.requires_grad = requires_grad
         self._reduce_meta = []
         
-        if requires_grad and (type(value) == bytes):
+        if requires_grad and isinstance(value, bytes):
             raise ValueError("Gradients are not yet supported for image inputs. Please provide a string input instead.")
 
     def __repr__(self):
@@ -341,7 +341,7 @@ def _backward_idempotent(variables: List[Variable], summation: Variable, backwar
         else:
             variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {summation_gradients}."
             
-        logger.info(f"Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
+        logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
                                                    "summation_role": summation.get_role_description()})
 
         var_gradients = Variable(value=variable_gradient_value, 

@@ -4,18 +4,9 @@ except ImportError:
     raise ImportError("If you'd like to use Groq models, please install the groq package by running `pip install groq`, and add 'GROQ_API_KEY' to your environment variables.")
 
 import os
-import json
-import base64
 import platformdirs
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_random_exponential,
-)
-from typing import List, Union
 
 from .base import EngineLM, CachedEngine
-from .engine_utils import get_image_type_from_bytes
 from .openai import ChatOpenAI
 
 

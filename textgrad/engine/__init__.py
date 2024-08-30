@@ -20,7 +20,7 @@ __MULTIMODAL_ENGINES__ = ["gpt-4-turbo",
                           ]
 
 def _check_if_multimodal(engine_name: str):
-    return any([name == engine_name for name in __MULTIMODAL_ENGINES__])
+    return any(name == engine_name for name in __MULTIMODAL_ENGINES__)
 
 def validate_multimodal_engine(engine):
     if not _check_if_multimodal(engine.model_string):
