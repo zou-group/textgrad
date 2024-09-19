@@ -31,7 +31,7 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if engine_name in __ENGINE_NAME_SHORTCUTS__:
         engine_name = __ENGINE_NAME_SHORTCUTS__[engine_name]
 
-    if "seed" in kwargs and "gpt-4" not in engine_name and "gpt-3.5" not in engine_name and "gpt-35" not in engine_name:
+    if "seed" in kwargs and "gpt" not in engine_name and "gpt-3.5" not in engine_name and "gpt-35" not in engine_name:
         raise ValueError(f"Seed is currently supported only for OpenAI engines, not {engine_name}")
 
     if engine_name.startswith("azure"):
