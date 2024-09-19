@@ -190,9 +190,9 @@ class AzureChatOpenAI(ChatOpenAI):
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_azure_{model_string}.db")  # Changed cache path to differentiate from OpenAI cache
 
-        azure_endpoint = os.getenv("AZURE_OPENAI_API_BASE")
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
         if azure_endpoint is None:
-            raise ValueError("Please set the AZURE_OPENAI_API_BASE environment variable if you'd like to use Azure OpenAI models.")
+            raise ValueError("Please set the AZURE_OPENAI_ENDPOINT environment variable if you'd like to use Azure OpenAI models.")
         
         super().__init__(model_string=model_string, system_prompt=system_prompt, base_url=azure_endpoint, **kwargs)
 
@@ -201,12 +201,12 @@ class AzureChatOpenAI(ChatOpenAI):
 
         api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2023-07-01-preview")
         if os.getenv("AZURE_OPENAI_API_KEY") is None:
-            raise ValueError("Please set the AZURE_OPENAI_API_KEY, AZURE_OPENAI_API_BASE, and AZURE_OPENAI_API_VERSION environment variables if you'd like to use Azure OpenAI models.")
+            raise ValueError("Please set the AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, and AZURE_OPENAI_API_VERSION environment variables if you'd like to use Azure OpenAI models.")
         
         self.client = AzureOpenAI(
             api_version=api_version,
             api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            azure_endpoint=os.getenv("AZURE_OPENAI_API_BASE"),
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
             azure_deployment=model_string,
         )
         self.model_string = model_string
