@@ -215,6 +215,8 @@ Output:
 TextGrad can also optimize prompts in PyTorch style! Here's how to do it with TextGrad, using GPT-4o for feedback, and optimizing a prompt for gpt-3.5-turbo:
 ```python
 import textgrad as tg
+from textgrad.tasks import load_task
+
 llm_engine = tg.get_engine("gpt-3.5-turbo")
 tg.set_backward_engine("gpt-4o")
 
