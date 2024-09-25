@@ -1,0 +1,522 @@
+# The simplified Chinese translations to textgrad literals that are fed to LLMs.
+# Copyright (C) 2024 Zou Group
+# This file is distributed under the same license as the textgrad package.
+# Yuanchun Shen <immr.shen@gmail.com>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: textgrad 0.1.5\n"
+"Report-Msgid-Bugs-To: immr.shen@gmail.com\n"
+"POT-Creation-Date: 2024-08-01 18:28+0800\n"
+"PO-Revision-Date: 2024-08-02 12:00+0800\n"
+"Last-Translator: Yuanchun Shen <immr.shen@gmail.com>\n"
+"Language-Team: Simplified Chinese <LL@li.org>\n"
+"Language: Simplified Chinese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: textgrad/defaults.py:4
+msgid ""
+"system prompt to the language model that specifies the behavior and "
+"strategies, which will be reused across queries"
+msgstr "用于指定语言模型行为和策略的系统提示，这些将在查询中重复使用"
+
+#: textgrad/defaults.py:6
+msgid "query to the language model"
+msgstr "发送给语言模型的问题"
+
+#: textgrad/defaults.py:7
+msgid "response from the language model"
+msgstr "来自语言模型的响应"
+
+#: textgrad/loss.py:36 textgrad/loss.py:96 textgrad/loss.py:218
+msgid "system prompt for the evaluation"
+msgstr "用于评估的系统提示"
+
+#: textgrad/loss.py:94
+msgid "You are an evaluation system that compares two variables."
+msgstr "您是一个用于比较两个变量的评估系统。"
+
+#: textgrad/loss.py:114
+msgid "evaluation of the a prediction"
+msgstr "对预测的评估"
+
+#: textgrad/loss.py:148
+msgid ""
+"You are an intelligent assistant used as an evaluator, and part of an "
+"optimization system. You will analyze a solution to a multi-choice problem. "
+"Investigate the reasoning and answer. Do not try to solve the problem, only "
+"raise the potential issues and mistakes in the answer. Be creative, think "
+"about different perspectives, and be very critical."
+msgstr ""
+"您是一个用作评估者的智能助手，是优化系统的一部分。您将分析多选问题的解决方案。请仔细核查推理步骤和最终答案。"
+"不要试图解决问题，只需要发现答案中的潜在问题和错误。要有创造力，从不同角度思考，并且要非常挑剔。"
+
+#: textgrad/loss.py:172
+msgid "system prompt for the test-time evaluation"
+msgstr "用于测试时评估的系统提示"
+
+#: textgrad/loss.py:181
+#, python-brace-format
+msgid ""
+"{instruction}\n"
+"Question: {{question}}\n"
+"Answer by the language model: {{prediction}}"
+msgstr ""
+"{instruction}\n"
+"问题：{{question}}\n"
+"语言模型的回答：{{prediction}}"
+
+#: textgrad/loss.py:192
+msgid "the multiple choice question"
+msgstr "多项选择题"
+
+#: textgrad/loss.py:195 textgrad/loss.py:232
+#, python-brace-format
+msgid "evaluation of the {role_description}"
+msgstr "对{role_description}的评估"
+
+#: textgrad/loss.py:205
+msgid "evaluation instruction"
+msgstr "评估说明"
+
+#: textgrad/loss.py:216
+msgid "You are an evaluation system that evaluates image-related questions."
+msgstr "您是一个评估图像相关问题的评估系统。"
+
+#: textgrad/model.py:30
+msgid "system prompt for the language model"
+msgstr "该语言模型的系统提示"
+
+#: textgrad/prompts.py:5 textgrad/optimizer/optimizer_prompts.py:118
+#, python-brace-format
+msgid ""
+"Here is a conversation:\n"
+"\n"
+"<CONVERSATION>{context}</CONVERSATION>\n"
+"\n"
+"This conversation is potentially part of a larger system. The output is used as {response_desc}\n"
+"\n"
+"Here is the feedback we got for {variable_desc} in the conversation:\n"
+"\n"
+"<FEEDBACK>{feedback}</FEEDBACK>\n"
+"\n"
+msgstr ""
+"以下是一次对话：\n"
+"\n"
+"<CONVERSATION>{context}</CONVERSATION>\n"
+"\n"
+"这段对话可能是一个更大系统的一部分。输出用作{response_desc}\n"
+"\n"
+"以下是我们在对话中得到的关于{variable_desc}的反馈：\n"
+"\n"
+"<FEEDBACK>{feedback}</FEEDBACK>\n"
+
+#: textgrad/variable.py:345
+#, python-brace-format
+msgid ""
+"Here is the combined feedback we got for this specific {role_description} "
+"and other variables: {summation_gradients}."
+msgstr "以下是我们针对这个特定的 {role_description} 和其他变量得到的综合反馈：{summation_gradients}。"
+
+#: textgrad/variable.py:351 textgrad/autograd/algebra.py:158
+#, python-brace-format
+msgid "feedback to {role_description}"
+msgstr "对{role_description}的反馈"
+
+#: textgrad/autograd/algebra.py:90
+#, python-brace-format
+msgid ""
+"Here is the combined feedback we got for this specific {variable_desc} and "
+"other variables: {feedback}"
+msgstr "这是我们针对这个特定的{variable_desc}和其他变量得到的综合反馈：{feedback}"
+
+#: textgrad/autograd/algebra.py:96
+#, python-brace-format
+msgid "feedback to {variable_desc}"
+msgstr "对{{variable_desc}}的反馈"
+
+#: textgrad/autograd/algebra.py:133
+#, python-brace-format
+msgid "a combination of the following variables: {role_descriptions}."
+msgstr "以下变量的组合：{role_descriptions}."
+
+#: textgrad/autograd/algebra.py:152
+#, python-brace-format
+msgid ""
+"Here is the combined feedback we got for this specific {role_description} "
+"and other variables: {aggregate_gradients}"
+msgstr "以下是我们针对这个特定{role_description}及其他变量获得的综合反馈：{aggregate_gradients}"
+
+#: textgrad/autograd/llm_backward_prompts.py:4
+msgid ""
+"\n"
+"### Glossary of tags that will be sent to you:\n"
+"# - <LM_SYSTEM_PROMPT>: The system prompt for the language model.\n"
+"# - <LM_INPUT>: The input to the language model.\n"
+"# - <LM_OUTPUT>: The output of the language model.\n"
+"# - <OBJECTIVE_FUNCTION>: The objective of the optimization task.\n"
+"# - <VARIABLE>: Specifies the span of the variable.\n"
+"# - <ROLE>: The role description of the variable."
+msgstr ""
+"\n"
+"### 将发送给您的标记术语表：\n"
+"# - <LM_SYSTEM_PROMPT>：语言模型的系统提示。\n"
+"# - <LM_INPUT>：语言模型的输入。\n"
+"# - <LM_OUTPUT>：语言模型的输出。\n"
+"# - <OBJECTIVE_FUNCTION>：优化任务的目标。\n"
+"# - <VARIABLE>：指定变量的范围。\n"
+"# - <ROLE>：变量的角色描述。"
+
+#: textgrad/autograd/llm_backward_prompts.py:17
+msgid ""
+"You are part of an optimization system that improves a given text (i.e. the variable). You are the gradient (feedback) engine. Your only responsibility is to give intelligent and creative feedback and constructive criticism to variables, given an objective specified in <OBJECTIVE_FUNCTION> </OBJECTIVE_FUNCTION> tags. The variables may be solutions to problems, prompts to language models, code, or any other text-based variable. Pay attention to the role description of the variable, and the context in which it is used. You should assume that the variable will be used in a similar context in the future. Only provide strategies, explanations, and methods to change in the variable. DO NOT propose a new version of the variable, that will be the job of the optimizer. Your only job is to send feedback and criticism (compute 'gradients'). For instance, feedback can be in the form of 'Since language models have the X failure mode...', 'Adding X can fix this error because...', 'Removing X can improve the objective function because...', 'Changing X to Y would fix the mistake ...', that gets at the downstream objective.\n"
+"If a variable is already working well (e.g. the objective function is perfect, an evaluation shows the response is accurate), you should not give feedback.\n"
+msgstr ""
+"你是一个优化系统的一部分，负责改进给定文本（即变量）。你是梯度（反馈）引擎。你的唯一责任是根据<OBJECTIVE_FUNCTION> </OBJECTIVE_FUNCTION>标签中指定的目标，向变量提供智能且富有创意的反馈和建设性的批评。变量可能是问题的解决方案、语言模型的提示、代码或任何其他基于文本的变量。请注意变量的角色描述及其使用的上下文。你应当假设变量未来会在类似的上下文中使用。只提供策略、解释以及修改变量的方法。不要提出变量的新版本，这将是优化器的工作。你的唯一工作是发送反馈和批评（计算'梯度'）。例如，反馈形式可以是'由于语言模型具有X失败模式...', '添加X可以修复此错误，因为...', '移除X可以改进目标函数，因为...', '将X更改为Y将修复错误...', 以实现下游目标。\n"
+"如果某个变量已经运作良好（例如目标函数是完美的，评估显示响应准确），你不应提供反馈。\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:28
+#, python-brace-format
+msgid ""
+"<LM_SYSTEM_PROMPT> {system_prompt} </LM_SYSTEM_PROMPT>\n"
+"\n"
+"<LM_INPUT> {prompt} </LM_INPUT>\n"
+"\n"
+"<LM_OUTPUT> {response_value} </LM_OUTPUT>\n"
+"\n"
+msgstr ""
+"<LM_SYSTEM_PROMPT> {system_prompt} </LM_SYSTEM_PROMPT>\n"
+"\n"
+"<LM_INPUT> {prompt} </LM_INPUT>\n"
+"\n"
+"<LM_OUTPUT> {response_value} </LM_OUTPUT>\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:35
+#, python-brace-format
+msgid ""
+"You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. Here is a conversation with a language model (LM):\n"
+"\n"
+"{conversation}"
+msgstr ""
+"您将给予一个具有以下角色的变量反馈：<ROLE> {variable_desc} </ROLE>。以下是与一个语言模型 (LM) 的对话：\n"
+"\n"
+"{conversation}"
+
+#: textgrad/autograd/llm_backward_prompts.py:40
+#, python-brace-format
+msgid ""
+"This conversation is part of a larger system. The <LM_OUTPUT> was later used as {response_desc}.\n"
+"\n"
+"<OBJECTIVE_FUNCTION>Your goal is to give feedback to the variable to address the following feedback on the LM_OUTPUT: {response_gradient} </OBJECTIVE_FUNCTION>\n"
+"\n"
+msgstr ""
+"这段对话是一个更大系统的一部分。<LM_OUTPUT> 后来被用作 {response_desc}。\n"
+"\n"
+"<OBJECTIVE_FUNCTION>你的目标是对变量给出反馈，以解决对 LM_OUTPUT 的以下反馈：{response_gradient} </OBJECTIVE_FUNCTION>\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:46
+#, python-brace-format
+msgid ""
+"You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. Here is an evaluation of the variable using a language model:\n"
+"\n"
+"{conversation}"
+msgstr ""
+"您将对具有以下角色的变量进行反馈：<ROLE> {variable_desc} </ROLE>。以下是使用语言模型对该变量的评估：\n"
+"\n"
+"{conversation}"
+
+#: textgrad/autograd/llm_backward_prompts.py:52
+#: textgrad/autograd/string_based_ops.py:36
+msgid ""
+"<OBJECTIVE_FUNCTION>Your goal is to give feedback and criticism to the variable given the above evaluation output. Our only goal is to improve the above metric, and nothing else. </OBJECTIVE_FUNCTION>\n"
+"\n"
+msgstr ""
+"<OBJECTIVE_FUNCTION>你的目标是根据上述评估输出给变量提供反馈和批评。我们唯一的目标是改善上述指标，除此之外没有别的。</OBJECTIVE_FUNCTION>\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:59
+#, python-brace-format
+msgid ""
+"We are interested in giving feedback to the {variable_desc} for this conversation. Specifically, give feedback to the following span of text:\n"
+"\n"
+"<VARIABLE> {variable_short} </VARIABLE>\n"
+"\n"
+"Given the above history, describe how the {variable_desc} could be improved to improve the <OBJECTIVE_FUNCTION>. Be very creative, critical, and intelligent.\n"
+"\n"
+msgstr ""
+"我们有兴趣向{variable_desc}提供该对话的反馈。具体来说，给以下这段文字提供反馈：\n"
+"\n"
+"<VARIABLE> {variable_short} </VARIABLE>\n"
+"\n"
+"基于上述历史，描述如何改进{variable_desc}以提升<OBJECTIVE_FUNCTION>。请充分发挥创意，进行批判性思考，以智能的方式提出建议。\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:68
+#, python-brace-format
+msgid ""
+"Here is a query and a response from searching with {engine_name}:\n"
+"<QUERY> {query} </QUERY>\n"
+"<RESULTS> {results} </RESULTS>\n"
+"\n"
+msgstr ""
+"这是使用{engine_name}搜索得到的查询和响应：\n"
+"<QUERY> {query} </QUERY>\n"
+"<RESULTS> {results} </RESULTS>\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:75
+#, python-brace-format
+msgid ""
+"For the search results from {engine_name} we got the following feedback:\n"
+"\n"
+"<FEEDBACK>{results_gradient}</FEEDBACK>\n"
+"\n"
+msgstr ""
+"来自 {engine_name} 的搜索结果得到了以下反馈：\n"
+"\n"
+"<FEEDBACK>{results_gradient}</FEEDBACK>\n"
+
+#: textgrad/autograd/llm_backward_prompts.py:80
+#, python-brace-format
+msgid ""
+"You must base on the following examples when give feedback and criticism to the variable:\n"
+"\n"
+"<EXAMPLES>{in_context_examples}</EXAMPLES>\n"
+"\n"
+msgstr ""
+"在给变量反馈和批评时，您必须基于以下示例：\n"
+"\n"
+"<EXAMPLES>{in_context_examples}</EXAMPLES>\n"
+
+#: textgrad/autograd/multimodal_backward_prompts.py:6
+#, python-brace-format
+msgid ""
+"\n"
+" Above messages are the <LM_INPUT>\n"
+"\n"
+"<LM_SYSTEM_PROMPT> {system_prompt} </LM_SYSTEM_PROMPT>\n"
+"\n"
+"<LM_OUTPUT> {response_value} </LM_OUTPUT>\n"
+"\n"
+msgstr ""
+"\n"
+"上面的信息是<LM_INPUT>\n"
+"\n"
+"<LM_SYSTEM_PROMPT> {system_prompt} </LM_SYSTEM_PROMPT>\n"
+"\n"
+"<LM_OUTPUT> {response_value} </LM_OUTPUT>\n"
+
+#: textgrad/autograd/reduce_prompts.py:5
+msgid ""
+"You are part of an optimization system that improves a given text (i.e. the "
+"variable). Your only responsibility is to critically aggregate and summarize"
+" the feedback from sources. The variables may be solutions to problems, "
+"prompts to language models, code, or any other text-based variable. The "
+"multiple sources of feedback will be given to you in <FEEDBACK> </FEEDBACK> "
+"tags. When giving a response, only provide the core summary of the feedback."
+" Do not recommend a new version for the variable -- only summarize the "
+"feedback critically. "
+msgstr ""
+"你是一个优化系统的一部分，该系统用于改进给定的文本（即变量）。你的唯一职责是批判性地汇总和总结来自不同来源的反馈。这些变量可能是问题的解决方案、语言模型的提示、代码或任何其他基于文本的变量。多种反馈来源将以<FEEDBACK>"
+" </FEEDBACK>标签的形式提供给你。在给出回应时，只提供反馈的核心摘要。不要推荐变量的新版本——只要批判性地总结反馈即可。"
+
+#: textgrad/autograd/string_based_ops.py:11
+#, python-brace-format
+msgid ""
+"Function purpose: {function_purpose}\n"
+"\n"
+"<INPUTS_TO_FUNCTION> {inputs_string} </INPUTS_TO_FUNCTION>\n"
+"\n"
+"<OUTPUT_OF_FUNCTION> {response_value} </OUTPUT_OF_FUNCTION>\n"
+"\n"
+msgstr ""
+"函数用途：{function_purpose}\n"
+"\n"
+"<INPUTS_TO_FUNCTION> {inputs_string} </INPUTS_TO_FUNCTION>\n"
+"\n"
+"<OUTPUT_OF_FUNCTION> {response_value} </OUTPUT_OF_FUNCTION>\n"
+
+#: textgrad/autograd/string_based_ops.py:18
+#, python-brace-format
+msgid ""
+"You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. Here is an evaluation of a string-based function with inputs and outputs :\n"
+"\n"
+"{conversation}"
+msgstr ""
+"您将向一个具有以下角色的变量提供反馈：<ROLE> {variable_desc} </ROLE>。以下是基于字符串的函数的输入和输出评估：\n"
+"\n"
+"{conversation}"
+
+#: textgrad/autograd/string_based_ops.py:25
+#, python-brace-format
+msgid ""
+"You will give feedback to a variable with the following role: <ROLE> {variable_desc} </ROLE>. Here is an evaluation of the variable using a string-based function:\n"
+"\n"
+"{conversation}"
+msgstr ""
+"您将为具有以下角色的变量提供反馈： <ROLE> {variable_desc} </ROLE>。这是使用基于字符串的函数对该变量的评估：\n"
+"\n"
+"{conversation}"
+
+#: textgrad/autograd/string_based_ops.py:31
+#, python-brace-format
+msgid ""
+"This conversation is part of a larger system. The <OUTPUT_OF_FUNCTION> was later used as {response_desc}.\n"
+"\n"
+"<OBJECTIVE_FUNCTION>Your goal is to give feedback to the variable to address the following feedback on the OUTPUT_OF_FUNCTION: {response_gradient} </OBJECTIVE_FUNCTION>\n"
+"\n"
+msgstr ""
+"这个对话是更大系统的一部分。<OUTPUT_OF_FUNCTION>后来被用作{response_desc}。\n"
+"\n"
+"<OBJECTIVE_FUNCTION>你的目标是对变量给出反馈，以解决以下关于OUTPUT_OF_FUNCTION的反馈：{response_gradient} </OBJECTIVE_FUNCTION>\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:4
+msgid ""
+"\n"
+"### Glossary of tags that will be sent to you:\n"
+"# - <LM_SYSTEM_PROMPT>: The system prompt for the language model.\n"
+"# - <LM_INPUT>: The input to the language model.\n"
+"# - <LM_OUTPUT>: The output of the language model.\n"
+"# - <FEEDBACK>: The feedback to the variable.\n"
+"# - <CONVERSATION>: The conversation history.\n"
+"# - <FOCUS>: The focus of the optimization.\n"
+"# - <ROLE>: The role description of the variable."
+msgstr ""
+"\n"
+"### 将发送给您的标签词汇表：\n"
+"# - <LM_SYSTEM_PROMPT>: 语言模型的系统提示符。\n"
+"# - <LM_INPUT>: 语言模型的输入。\n"
+"# - <LM_OUTPUT>: 语言模型的输出。\n"
+"# - <FEEDBACK>: 变量的反馈。\n"
+"# - <CONVERSATION>: 对话历史。\n"
+"# - <FOCUS>: 优化的重点。\n"
+"# - <ROLE>: 变量的角色描述。"
+
+#: textgrad/optimizer/optimizer_prompts.py:18
+#, python-brace-format
+msgid ""
+"You are part of an optimization system that improves text (i.e., variable). You will be asked to creatively and critically improve prompts, solutions to problems, code, or any other text-based variable. You will receive some feedback, and use the feedback to improve the variable. The feedback may be noisy, identify what is important and what is correct. Pay attention to the role description of the variable, and the context in which it is used. This is very important: You MUST give your response by sending the improved variable between {new_variable_start_tag} {{improved variable}} {new_variable_end_tag} tags. The text you send between the tags will directly replace the variable.\n"
+"\n"
+msgstr ""
+"你是一个改进文本（即变量）的优化系统的一部分。你将被要求有创意并批判性地改进提示、问题解决方案、代码或任何其他基于文本的变量。你将收到一些反馈，并使用这些反馈来改进变量。反馈可能会有噪音，辨别什么是重要的和正确的。注意变量的角色描述以及其使用的上下文。这非常重要：你必须通过将改进后的变量放在"
+" {new_variable_start_tag} {{improved variable}} {new_variable_end_tag} "
+"标签之间来给出你的回应。你在标签之间发送的文本将直接替换变量。\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:30
+#, python-brace-format
+msgid ""
+"Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n"
+"\n"
+"The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n"
+"\n"
+"Here is the context and feedback we got for the variable:\n"
+"\n"
+"<CONTEXT>{variable_grad}</CONTEXT>\n"
+"\n"
+"Improve the variable ({variable_desc}) using the feedback provided in <FEEDBACK> tags.\n"
+msgstr ""
+"这是您将改进的变量的角色：<ROLE>{variable_desc}</ROLE>。\n"
+"\n"
+"该变量是以下跨度内的文本：<VARIABLE> {variable_short} </VARIABLE>\n"
+"\n"
+"以下是我们对于该变量的背景和反馈：\n"
+"\n"
+"<CONTEXT>{variable_grad}</CONTEXT>\n"
+"\n"
+"使用 <FEEDBACK> 标签中提供的反馈来改进变量 ({variable_desc})。\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:39
+#, python-brace-format
+msgid ""
+"Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n"
+"\n"
+"The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n"
+"\n"
+"Here is the context and feedback we got for the variable:\n"
+"\n"
+msgstr ""
+"以下是您将改进的变量的作用：<ROLE>{variable_desc}</ROLE>。\n"
+"\n"
+"该变量是以下范围内的文本：<VARIABLE>{variable_short}</VARIABLE>\n"
+"\n"
+"以下是我们为这个变量获得的上下文和反馈：\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:45
+#, python-brace-format
+msgid ""
+"Improve the variable ({variable_desc}) using the feedback provided in "
+"<FEEDBACK> tags.\n"
+msgstr "使用<FEEDBACK>标签中提供的反馈来改进变量（{{variable_desc}}）。\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:49
+#, python-brace-format
+msgid ""
+"Send the improved variable in the following format:\n"
+"\n"
+"{new_variable_start_tag}{{the improved variable}}{new_variable_end_tag}\n"
+"\n"
+"Send ONLY the improved variable between the <IMPROVED_VARIABLE> tags, and nothing else."
+msgstr ""
+"请以以下格式发送改进后的变量：\n"
+"\n"
+"{new_variable_start_tag}{{改进后的变量}}{new_variable_end_tag}\n"
+"\n"
+"在<IMPROVED_VARIABLE>标签之间只发送改进后的变量，不要发送其他内容。"
+
+#: textgrad/optimizer/optimizer_prompts.py:55
+#, python-brace-format
+msgid ""
+"Here are the past iterations of this variable:\n"
+"\n"
+"<PAST_ITERATIONS>{past_values}</PAST_ITERATIONS>\n"
+"\n"
+"Similar feedbacks across different steps suggests that the modifications to the variable are insufficient.If this is the case, please make more significant changes to the variable.\n"
+"\n"
+msgstr ""
+"以下是此变量的过去迭代：\n"
+"\n"
+"<PAST_ITERATIONS>{past_values}</PAST_ITERATIONS>\n"
+"\n"
+"不同步骤中类似的反馈表明对该变量的修改不够充分。如果是这种情况，请对该变量进行更显著的更改。\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:62
+#, python-brace-format
+msgid ""
+"You must follow the following constraints:\n"
+"\n"
+"<CONSTRAINTS>{constraint_text}</CONSTRAINTS>\n"
+"\n"
+msgstr ""
+"您必须遵守以下约束条件：\n"
+"\n"
+"<CONSTRAINTS>{constraint_text}</CONSTRAINTS>\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:67
+#, python-brace-format
+msgid ""
+"You must base on the following examples when modifying the {variable_desc}:\n"
+"\n"
+"<EXAMPLES>{in_context_examples}</EXAMPLES>\n"
+"\n"
+msgstr ""
+"修改{variable_desc}时，必须基于以下示例：\n"
+"\n"
+"<EXAMPLES>{in_context_examples}</EXAMPLES>\n"
+
+#: textgrad/optimizer/optimizer_prompts.py:123
+#, python-brace-format
+msgid ""
+"Above is a conversation with a language model.\n"
+"This conversation is potentially part of a larger system. The output is used as {response_desc}\n"
+"\n"
+"Here is the feedback we got for {variable_desc} in the conversation:\n"
+"\n"
+"<FEEDBACK>{feedback}</FEEDBACK>\n"
+"\n"
+msgstr ""
+"上面是与一个语言模型的对话。\n"
+"这个对话可能是一个更大系统的一部分。输出被用作{response_desc}\n"
+"\n"
+"以下是我们在对话中得到的关于{variable_desc}的反馈：\n"
+"\n"
+"<FEEDBACK>{feedback}</FEEDBACK>\n"
