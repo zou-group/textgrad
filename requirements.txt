@@ -9,3 +9,5 @@ graphviz>=0.20.3
 gdown>=5.2.0
 pillow
 httpx
+langchain>=0.3.0
+langchain-aws>0.2.1
