@@ -10,4 +10,4 @@ gdown>=5.2.0
 pillow
 httpx
 langchain>=0.3.0
-langchain-aws>0.2.1
+langchain-aws>=0.2.1
