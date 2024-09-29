@@ -65,6 +65,8 @@ LiteLLMEngine("gpt-4o", cache=True).generate(content="hello, what's 3+4", system
 
 image_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
 image_data = httpx.get(image_url).content
+
+LiteLLMEngine("gpt-4o", cache=True).generate(content=[image_data, "what is this my boy"], system_prompt="you are an assistant")
 ```
 
 In the examples folder you will find two new notebooks that show how to use the new engines.
