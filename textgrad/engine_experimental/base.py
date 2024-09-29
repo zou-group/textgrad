@@ -64,7 +64,7 @@ class EngineLM(ABC):
     def _generate_from_single_prompt(self, prompt, system_prompt=None, **kwargs) -> str:
         pass
 
-    def generate(self, content, system_prompt=Union[str | List[Union[str, bytes]]], **kwargs):
+    def generate(self, content, system_prompt: Union[str | List[Union[str, bytes]]] = None, **kwargs):
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
 
         if isinstance(content, str):

@@ -29,6 +29,47 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 
 ![Analogy with Torch](assets/analogy.png)
 
+
+### Updates:
+
+**29th Sept 2024**:
+
+We are introducing a new engine based on [litellm](https://github.com/BerriAI/litellm). This should allow
+you to use any model you like, as long as it is supported by litellm. This means that now
+**Bedrock, Together, Gemini and even more** are all supported by TextGrad!
+
+In addition to this, with the new engines it should be easy to enable and disable caching.  
+
+We are in the process of testing these new engines and deprecating the old engines. If you have any issues, please let us know!
+
+The new litellm engines can be loaded with the following code: 
+
+An example of loading a litellm engine:
+```python
+engine = get_engine("experimental:gpt-4o", cache=False)
+
+# this also works with
+
+set_backward_engine("experimental:gpt-4o", cache=False)
+```
+
+Be sure to set the relevant environment variables for the new engines!
+
+An example of forward pass:
+```python
+
+import httpx
+from textgrad.engine_experimental.litellm import LiteLLMEngine
+
+LiteLLMEngine("gpt-4o", cache=True).generate(content="hello, what's 3+4", system_prompt="you are an assistant")
+
+image_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
+image_data = httpx.get(image_url).content
+```
+
+In the examples folder you will find two new notebooks that show how to use the new engines.
+
+
 ## QuickStart
 If you know PyTorch, you know 80% of TextGrad.
 Let's walk through the key components with a simple example. Say we want to use GPT-4o to solve a simple
@@ -96,7 +137,42 @@ answer
 > :white_check_mark: **answer: It will still take 1 hour to dry 30 shirts under the sun,**
 > **assuming they are all laid out properly to receive equal sunlight.**
 
+### Updates:
 
+**29th Sept 2024**:
+
+We are introducing a new engine based on [litellm](https://github.com/BerriAI/litellm). This should allow
+you to use any model you like, as long as it is supported by litellm. This means that now
+**Bedrock, Together, Gemini and even more** are all supported by TextGrad!
+
+In addition to this, with the new engines it should be easy to enable and disable caching.  
+
+We are in the process of testing these new engines and deprecating the old engines. If you have any issues, please let us know!
+
+The new litellm engines can be loaded with the following code: 
+
+An example of loading a litellm engine:
+```python
+engine = get_engine("experimental:gpt-4o", cache=False)
+
+# this also works with
+
+set_backward_engine("experimental:gpt-4o", cache=False)
+```
+
+An example of forward pass:
+```python
+
+import httpx
+from textgrad.engine_experimental.litellm import LiteLLMEngine
+
+LiteLLMEngine("gpt-4o", cache=True).generate(content="hello, what's 3+4", system_prompt="you are an assistant")
+
+image_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
+image_data = httpx.get(image_url).content
+```
+
+In the examples folder you will find two new notebooks that show how to use the new engines.
 
 
 We have many more examples around how TextGrad can optimize all kinds of variables -- code, solutions to problems, molecules, prompts, and all that!
@@ -118,6 +194,8 @@ you need an OpenAI/Anthropic key to run the LLMs).
 | 5. MultiModal Optimization                         | ![](https://img.shields.io/badge/Level-Beginner-green.svg)      | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Tutorial-MultiModal.ipynb)              |
 
 </div>
+
+
 
 ### Installation
 
