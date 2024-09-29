@@ -40,6 +40,19 @@ class EngineLM(ABC):
                  is_multimodal: bool = False,
                  cache=Union[dc.Cache, bool]):
 
+        """
+        Base class for the engines.
+
+        :param model_string: The model string to use.
+        :type model_string: str
+        :param system_prompt: The system prompt to use. Defaults to "You are a helpful, creative, and smart assistant."
+        :type system_prompt: str
+        :param is_multimodal: Whether the model is multimodal. Defaults to False.
+        :type is_multimodal: bool
+        :param cache: The cache to use. Defaults to True. Note that cache can also be a diskcache.Cache object.
+        :type cache: Union[diskcache.Cache, bool]
+        """
+
         root = platformdirs.user_cache_dir("textgrad")
         default_cache_path = os.path.join(root, f"cache_model_{model_string}.db")
 
@@ -47,6 +60,7 @@ class EngineLM(ABC):
         self.system_prompt = system_prompt
         self.is_multimodal = is_multimodal
 
+        # cache resolution
         if isinstance(cache, dc.Cache):
             self.cache = cache
         elif cache is True:
