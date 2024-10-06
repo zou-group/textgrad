@@ -25,7 +25,7 @@ class LiteLLMEngine(EngineLM):
                  model_string: str,
                  system_prompt: str = DEFAULT_SYSTEM_PROMPT,
                  is_multimodal: bool = True,
-                 cache=Union[dc.Cache, bool]):
+                 cache: Union[dc.Cache, bool] = False):
 
         super().__init__(
             model_string=model_string,

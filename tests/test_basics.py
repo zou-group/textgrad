@@ -68,6 +68,57 @@ def test_openai_engine():
     os.environ['OPENAI_API_KEY'] = "fake_key"
     engine = ChatOpenAI()
 
+
+def test_set_backward_engine():
+    from textgrad.config import set_backward_engine, SingletonBackwardEngine
+    from textgrad.engine.openai import ChatOpenAI
+    from textgrad.engine_experimental.litellm import LiteLLMEngine
+
+    engine = ChatOpenAI()
+    set_backward_engine(engine, override=False)
+    assert SingletonBackwardEngine().get_engine() == engine
+
+    new_engine = LiteLLMEngine(model_string="gpt-3.5-turbo-0613")
+    set_backward_engine(new_engine, True)
+    assert SingletonBackwardEngine().get_engine() == new_engine
+
+    with pytest.raises(Exception):
+        set_backward_engine(engine, False)
+
+def test_get_engine():
+    from textgrad.engine import get_engine
+    from textgrad.engine.openai import ChatOpenAI
+    from textgrad.engine_experimental.litellm import LiteLLMEngine
+
+    engine = get_engine("gpt-3.5-turbo-0613")
+    assert isinstance(engine, ChatOpenAI)
+
+    engine = get_engine("experimental:claude-3-opus-20240229")
+    assert isinstance(engine, LiteLLMEngine)
+
+    engine = get_engine("experimental:claude-3-opus-20240229", cache=True)
+    assert isinstance(engine, LiteLLMEngine)
+
+    engine = get_engine("experimental:claude-3-opus-20240229", cache=False)
+    assert isinstance(engine, LiteLLMEngine)
+
+    # get local diskcache
+    from diskcache import Cache
+    cache = Cache("./cache")
+
+    engine = get_engine("experimental:claude-3-opus-20240229", cache=cache)
+    assert isinstance(engine, LiteLLMEngine)
+
+    with pytest.raises(ValueError):
+        get_engine("invalid-engine")
+
+    with pytest.raises(ValueError):
+        get_engine("experimental:claude-3-opus-20240229", cache=[1,2,3])
+
+    with pytest.raises(ValueError):
+        get_engine("gpt-4o", cache=True)
+
+
 # Test importing main components from textgrad
 def test_import_main_components():
     from textgrad import Variable, TextualGradientDescent, EngineLM

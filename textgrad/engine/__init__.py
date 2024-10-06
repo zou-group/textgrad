@@ -35,6 +35,9 @@ def get_engine(engine_name: str, **kwargs) -> EngineLM:
     if "seed" in kwargs and "gpt-4" not in engine_name and "gpt-3.5" not in engine_name and "gpt-35" not in engine_name:
         raise ValueError(f"Seed is currently supported only for OpenAI engines, not {engine_name}")
 
+    if "cache" in kwargs and "experimental" not in engine_name:
+        raise ValueError(f"Cache is currently supported only for LiteLLM engines, not {engine_name}")
+
     # check if engine_name starts with "experimental:"
     if engine_name.startswith("experimental:"):
         engine_name = engine_name.split("experimental:")[1]
