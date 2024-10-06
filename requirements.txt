@@ -7,5 +7,6 @@ datasets>=2.14.6
 diskcache>=5.6.3
 graphviz>=0.20.3
 gdown>=5.2.0
+litellm==1.44.22
 pillow
 httpx
