@@ -38,6 +38,8 @@ We are introducing a new engine based on [litellm](https://github.com/BerriAI/li
 you to use any model you like, as long as it is supported by litellm. This means that now
 **Bedrock, Together, Gemini and even more** are all supported by TextGrad!
 
+This should be seen as experimental but we plan to depreciate the old engines in the future.
+
 In addition to this, with the new engines it should be easy to enable and disable caching.  
 
 We are in the process of testing these new engines and deprecating the old engines. If you have any issues, please let us know!
