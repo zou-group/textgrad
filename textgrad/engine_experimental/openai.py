@@ -20,7 +20,7 @@ class OpenAIEngine(EngineLM):
     def __init__(self, model_string: str,
                  system_prompt: str = DEFAULT_SYSTEM_PROMPT,
                  is_multimodal: bool = False,
-                 cache=Union[dc.Cache, bool]):
+                 cache: Union[dc.Cache, bool] = False):
 
         self.validate()
 
@@ -92,7 +92,7 @@ class OpenAICompatibleEngine(OpenAIEngine):
                  model_string: str,
                  system_prompt: str = DEFAULT_SYSTEM_PROMPT,
                  is_multimodal: bool = False,
-                 cache=Union[dc.Cache, bool]):
+                 cache: Union[dc.Cache, bool] = False):
 
             self.client = client
 

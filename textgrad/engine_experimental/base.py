@@ -38,7 +38,7 @@ class EngineLM(ABC):
     def __init__(self, model_string: str,
                  system_prompt: str = "You are a helpful, creative, and smart assistant.",
                  is_multimodal: bool = False,
-                 cache=Union[dc.Cache, bool]):
+                 cache: Union[dc.Cache, bool] = False):
 
         """
         Base class for the engines.
