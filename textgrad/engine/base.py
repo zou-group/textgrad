@@ -1,10 +1,16 @@
 import hashlib
 import diskcache as dc
 from abc import ABC, abstractmethod
+import warnings
 
 class EngineLM(ABC):
     system_prompt: str = "You are a helpful, creative, and smart assistant."
     model_string: str
+
+    def __init__(self):
+        warnings.warn("This Engine class is depreacted and will be removed in future version. Please use experimental engines. See https://github.com/zou-group/textgrad/pull/120", DeprecationWarning,
+                      stacklevel=2)
+
     @abstractmethod
     def generate(self, prompt, system_prompt=None, **kwargs):
         pass
