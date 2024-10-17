@@ -40,8 +40,8 @@ class Variable:
             raise Exception("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
-        assert type(value) in [str, bytes, int], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
-        if isinstance(value, int):
+        assert isinstance(value, (str, bytes, int)) or np.issubdtype(type(value), np.integer), "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
+        if isinstance(value, int) or np.issubdtype(type(value), np.integer):
             value = str(value)
         # We'll currently let "empty variables" slide, but we'll need to handle this better in the future.
         # if value == "" and image_path == "":
