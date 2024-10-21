@@ -2,6 +2,7 @@ from textgrad import logger
 from textgrad.engine import EngineLM
 from typing import List, Set, Dict
 import httpx
+import numpy
 from collections import defaultdict
 from functools import partial
 from .config import SingletonBackwardEngine
@@ -39,9 +40,9 @@ class Variable:
         if (not requires_grad) and (len(_predecessor_requires_grad) > 0):
             raise Exception("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
-        
-        assert type(value) in [str, bytes, int], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
-        if isinstance(value, int):
+
+        assert type(value) in [str, bytes, int, numpy.int64], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
+        if isinstance(value, int) or isinstance(value, numpy.int64):
             value = str(value)
         # We'll currently let "empty variables" slide, but we'll need to handle this better in the future.
         # if value == "" and image_path == "":
