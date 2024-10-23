@@ -1,3 +1,8 @@
+try:
+    from langchain_aws import ChatBedrock
+except ImportError:
+    raise ImportError("If you'd like to use Bedrock models, please install the `langchain_aws` package by running `pip install langchain-aws`, and instantiate a Bedrock Client.")
+
 import base64
 import json
 import os
