@@ -6,7 +6,7 @@ import logging
 
 from textgrad import Variable, TextualGradientDescent, BlackboxLLM, sum
 from textgrad.engine.base import EngineLM
-from textgrad.engine.openai import ChatOpenAI
+from textgrad.engine.openai import AzureChatOpenAI, ChatOpenAI
 from textgrad.autograd import LLMCall, FormattedLLMCall
 
 logging.disable(logging.CRITICAL)
@@ -248,3 +248,14 @@ def test_multimodal_from_url():
                                 role_description="image to answer a question about", requires_grad=False)
 
     assert image_variable_2.value == image_variable.value
+
+def test_azure_openai_engine():
+    if os.environ.get("OPENAI_API_KEY"):
+        os.environ.pop("OPENAI_API_KEY")
+
+    with pytest.raises(ValueError):
+        engine = AzureChatOpenAI()
+    
+    os.environ['AZURE_OPENAI_API_KEY'] = "fake_key"
+    os.environ['AZURE_OPENAI_API_BASE'] = "fake_base"
+    engine = AzureChatOpenAI()
