@@ -1,6 +1,9 @@
 name: Merge Queue Tests
 
 on:
+  push:
+    branches:
+      - main  # Add this temporarily to make it visible
   merge_group:
     types: [checks_requested]
 
@@ -21,4 +24,3 @@ jobs:
     - name: Run tests
       run: |
         pytest --ignore=tests/test_vllm.py --ignore=tests/test_bedrock.py
-
