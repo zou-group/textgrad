@@ -13,7 +13,7 @@ on:
 jobs:
   test:
     name: Run Tests
-    if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'merge_group'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -28,4 +28,26 @@ jobs:
         pip install pytest
     - name: Run tests
       run: |
-        pytest --ignore=tests/test_vllm.py --ignore=tests/test_bedrock.py
+        pytest --ignore=tests/test_api.py
+        
+  merge-queue-only-test:
+    name: Merge Queue Only Tests
+    if: github.event_name == 'merge_group'
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run merge queue specific tests
+        run: |
+          pytest tests/test_api.py
