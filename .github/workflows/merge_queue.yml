@@ -1,15 +1,19 @@
 name: Merge Queue Tests
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
-      - main  # Add this temporarily to make it visible
+      - main
   merge_group:
     types: [checks_requested]
 
 jobs:
   test:
     name: Run Tests
+    if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
