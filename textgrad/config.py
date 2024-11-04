@@ -42,10 +42,10 @@ class SingletonBackwardEngine:
         """
         return self.engine
 
-def set_backward_engine(engine: Union[EngineLM, str], override: bool = False):
+def set_backward_engine(engine: Union[EngineLM, str], override: bool = False, **kwargs):
     singleton_backward_engine = SingletonBackwardEngine()
     if isinstance(engine, str):
-        engine = get_engine(engine)
+        engine = get_engine(engine, **kwargs)
     singleton_backward_engine.set_engine(engine, override=override)
 
 
