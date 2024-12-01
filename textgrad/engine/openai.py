@@ -14,7 +14,8 @@ from tenacity import (
 )
 from typing import List, Union
 
-from .base import EngineLM, CachedEngine
+
+from .base import EngineLM, CachedEngine, CachedLLM
 from .engine_utils import get_image_type_from_bytes
 
 # Default base URL for OLLAMA
@@ -156,6 +157,91 @@ class ChatOpenAI(EngineLM, CachedEngine):
 
         response_text = response.choices[0].message.content
         self._save_cache(cache_key, response_text)
+        return response_text
+
+
+class OpenAIWithCachedLLM(CachedLLM):
+    DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
+
+    def __init__(self, model_string, is_multimodal=False, system_prompt: str = DEFAULT_SYSTEM_PROMPT, do_cache=False):
+        super().__init__(model_string=model_string, is_multimodal=is_multimodal, do_cache=do_cache)
+        """
+        :param model_string:
+        :param system_prompt:
+        :param base_url: Used to support Ollama
+        """
+
+        self.system_prompt = system_prompt
+
+        if os.getenv("OPENAI_API_KEY") is None:
+            raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
+
+        self.client = OpenAI(
+            api_key=os.getenv("OPENAI_API_KEY")
+        )
+
+    def _generate_from_single_prompt(
+        self, prompt: str, system_prompt: str= None, temperature=0, max_tokens=2000, top_p=0.99
+    ):
+
+        response = self.client.chat.completions.create(
+            model=self.model_string,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt},
+            ],
+            frequency_penalty=0,
+            presence_penalty=0,
+            stop=None,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
+        )
+
+        response = response.choices[0].message.content
+        return response
+
+    def _format_content(self, content: List[Union[str, bytes]]) -> List[dict]:
+        """Helper function to format a list of strings and bytes into a list of dictionaries to pass as messages to the API.
+        """
+        formatted_content = []
+        for item in content:
+            if isinstance(item, bytes):
+                # For now, bytes are assumed to be images
+                image_type = get_image_type_from_bytes(item)
+                base64_image = base64.b64encode(item).decode('utf-8')
+                formatted_content.append({
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/{image_type};base64,{base64_image}"
+                    }
+                })
+            elif isinstance(item, str):
+                formatted_content.append({
+                    "type": "text",
+                    "text": item
+                })
+            else:
+                raise ValueError(f"Unsupported input type: {type(item)}")
+        return formatted_content
+
+    def _generate_from_multiple_input(
+        self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+    ):
+        formatted_content = self._format_content(content)
+
+        response = self.client.chat.completions.create(
+            model=self.model_string,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": formatted_content},
+            ],
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
+        )
+
+        response_text = response.choices[0].message.content
         return response_text
 
 class AzureChatOpenAI(ChatOpenAI):
