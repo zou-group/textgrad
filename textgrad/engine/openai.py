@@ -33,11 +33,13 @@ class ChatOpenAI(EngineLM, CachedEngine):
         system_prompt: str=DEFAULT_SYSTEM_PROMPT,
         is_multimodal: bool=False,
         base_url: str=None,
+        azure_openai: bool=False,
         **kwargs):
         """
         :param model_string:
         :param system_prompt:
         :param base_url: Used to support Ollama
+        :param azure_openai: Set to True if you use Azure OpenAI.
         """
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
@@ -47,20 +49,21 @@ class ChatOpenAI(EngineLM, CachedEngine):
         self.system_prompt = system_prompt
         self.base_url = base_url
         
-        if not base_url:
-            if os.getenv("OPENAI_API_KEY") is None:
-                raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
-            
-            self.client = OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY")
-            )
-        elif base_url and base_url == OLLAMA_BASE_URL:
-            self.client = OpenAI(
-                base_url=base_url,
-                api_key="ollama"
-            )
-        else:
-            raise ValueError("Invalid base URL provided. Please use the default OLLAMA base URL or None.")
+        if not azure_openai:
+            if not base_url:
+                if os.getenv("OPENAI_API_KEY") is None:
+                    raise ValueError("Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
+                
+                self.client = OpenAI(
+                    api_key=os.getenv("OPENAI_API_KEY")
+                )
+            elif base_url and base_url == OLLAMA_BASE_URL:
+                self.client = OpenAI(
+                    base_url=base_url,
+                    api_key="ollama"
+                )
+            else:
+                raise ValueError("Invalid base URL provided. Please use the default OLLAMA base URL or None.")
 
         self.model_string = model_string
         self.is_multimodal = is_multimodal
@@ -184,11 +187,14 @@ class AzureChatOpenAI(ChatOpenAI):
         root = platformdirs.user_cache_dir("textgrad")
         cache_path = os.path.join(root, f"cache_azure_{model_string}.db")  # Changed cache path to differentiate from OpenAI cache
 
-        super().__init__(cache_path=cache_path, system_prompt=system_prompt, **kwargs)
+        super().__init__(cache_path=cache_path, 
+                         system_prompt=system_prompt, 
+                         azure_openai=True, 
+                         **kwargs)
 
         self.system_prompt = system_prompt
         api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2023-07-01-preview")
-        if os.getenv("AZURE_OPENAI_API_KEY") is None:
+        if (os.getenv("AZURE_OPENAI_API_KEY") is None) or (os.getenv("AZURE_OPENAI_API_BASE") is None):
             raise ValueError("Please set the AZURE_OPENAI_API_KEY, AZURE_OPENAI_API_BASE, and AZURE_OPENAI_API_VERSION environment variables if you'd like to use Azure OpenAI models.")
         
         self.client = AzureOpenAI(
