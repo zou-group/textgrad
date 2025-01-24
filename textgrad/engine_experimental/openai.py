@@ -16,7 +16,7 @@ from tenacity import (
 
 class OpenAIEngine(EngineLM):
     """
-    OpenAIEngine is a wrapper around the OpenAI API. 
+    OpenAIEngine is a wrapper around the OpenAI API.
     """
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
 
