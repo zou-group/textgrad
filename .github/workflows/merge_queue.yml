@@ -47,6 +47,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install ipython
           pip install pytest
       - name: Run merge queue specific tests
         run: |
