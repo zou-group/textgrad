@@ -1,9 +1,12 @@
 from typing import Union
-from textgrad.variable import Variable
+
 from textgrad.autograd import LLMCall
 from textgrad.autograd.function import Module
 from textgrad.engine import EngineLM, get_engine
+from textgrad.variable import Variable
+
 from .config import SingletonBackwardEngine
+
 
 class BlackboxLLM(Module):
     def __init__(self, engine: Union[EngineLM, str] = None, system_prompt: Union[Variable, str] = None):
@@ -23,7 +26,7 @@ class BlackboxLLM(Module):
             engine = get_engine(engine)
         self.engine = engine
         if isinstance(system_prompt, str):
-            system_prompt = Variable(system_prompt, requires_grad=False, role_description="system prompt for the language model")
+            system_prompt = Variable(system_prompt, requires_grad=False, role_description=_("system prompt for the language model"))
         self.system_prompt = system_prompt
         self.llm_call = LLMCall(self.engine, self.system_prompt)
 
