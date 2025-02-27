@@ -1,10 +1,12 @@
 ## Operations over variables.
 from typing import List, Set
+
 from textgrad import logger
-from textgrad.variable import Variable
 from textgrad.engine import EngineLM
-from .reduce_prompts import construct_reduce_prompt, REDUCE_MEAN_SYSTEM_PROMPT
-from .function import Function, BackwardContext
+from textgrad.variable import Variable
+
+from .function import BackwardContext, Function
+from .reduce_prompts import REDUCE_MEAN_SYSTEM_PROMPT, construct_reduce_prompt
 
 
 def _reduce_gradients_mean(gradients: Set[Variable], backward_engine: EngineLM) -> Variable:
@@ -84,13 +86,15 @@ class Sum(Function):
             if summation_gradients == "":
                 variable_gradient_value = ""
             else:
-                variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {summation_gradients}."
+                var_grad_template = _("Here is the combined feedback we got for this specific {variable_desc} and other variables: {feedback}")
+                variable_gradient_value = var_grad_template.format(variable_desc=variable.get_role_description(), feedback=summation_gradients)
                 
-            logger.info(f"Idempotent backward", extra={"v_gradient_value": variable_gradient_value, 
+            logger.info("Idempotent backward", extra={"v_gradient_value": variable_gradient_value,
                                                     "summation_role": summation.get_role_description()})
 
+            feedback_role_template = _("feedback to {variable_desc}")
             var_gradients = Variable(value=variable_gradient_value, 
-                                    role_description=f"feedback to {variable.get_role_description()}")
+                                    role_description=feedback_role_template.format(variable_desc=variable.get_role_description()))
             variable.gradients.add(var_gradients)
             
             if summation._reduce_meta != []:
@@ -98,7 +102,7 @@ class Sum(Function):
                 variable._reduce_meta.extend(summation._reduce_meta)
 
             variable.gradients.add(Variable(value=variable_gradient_value, 
-                                            role_description=f"feedback to {variable.get_role_description()}"))
+                                            role_description=feedback_role_template.format(variable_desc=variable.get_role_description())))
 
 
 class Aggregate(Function):
@@ -124,8 +128,9 @@ class Aggregate(Function):
         # We also need to communicate to the variables that they are part of a mean operation.
         reduce_meta = {"op": _reduce_gradients_mean, "id": id(variables)}
         
+        agg_role_template = _("a combination of the following variables: {role_descriptions}.")
         aggregated_variable = Variable(value=concat_values, 
-                                    role_description=f"a combination of the following variables: {role_descriptions}.",
+                                    role_description=agg_role_template.format(role_descriptions=role_descriptions),
                                     predecessors=variables,
                                     requires_grad=any([v.requires_grad for v in variables]))
         
@@ -142,13 +147,15 @@ class Aggregate(Function):
         if aggregate_gradients == "":
             variable_gradient_value = ""
         else:
-            variable_gradient_value = f"Here is the combined feedback we got for this specific {variable.get_role_description()} and other variables: {aggregate_gradients}."
+            var_grad_template = _("Here is the combined feedback we got for this specific {role_description} and other variables: {aggregate_gradients}")
+            variable_gradient_value = var_grad_template.format(role_description=variable.get_role_description(), aggregate_gradients=aggregate_gradients)
             
         logger.info(f"aggregation backward", extra={"v_gradient_value": variable_gradient_value, 
                                                 "aggregation_role": aggregated_variable.get_role_description()})
 
+        feedback_role_template = _("feedback to {role_description}")
         var_gradients = Variable(value=variable_gradient_value, 
-                                role_description=f"feedback to {variable.get_role_description()}")
+                                role_description=feedback_role_template.format(role_description=variable.get_role_description()))
         variable.gradients.add(var_gradients)
         
         if aggregated_variable._reduce_meta != []:
