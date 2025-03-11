@@ -9,7 +9,7 @@ class EngineLM(ABC):
     def generate(self, prompt, system_prompt=None, **kwargs):
         pass
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> str:
         pass
 
 

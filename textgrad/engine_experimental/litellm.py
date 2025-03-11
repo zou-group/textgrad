@@ -17,7 +17,8 @@ class LiteLLMEngine(EngineLM):
         ]
 
         return completion(model=self.model_string,
-                          messages=messages)['choices'][0]['message']['content']
+                          messages=messages,
+                          **kwargs)['choices'][0]['message']['content']
 
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
 

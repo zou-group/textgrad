@@ -78,11 +78,11 @@ class EngineLM(ABC):
     def _generate_from_single_prompt(self, prompt, system_prompt=None, **kwargs) -> str:
         pass
 
-    def generate(self, content, system_prompt: Union[str, List[Union[str, bytes]]] = None, **kwargs):
+    def generate(self, content, system_prompt: Union[str, List[Union[str, bytes]]] = None, **kwargs) -> str:
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
 
         if isinstance(content, str):
-            return self._generate_from_single_prompt(content=content, system_prompt=sys_prompt_arg, **kwargs)
+            response = self._generate_from_single_prompt(content=content, system_prompt=sys_prompt_arg, **kwargs)
 
         elif isinstance(content, list):
             has_multimodal_input = any(isinstance(item, bytes) for item in content)
@@ -90,7 +90,10 @@ class EngineLM(ABC):
                 raise NotImplementedError("Multimodal generation flag is not set, but multimodal input is provided. "
                                           "Is this model multimodal?")
 
-            return self._generate_from_multiple_input(content=content, system_prompt=sys_prompt_arg, **kwargs)
+            response = self._generate_from_multiple_input(content=content, system_prompt=sys_prompt_arg, **kwargs)
 
-    def __call__(self, *args, **kwargs):
-        pass
+        if response is None:
+            raise ValueError("Response is None. Please check the input and the system prompt.")
+
+        return response
+
