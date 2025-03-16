@@ -38,19 +38,18 @@ class LiteLLMEngine(EngineLM):
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_single_prompt(
-            self, content: str, system_prompt: str = None, temperature=0, max_tokens=2000, top_p=0.99
+            self, content: str, system_prompt: str = None, **kwargs
     ):
 
-        return self.lite_llm_generate(content, system_prompt)
+        return self.lite_llm_generate(content, system_prompt, **kwargs)
 
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_multiple_input(
-            self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
-    ):
+            self, content: List[Union[str, bytes]], system_prompt=None, **kwargs):
         formatted_content = open_ai_like_formatting(content)
 
-        return self.lite_llm_generate(formatted_content, system_prompt)
+        return self.lite_llm_generate(formatted_content, system_prompt, **kwargs)
 
     def __call__(self, content, **kwargs):
         return self.generate(content, **kwargs)
