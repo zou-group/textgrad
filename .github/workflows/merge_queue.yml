@@ -29,6 +29,7 @@ jobs:
     - name: Run tests
       run: |
         pytest --ignore=tests/test_api.py
+        pytest tests/test_caching.py
         
   merge-queue-only-test:
     name: Merge Queue Only Tests
