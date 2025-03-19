@@ -3,6 +3,7 @@
 <!--- BADGES: START --->
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zou-group/TextGrad/blob/main/examples/notebooks/Prompt-Optimization.ipynb)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)][#license-gh-package]
+[![Nature](https://img.shields.io/badge/Nature-Paper-green?logo=nature&logoColor=white)](https://www.nature.com/articles/s41586-025-08661-4)
 [![Arxiv](https://img.shields.io/badge/arXiv-2406.07496-B31B1B.svg)][#arxiv-paper-package]
 [![Documentation Status](https://readthedocs.org/projects/textgrad/badge/?version=latest)][#docs-package]
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/textgrad)][#pypi-package]
@@ -15,6 +16,8 @@
 [#docs-package]: https://textgrad.readthedocs.io/en/latest/?badge=latest
 [#pypi-package]: https://pypi.org/project/textgrad/
 [#conda-forge-package]: https://anaconda.org/conda-forge/textgrad
+[#nature-link]: https://www.nature.com/articles/s41586-025-08661-4
+
 <!--- BADGES: END --->
 
 ## TextGrad: Automatic ''Differentiation'' via Text
@@ -32,7 +35,11 @@ This API is similar to the Pytorch API, making it simple to adapt to your usecas
 
 ### Updates:
 
-**29th Sept 2024**:
+**19th March 2025**
+
+TextGrad published in [Nature](https://www.nature.com/articles/s41586-025-08661-4)!
+
+**Past Updates**:
 
 We are introducing a new engine based on [litellm](https://github.com/BerriAI/litellm). This should allow
 you to use any model you like, as long as it is supported by litellm. This means that now
@@ -341,12 +348,13 @@ Many existing works greatly inspired this project! Here is a non-exhaustive list
 
 ### Citation
 ```bibtex
-@article{yuksekgonul2024textgrad,
-      title={TextGrad: Automatic "Differentiation" via Text},
-      author={Mert Yuksekgonul and Federico Bianchi and Joseph Boen and Sheng Liu and Zhi Huang and Carlos Guestrin and James Zou},
-      year={2024},
-      eprint={2406.07496},
-      archivePrefix={arXiv}
+@article{yuksekgonul2025optimizing,
+  title={Optimizing generative AI by backpropagating language model feedback},
+  author={Yuksekgonul, Mert and Bianchi, Federico and Boen, Joseph and Liu, Sheng and Lu, Pan and Huang, Zhi and Guestrin, Carlos and Zou, James},
+  journal={Nature},
+  volume={639},
+  pages={609--616},
+  year={2025},
 }
 ```
 
