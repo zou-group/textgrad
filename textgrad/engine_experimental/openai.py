@@ -63,19 +63,19 @@ class OpenAIEngine(EngineLM):
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_single_prompt(
-            self, content: str, system_prompt: str = None, temperature=0, max_tokens=2000, top_p=0.99
+            self, content: str, system_prompt: str = None, **kwargs
     ):
 
-        return self.openai_call(content, system_prompt, temperature, max_tokens, top_p)
+        return self.openai_call(content, system_prompt, **kwargs)
 
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_multiple_input(
-            self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+            self, content: List[Union[str, bytes]], system_prompt=None, **kwargs
     ):
         formatted_content = open_ai_like_formatting(content)
 
-        return self.openai_call(formatted_content, system_prompt, temperature, max_tokens, top_p)
+        return self.openai_call(formatted_content, system_prompt, **kwargs)
 
     def __call__(self, content, **kwargs):
         return self.generate(content, **kwargs)
@@ -84,8 +84,8 @@ class OpenAIEngine(EngineLM):
 
 class OpenAICompatibleEngine(OpenAIEngine):
     """
-        This is the same as engine.openai.ChatOpenAI, but we pass in an external OpenAI client.
-        """
+    This is the same as engine.openai.ChatOpenAI, but we pass in an external OpenAI client.
+    """
 
     DEFAULT_SYSTEM_PROMPT = "You are a helpful, creative, and smart assistant."
     client = None
