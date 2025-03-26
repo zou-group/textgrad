@@ -5,6 +5,8 @@ from datetime import datetime
 
 LOG_DIR = os.getenv("TEXTGRAD_LOG_DIR", "./logs/")
 
+__version__ = "0.1.8"
+
 class CustomJsonFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         super(CustomJsonFormatter, self).format(record)
