@@ -28,8 +28,7 @@ jobs:
         pip install pytest
     - name: Run tests
       run: |
-        pytest --ignore=tests/test_api.py
-        pytest tests/test_caching.py
+        pytest --ignore=tests/test_api.py --ignore=tests/test_litellm_engine_functional.py --ignore=tests/test_litellm_engine_parameters_and_caching.py
         
   merge-queue-only-test:
     name: Merge Queue Only Tests
