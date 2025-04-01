@@ -12,7 +12,7 @@ from tenacity import (
     stop_after_attempt,
     wait_random_exponential,
 )
-from typing import List, Union
+from typing import List, Optional, Union
 
 from .base import EngineLM, CachedEngine
 from .engine_utils import get_image_type_from_bytes
@@ -33,14 +33,16 @@ class ChatOpenAI(EngineLM, CachedEngine):
         system_prompt: str=DEFAULT_SYSTEM_PROMPT,
         is_multimodal: bool=False,
         base_url: str=None,
+        cache_path: Optional[str]=None,
         **kwargs):
         """
         :param model_string:
         :param system_prompt:
         :param base_url: Used to support Ollama
         """
-        root = platformdirs.user_cache_dir("textgrad")
-        cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
+        if cache_path is None:
+            root = platformdirs.user_cache_dir("textgrad")
+            cache_path = os.path.join(root, f"cache_openai_{model_string}.db")
 
         super().__init__(cache_path=cache_path)
 
