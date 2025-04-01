@@ -9,6 +9,7 @@ from tenacity import (
     wait_random_exponential,
 )
 
+
 class LiteLLMEngine(EngineLM):
     def lite_llm_generate(self, content, system_prompt=None, **kwargs) -> str:
         messages = [
@@ -38,9 +39,8 @@ class LiteLLMEngine(EngineLM):
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_single_prompt(
-            self, content: str, system_prompt: str = None, **kwargs
+            self, content: str, system_prompt: Union[str, None] = None, **kwargs
     ):
-
         return self.lite_llm_generate(content, system_prompt, **kwargs)
 
     @cached
@@ -53,7 +53,7 @@ class LiteLLMEngine(EngineLM):
 
     def __call__(self, content, **kwargs):
         return self.generate(content, **kwargs)
-
+    
 
 
 
