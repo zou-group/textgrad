@@ -12,7 +12,7 @@ from tenacity import (
     stop_after_attempt,
     wait_random_exponential,
 )
-from typing import List, Union
+from typing import List, Union, Optional
 
 from .base import EngineLM, CachedEngine
 from .engine_utils import get_image_type_from_bytes
@@ -32,7 +32,8 @@ class ChatOpenAI(EngineLM, CachedEngine):
         model_string: str="gpt-3.5-turbo-0613",
         system_prompt: str=DEFAULT_SYSTEM_PROMPT,
         is_multimodal: bool=False,
-        base_url: str=None,
+        base_url: Optional[str]=None,
+        seed: Optional[int]=None,
         **kwargs):
         """
         :param model_string:
@@ -64,22 +65,37 @@ class ChatOpenAI(EngineLM, CachedEngine):
 
         self.model_string = model_string
         self.is_multimodal = is_multimodal
-        self.seed = kwargs.get("seed", None)
+
+        if seed is not None and base_url is not None:
+            raise ValueError("Seed is currently supported only for OpenAI engines.")
+        self.seed = seed
 
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
-    def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt: str=None, **kwargs):
+    def generate(
+        self, 
+        content: Union[str, List[Union[str, bytes]]], 
+        system_prompt: Optional[str]=None, 
+        seed: Optional[int]=None, 
+        **kwargs
+    ):
         if isinstance(content, str):
-            return self._generate_from_single_prompt(content, system_prompt=system_prompt, **kwargs)
+            return self._generate_from_single_prompt(content, system_prompt=system_prompt, seed=seed, **kwargs)
         
         elif isinstance(content, list):
             has_multimodal_input = any(isinstance(item, bytes) for item in content)
             if (has_multimodal_input) and (not self.is_multimodal):
                 raise NotImplementedError("Multimodal generation is only supported for Claude-3 and beyond.")
             
-            return self._generate_from_multiple_input(content, system_prompt=system_prompt, **kwargs)
+            return self._generate_from_multiple_input(content, system_prompt=system_prompt, seed=seed, **kwargs)
 
     def _generate_from_single_prompt(
-        self, prompt: str, system_prompt: str=None, temperature=0, max_tokens=2000, top_p=0.99
+        self, 
+        prompt: str, 
+        system_prompt: Optional[str]=None,
+        temperature: float=0, 
+        max_tokens: int=2000, 
+        top_p: float=0.99, 
+        seed: Optional[int]=None
     ):
 
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
@@ -100,7 +116,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
-            seed=self.seed
+            seed=seed if seed is not None else self.seed
         )
 
         response = response.choices[0].message.content
@@ -135,7 +151,13 @@ class ChatOpenAI(EngineLM, CachedEngine):
         return formatted_content
 
     def _generate_from_multiple_input(
-        self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+        self, 
+        content: List[Union[str, bytes]], 
+        system_prompt: Optional[str]=None, 
+        temperature: float=0, 
+        max_tokens: int=2000, 
+        top_p: float=0.99, 
+        seed: Optional[int]=None
     ):
         sys_prompt_arg = system_prompt if system_prompt else self.system_prompt
         formatted_content = self._format_content(content)
@@ -154,7 +176,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
-            seed=self.seed
+            seed=seed if seed is not None else self.seed
         )
 
         response_text = response.choices[0].message.content

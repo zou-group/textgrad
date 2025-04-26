@@ -4,7 +4,7 @@ except ImportError:
     raise ImportError("If you'd like to use OpenAI models, please install the openai package by running `pip install openai`, and add 'OPENAI_API_KEY' to your environment variables.")
 
 import os
-from typing import List, Union
+from typing import List, Union, Optional
 from textgrad.engine_experimental.engine_utils import open_ai_like_formatting
 from textgrad.engine_experimental.base import EngineLM, cached
 import diskcache as dc
@@ -23,7 +23,8 @@ class OpenAIEngine(EngineLM):
     def __init__(self, model_string: str,
                  system_prompt: str = DEFAULT_SYSTEM_PROMPT,
                  is_multimodal: bool = False,
-                 cache: Union[dc.Cache, bool] = False):
+                 cache: Union[dc.Cache, bool] = False,
+                 seed: Optional[int] = None):
 
         self.validate()
 
@@ -37,13 +38,22 @@ class OpenAIEngine(EngineLM):
         self.client = OpenAI(
             api_key=os.getenv("OPENAI_API_KEY")
         )
+        self.seed = seed
 
     def validate(self) -> None:
         if os.getenv("OPENAI_API_KEY") is None:
             raise ValueError(
                 "Please set the OPENAI_API_KEY environment variable if you'd like to use OpenAI models.")
 
-    def openai_call(self, user_content, system_prompt, temperature, max_tokens, top_p):
+    def openai_call(
+        self, 
+        user_content: Union[List[dict], str], 
+        system_prompt: str, 
+        temperature: float, 
+        max_tokens: int, 
+        top_p: float, 
+        seed: Optional[int]
+    ):
         response = self.client.chat.completions.create(
             model=self.model_string,
             messages=[
@@ -56,6 +66,7 @@ class OpenAIEngine(EngineLM):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
+            seed=seed if seed is not None else self.seed
         )
 
         return response.choices[0].message.content
@@ -63,19 +74,31 @@ class OpenAIEngine(EngineLM):
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_single_prompt(
-            self, content: str, system_prompt: str = None, temperature=0, max_tokens=2000, top_p=0.99
+        self, 
+        content: str, 
+        system_prompt: Optional[str] = None, 
+        temperature: float = 0, 
+        max_tokens: int = 2000, 
+        top_p: float = 0.99, 
+        seed: Optional[int] = None
     ):
 
-        return self.openai_call(content, system_prompt, temperature, max_tokens, top_p)
+        return self.openai_call(content, system_prompt, temperature, max_tokens, top_p, seed)
 
     @cached
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(3))
     def _generate_from_multiple_input(
-            self, content: List[Union[str, bytes]], system_prompt=None, temperature=0, max_tokens=2000, top_p=0.99
+        self, 
+        content: List[Union[str, bytes]], 
+        system_prompt: Optional[str] = None, 
+        temperature: float = 0, 
+        max_tokens: int = 2000, 
+        top_p: float = 0.99, 
+        seed: Optional[int] = None
     ):
         formatted_content = open_ai_like_formatting(content)
 
-        return self.openai_call(formatted_content, system_prompt, temperature, max_tokens, top_p)
+        return self.openai_call(formatted_content, system_prompt, temperature, max_tokens, top_p, seed)
 
     def __call__(self, content, **kwargs):
         return self.generate(content, **kwargs)
