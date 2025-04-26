@@ -64,6 +64,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
 
         self.model_string = model_string
         self.is_multimodal = is_multimodal
+        self.seed = kwargs.get("seed", None)
 
     @retry(wait=wait_random_exponential(min=1, max=5), stop=stop_after_attempt(5))
     def generate(self, content: Union[str, List[Union[str, bytes]]], system_prompt: str=None, **kwargs):
@@ -99,6 +100,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
+            seed=self.seed
         )
 
         response = response.choices[0].message.content
@@ -152,6 +154,7 @@ class ChatOpenAI(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
+            seed=self.seed
         )
 
         response_text = response.choices[0].message.content
