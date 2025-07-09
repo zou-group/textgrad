@@ -97,6 +97,30 @@ class StringBasedFunction(Function):
             self._backward_through_string_fn_chain(children_variables, response, inputs, function_purpose, backward_engine)
 
     @staticmethod
+    def backward_static(
+        response: Variable,
+        function_purpose: str,
+        inputs: Dict[str, Variable],
+        backward_engine: EngineLM,
+    ):
+        """
+        Static method to perform backward propagation for string-based functions.
+        
+        This method handles the gradient computation for string-based functions by determining
+        whether to use the base backward method (when no gradient exists on the response) or
+        the chain backward method (when gradient information is available on the response).
+        """
+        children_variables = response.predecessors
+        if response.get_gradient_text().strip() == "":
+            StringBasedFunction._backward_through_string_fn_base(
+                children_variables, response, inputs, function_purpose, backward_engine
+            )
+        else:
+            StringBasedFunction._backward_through_string_fn_chain(
+                children_variables, response, inputs, function_purpose, backward_engine
+            )
+
+    @staticmethod
     def _construct_string_fn_chain_backward_prompt(backward_info: dict[str, str]) -> str:
         conversation = CONVERSATION_TEMPLATE_STRING.format(**backward_info)
         backward_prompt = CONVERSATION_START_INSTRUCTION_STRING_FN_CHAIN.format(conversation=conversation, **backward_info)
