@@ -97,6 +97,23 @@ class StringBasedFunction(Function):
             self._backward_through_string_fn_chain(children_variables, response, inputs, function_purpose, backward_engine)
 
     @staticmethod
+    def backward_static(
+        response: Variable,
+        function_purpose: str,
+        inputs: Dict[str, Variable],
+        backward_engine: EngineLM,
+    ):
+        children_variables = response.predecessors
+        if response.get_gradient_text().strip() == "":
+            StringBasedFunction._backward_through_string_fn_base(
+                children_variables, response, inputs, function_purpose, backward_engine
+            )
+        else:
+            StringBasedFunction._backward_through_string_fn_chain(
+                children_variables, response, inputs, function_purpose, backward_engine
+            )
+
+    @staticmethod
     def _construct_string_fn_chain_backward_prompt(backward_info: dict[str, str]) -> str:
         conversation = CONVERSATION_TEMPLATE_STRING.format(**backward_info)
         backward_prompt = CONVERSATION_START_INSTRUCTION_STRING_FN_CHAIN.format(conversation=conversation, **backward_info)
