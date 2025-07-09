@@ -103,6 +103,13 @@ class StringBasedFunction(Function):
         inputs: Dict[str, Variable],
         backward_engine: EngineLM,
     ):
+        """
+        Static method to perform backward propagation for string-based functions.
+        
+        This method handles the gradient computation for string-based functions by determining
+        whether to use the base backward method (when no gradient exists on the response) or
+        the chain backward method (when gradient information is available on the response).
+        """
         children_variables = response.predecessors
         if response.get_gradient_text().strip() == "":
             StringBasedFunction._backward_through_string_fn_base(
