@@ -26,4 +26,4 @@ Also install:
 sudo apt install graphviz
 ```
 
-For more installation instructions, please refer to the [installation instructions](https://github.com/lupantech/textgrad#installation) in the [textgrad](https://github.com/lupantech/textgrad) repository. 
+For more installation instructions, please refer to the [installation instructions](https://github.com/zou-group/textgrad?tab=readme-ov-file#installation) in the [textgrad](https://github.com/zou-group/textgrad) repository. 
