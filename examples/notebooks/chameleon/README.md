@@ -6,10 +6,7 @@ Here, we provide the notebook examples for the agentic system [Chameleon](https:
 
 Chameleon is a complex AI system that can plan, execute, and reason about a sequence of tools to answer a question. TextGrad is used to optimize the long chain of reasoning steps in Chameleon in an interactive self-improvement loop.
 
-Two examples are provided:
-
-1. [textgrad_chameleon_38.ipynb](textgrad_chameleon_38.ipynb)
-2. [textgrad_chameleon_46.ipynb](textgrad_chameleon_46.ipynb)
+One example is provided: [TextGrad_Chemeleon_ScienceQA.ipynb](TextGrad_Chemeleon_ScienceQA.ipynb).
 
 ## Install the required packages
 
