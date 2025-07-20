@@ -40,6 +40,16 @@ class Variable:
             raise Exception("If the variable does not require grad, none of its predecessors should require grad."
                             f"In this case, following predecessors require grad: {_predecessor_requires_grad}")
         
+        # Handle numpy types by converting them to native Python types
+        try:
+            import numpy as np
+            if isinstance(value, np.integer):
+                value = int(value)
+            elif isinstance(value, np.floating):
+                value = float(value)
+        except ImportError:
+            pass  # numpy not available, continue without conversion
+
         assert type(value) in [str, bytes, int], "Value must be a string, int, or image (bytes). Got: {}".format(type(value))
         if isinstance(value, int):
             value = str(value)
