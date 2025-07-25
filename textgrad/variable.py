@@ -1,6 +1,6 @@
 from textgrad import logger
 from textgrad.engine import EngineLM
-from typing import List, Set, Dict
+from typing import List, Set, Dict, Optional
 import httpx
 from collections import defaultdict
 from functools import partial
@@ -13,7 +13,7 @@ class Variable:
         self,
         value: Union[str, bytes] = "",
         image_path: str = "",
-        predecessors: List['Variable']=None,
+        predecessors: Optional[List['Variable']] = None,
         requires_grad: bool=True,
         *,
         role_description: str):
