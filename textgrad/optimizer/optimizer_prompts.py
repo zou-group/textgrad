@@ -25,7 +25,7 @@ OPTIMIZER_SYSTEM_PROMPT = (
 # TGD update instruction
 TGD_PROMPT_PREFIX = (
     "Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n\n"
-    "The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n\n"
+    "The variable is the text within the following span: <VARIABLE> {variable_value} </VARIABLE>\n\n"
     "Here is the context and feedback we got for the variable:\n\n"
     "<CONTEXT>{variable_grad}</CONTEXT>\n\n"
     "Improve the variable ({variable_desc}) using the feedback provided in <FEEDBACK> tags.\n"
@@ -34,7 +34,7 @@ TGD_PROMPT_PREFIX = (
 # If the gradients are in a multi-part container
 TGD_MULTIPART_PROMPT_INIT = (
     "Here is the role of the variable you will improve: <ROLE>{variable_desc}</ROLE>.\n\n"
-    "The variable is the text within the following span: <VARIABLE> {variable_short} </VARIABLE>\n\n"
+    "The variable is the text within the following span: <VARIABLE> {variable_value} </VARIABLE>\n\n"
     "Here is the context and feedback we got for the variable:\n\n"
 )
 
