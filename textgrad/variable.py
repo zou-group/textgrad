@@ -361,7 +361,4 @@ def _backward_idempotent(variables: List[Variable], summation: Variable, backwar
         if summation._reduce_meta != []:
             var_gradients._reduce_meta.extend(summation._reduce_meta)
             variable._reduce_meta.extend(summation._reduce_meta)
-
-        variable.gradients.add(Variable(value=variable_gradient_value, 
-                                        role_description=f"feedback to {variable.get_role_description()}"))
         
