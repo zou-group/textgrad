@@ -73,7 +73,7 @@ class Variable:
         self.grad_fn = None
         self.role_description = role_description
         self.predecessors = set(predecessors)
-        self.requires_grad = requires_grad
+        self._requires_grad = requires_grad
         self._reduce_meta = []
         
         if requires_grad and (type(value) == bytes):
@@ -109,6 +109,20 @@ class Variable:
 
     def set_role_description(self, role_description):
         self.role_description = role_description
+
+    @property
+    def requires_grad(self):
+        return self._requires_grad
+
+    @requires_grad.setter
+    def requires_grad(self, value):
+        if not value:
+            # Check invariant if setting to False
+            predecessor_requires_grad = [v for v in self.predecessors if v.requires_grad]
+            if len(predecessor_requires_grad) > 0:
+                 raise ValueError("If the variable does not require grad, none of its predecessors should require grad."
+                                f"In this case, following predecessors require grad: {predecessor_requires_grad}")
+        self._requires_grad = value
 
     def reset_gradients(self):
         self.gradients = set()
