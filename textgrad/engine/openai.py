@@ -80,7 +80,7 @@ class BaseOpenAIEngine(EngineLM, CachedEngine):
         if cache_or_none is not None:
             return cache_or_none
 
-        response = self.client.chat.completions.create(
+        stream = self.client.chat.completions.create(
             model=self.model_string,
             messages=[
                 {"role": "system", "content": sys_prompt_arg},
@@ -92,9 +92,13 @@ class BaseOpenAIEngine(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
+            stream=True,
         )
 
-        response = response.choices[0].message.content
+        response = ""
+        for chunk in stream:
+            if chunk.choices and chunk.choices[0].delta.content is not None:
+                response += chunk.choices[0].delta.content
         self._save_cache(sys_prompt_arg + prompt, response)
         return response
 
@@ -139,7 +143,7 @@ class BaseOpenAIEngine(EngineLM, CachedEngine):
         if cache_or_none is not None:
             return cache_or_none
 
-        response = self.client.chat.completions.create(
+        stream = self.client.chat.completions.create(
             model=self.model_string,
             messages=[
                 {"role": "system", "content": sys_prompt_arg},
@@ -148,9 +152,13 @@ class BaseOpenAIEngine(EngineLM, CachedEngine):
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
+            stream=True,
         )
 
-        response_text = response.choices[0].message.content
+        response_text = ""
+        for chunk in stream:
+            if chunk.choices and chunk.choices[0].delta.content is not None:
+                response_text += chunk.choices[0].delta.content
         self._save_cache(cache_key, response_text)
         return response_text
 
