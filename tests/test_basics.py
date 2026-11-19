@@ -248,3 +248,58 @@ def test_multimodal_from_url():
                                 role_description="image to answer a question about", requires_grad=False)
 
     assert image_variable_2.value == image_variable.value
+
+# Engine that records the prompts it receives and returns a well-formed optimizer response
+class RecordingOptimizerEngine(EngineLM):
+    def __init__(self):
+        self.prompts = []
+
+    def generate(self, prompt, system_prompt=None, **kwargs):
+        self.prompts.append(prompt)
+        return f"<IMPROVED_VARIABLE>step {len(self.prompts)}</IMPROVED_VARIABLE>"
+
+    def __call__(self, prompt, system_prompt=None):
+        return self.generate(prompt, system_prompt=system_prompt)
+
+
+def _variable_with_gradient(value="initial value"):
+    v = Variable(value, role_description="a test variable", requires_grad=True)
+    v.gradients = {Variable("make it better", role_description="feedback")}
+    return v
+
+
+def test_momentum_optimizer_step_sends_prompt_to_engine():
+    from textgrad.optimizer import TextualGradientDescentwithMomentum
+
+    engine = RecordingOptimizerEngine()
+    v = _variable_with_gradient()
+    optimizer = TextualGradientDescentwithMomentum(engine=engine, parameters=[v], momentum_window=2)
+
+    optimizer.step()
+    optimizer.step()
+
+    assert all(isinstance(p, str) and p for p in engine.prompts)
+    assert v.value == "step 2"
+    # The second step should include the past iterations in the prompt
+    assert "<PAST_ITERATIONS>" in engine.prompts[1]
+    assert "step 1" in engine.prompts[1]
+
+
+def test_momentum_optimizer_zero_window_behaves_like_tgd():
+    from textgrad.optimizer import TextualGradientDescentwithMomentum
+
+    engine = RecordingOptimizerEngine()
+    v = _variable_with_gradient()
+    optimizer = TextualGradientDescentwithMomentum(engine=engine, parameters=[v], momentum_window=0)
+
+    optimizer.step()
+
+    assert v.value == "step 1"
+    assert "<PAST_ITERATIONS>" not in engine.prompts[0]
+
+
+def test_momentum_optimizer_rejects_negative_window():
+    from textgrad.optimizer import TextualGradientDescentwithMomentum
+
+    with pytest.raises(ValueError):
+        TextualGradientDescentwithMomentum(engine=RecordingOptimizerEngine(), parameters=[_variable_with_gradient()], momentum_window=-1)

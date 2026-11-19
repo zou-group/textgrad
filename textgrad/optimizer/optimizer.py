@@ -207,15 +207,17 @@ class TextualGradientDescentwithMomentum(Optimizer):
         if new_variable_tags is None:
             new_variable_tags = ["<IMPROVED_VARIABLE>", "</IMPROVED_VARIABLE>"]
 
-        self.engine = validate_engine_or_get_default(engine)
-        
-        if momentum_window == 0:
-            return TextualGradientDescent(engine=engine, parameters=parameters, constraints=constraints)
+        if momentum_window < 0:
+            raise ValueError(f"momentum_window must be non-negative, got {momentum_window}")
 
-        # Each item in the momentum storage will include past value and the criticism
+        self.engine = validate_engine_or_get_default(engine)
+
+        # Each item in the momentum storage will include past value and the criticism.
+        # With momentum_window == 0 no history is kept, so the optimizer behaves like
+        # plain TextualGradientDescent. (__init__ cannot return a different object.)
         self.momentum_storage = [[] for _ in range(len(parameters))]
         self.momentum_window = momentum_window
-        self.do_momentum = True
+        self.do_momentum = momentum_window > 0
         self.constraints = constraints if constraints is not None else []
         self.do_constrained = (len(self.constraints) > 0)
         self.optimizer_system_prompt = optimizer_system_prompt.format(new_variable_start_tag=new_variable_tags[0], new_variable_end_tag=new_variable_tags[1])
@@ -257,8 +259,9 @@ class TextualGradientDescentwithMomentum(Optimizer):
         logger.info(f"TextualGradientwithMomentum prompt for update", extra={"prompt": prompt})
         return prompt
 
-
     def _update_momentum_storage(self, variable: Variable, momentum_storage_idx: int):
+        if self.momentum_window == 0:
+            return
         if len(self.momentum_storage[momentum_storage_idx]) >= self.momentum_window:
             self.momentum_storage[momentum_storage_idx].pop(0)
         
